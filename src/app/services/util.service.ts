@@ -5,6 +5,7 @@ import { AppSettings } from '../app.settings';
 import { Alumno } from '../models/alumno.model';
 import { Pais } from '../models/pais.model';
 import { DataCatalogo } from '../models/dataCatalogo.model';
+import { Editorial } from '../models/editorial.model';
 
 const baseUrlUtil = AppSettings.API_ENDPOINT+ '/util';
 
@@ -51,6 +52,29 @@ export class UtilService {
     return this.http.get<DataCatalogo[]>(baseUrlUtil+"/listaSede");
   }
 
+  listaEstadoLibro():Observable<DataCatalogo[]>{
+    return this.http.get<DataCatalogo[]>(baseUrlUtil+"/listaEstadoLibro");
+  }
+
+  listaEstadoSala():Observable<DataCatalogo[]>{
+    return this.http.get<DataCatalogo[]>(baseUrlUtil+"/listaEstadoSala");
+  }
+
+  listaCentroEstudios():Observable<DataCatalogo[]>{
+    return this.http.get<DataCatalogo[]>(baseUrlUtil+"/listaCentroEstudios");
+  }
+
+  listaIdioma():Observable<DataCatalogo[]>{
+    return this.http.get<DataCatalogo[]>(baseUrlUtil+"/listaIdioma");
+  }
+
+  listaTemaTesis():Observable<DataCatalogo[]>{
+    return this.http.get<DataCatalogo[]>(baseUrlUtil+"/listaTemaTesis");
+  }
+
+  listaEditorial():Observable<Editorial[]>{
+    return this.http.get<Editorial[]>(baseUrlUtil+"/listaEditorial");
+  }
 }
 
 
