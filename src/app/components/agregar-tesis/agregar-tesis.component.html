@@ -1,4 +1,58 @@
 <app-menu></app-menu>
-<div style="padding: 2%">
-        <p>agregar-tesis works!</p>
+<div class="container">
+
+        <div class="row">
+                <mat-toolbar color="primary" >    
+                <span>Registra Tesis</span>    
+                </mat-toolbar> 
+        </div>
+
+        <div  class="row"  style="margin-top: 3%">
+                <mat-form-field class="col-md-4">
+                    <mat-label>Titulo</mat-label>
+                    <input  matInput [(ngModel)] ="tesis.titulo" >
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4">
+                        <mat-label>Fecha de Creación</mat-label>
+                        <input  matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4">
+                    <mat-label>Tema</mat-label>
+                    <mat-select [(ngModel)]="tesis.tema!.idDataCatalogo">
+                        <mat-option value="-1"> [Seleccione] </mat-option>
+                        <mat-option  *ngFor="let x of lstTema" [value]="x.idDataCatalogo">
+                            {{x.descripcion}}
+                        </mat-option>   
+                    </mat-select> 
+                </mat-form-field> 
+
+                <mat-form-field class="col-md-4">
+                        <mat-label>Idiona</mat-label>
+                        <mat-select [(ngModel)]="tesis.idioma!.idDataCatalogo">
+                        <mat-option value="-1"> [Seleccione] </mat-option>
+                        <mat-option  *ngFor="let x of lstIdioma" [value]="x.idDataCatalogo">
+                                {{x.descripcion}}
+                        </mat-option>   
+                        </mat-select> 
+                </mat-form-field> 
+
+                <mat-form-field class="col-md-4">
+                        <mat-label>Centro de Estudios</mat-label>
+                        <mat-select [(ngModel)]="tesis.centroEstudios!.idDataCatalogo">
+                        <mat-option value="-1"> [Seleccione] </mat-option>
+                        <mat-option  *ngFor="let x of lstCentroEstudios" [value]="x.idDataCatalogo">
+                                {{x.descripcion}}
+                        </mat-option>   
+                        </mat-select> 
+                </mat-form-field> 
+
+
+    </div>
+        <div  class="row" >
+                <button mat-raised-button type="submit" color="primary" (click)="ngOnInit()">Registra</button>
+        </div> 
 </div>
