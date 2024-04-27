@@ -24,6 +24,10 @@ export class UtilService {
     return this.http.get<Alumno[]>(baseUrlUtil+"/listaAlumno");
   }
 
+  buscaPorDni():Observable<Alumno[]>{
+    return this.http.get<Alumno[]>(baseUrlUtil+"/buscaPorDni");
+  }
+
   listaCategoriaDeLibro():Observable<DataCatalogo[]>{
     return this.http.get<DataCatalogo[]>(baseUrlUtil+"/listaCategoriaDeLibro");
   }
