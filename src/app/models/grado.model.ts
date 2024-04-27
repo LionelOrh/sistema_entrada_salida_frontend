@@ -1,5 +1,5 @@
 export class Grado {
-    idGrado?: number;
+    idGrado?: number ;
     descripcion?:string;
 
 }
