@@ -1,65 +1,136 @@
 <app-menu></app-menu>
 <div class="container" style="padding: 2%">
+    
+    <form  id="idFormCatalogo" [formGroup]="formsRegistra" > 
+
         <div class="row">
                 <mat-toolbar color="primary" >    
                 <span>Registra Sala</span>    
                 </mat-toolbar>  
         </div>
         <div  class="row"  style="margin-top: 3%">
+
                     <mat-form-field class="col-md-4">
                         <mat-label>Nro De Sala</mat-label>
-                        <input  matInput [(ngModel)] ="objSala.numero">
+                        <input  matInput [(ngModel)] ="objSala.numero" formControlName="validaNumero" >
+
+                        <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaNumero.touched">
+                            <span *ngIf="formsRegistra.controls.validaNumero.hasError('required')">
+                                El número es requerido                        
+                            </span>
+                      </mat-hint>
                     </mat-form-field>
+
 
                     <mat-form-field class="col-md-4">
                         <mat-label>Piso</mat-label>
-                        <input  matInput [(ngModel)] ="objSala.piso">
+                        <input  matInput [(ngModel)] ="objSala.piso" formControlName="validaPiso" >
+
+                        <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaPiso.touched">
+                            <span *ngIf="formsRegistra.controls.validaPiso.hasError('required')">
+                                El piso es requerido                        
+                            </span>
+                            <span *ngIf="formsRegistra.controls.validaPiso.hasError('pattern')">
+                                El piso  debe cotener de 1 a 2 dígitos                        
+                            </span>
+                      </mat-hint>
+
                     </mat-form-field>
+
+
 
                     <mat-form-field class="col-md-4">
                         <mat-label>Nro De Alumnos</mat-label>
-                        <input  matInput [(ngModel)] ="objSala.numAlumnos">
-                    </mat-form-field>
+                          <input  matInput [(ngModel)] ="objSala.numAlumnos" formControlName="validaNumAlumnos" >
 
-                    <mat-form-field class="col-md-4">
-                        <mat-label>Recursos</mat-label>
-                        <input  matInput [(ngModel)] ="objSala.recursos">
-                    </mat-form-field>
-        </div>
+                        <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaNumAlumnos.touched">
+                            <span *ngIf="formsRegistra.controls.validaNumAlumnos.hasError('required')">
+                                El número de alumnos es requerido                        
+                            </span>
+                            <span *ngIf="formsRegistra.controls.validaNumAlumnos.hasError('pattern')">
+                                El número de alumnos debe ser de 1 a 3 dígitos                      
+                            </span>
+                      </mat-hint>
+                    </mat-form-field>         
+    </div>
+
         <div class="row"  style="margin-top: 3%">
-                   
+            
+            <mat-form-field class="col-md-4">
+                <mat-label>Recursos</mat-label>
+
+                <input  matInput [(ngModel)] ="objSala.recursos" formControlName="validaRecursos" >
+
+                <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaRecursos.touched">
+                    <span *ngIf="formsRegistra.controls.validaRecursos.hasError('required')">
+                        El recurso es requerido                        
+                    </span>
+                    <span *ngIf="formsRegistra.controls.validaRecursos.hasError('pattern')">
+                        El recurso es de 3 a 40 caracteres                      
+                    </span>
+              </mat-hint>
+
+            </mat-form-field>
+
+            
                 <mat-form-field class="col-md-4">
                         <mat-label>Tipo De Sala</mat-label>
-                        <mat-select  [(ngModel)] ="objSala.tipoSala!.idDataCatalogo">
+                        <mat-select  [(ngModel)] ="objSala.tipoSala!.idDataCatalogo" formControlName="validaTipoSala">
                             <mat-option value="-1"> [Seleccione] </mat-option>
                             <mat-option *ngFor="let y of lstTipoSala" [value]="y.idDataCatalogo">
                                     {{y.descripcion}}
                             </mat-option> 
-                        </mat-select> 
+                        </mat-select>
+                        
+                        <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaTipoSala.touched">
+                            <span *ngIf="formsRegistra.controls.validaTipoSala.hasError('min')">
+                               El tipo de sala es requerido                   
+                            </span>
+                        </mat-hint>
+
                     </mat-form-field>
 
                     <mat-form-field class="col-md-4">
                         <mat-label>Sede </mat-label>
-                        <mat-select  [(ngModel)] ="objSala.sede!.idDataCatalogo">
+                        <mat-select  [(ngModel)] ="objSala.sede!.idDataCatalogo" formControlName="validaSede">
                             <mat-option value="-1"> [Seleccione] </mat-option>
                             <mat-option *ngFor="let y of lstSede" [value]="y.idDataCatalogo">
                                     {{y.descripcion}}
                             </mat-option> 
                         </mat-select> 
-                    </mat-form-field>
 
-                    <mat-form-field class="col-md-4">
-                        <mat-label>Estado De Reserva </mat-label>
-                        <mat-select  [(ngModel)] ="objSala.estadoReserva!.idDataCatalogo">
-                            <mat-option value="-1"> [Seleccione] </mat-option>
-                            <mat-option *ngFor="let y of lstEstadoReserva" [value]="y.idDataCatalogo">
-                                    {{y.descripcion}}
-                            </mat-option> 
-                        </mat-select> 
-                    </mat-form-field>
-        </div>
+                        <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaSede.touched">
+                            <span *ngIf="formsRegistra.controls.validaSede.hasError('min')">
+                               La sede es requerida                    
+                            </span>
+                        </mat-hint>
+
+                    </mat-form-field>          
+    </div>
+
+
+    <div class="row"  style="margin-top: 3%">
+        <mat-form-field class="col-md-4">
+            <mat-label>Estado De Reserva </mat-label>
+            <mat-select  [(ngModel)] ="objSala.estadoReserva!.idDataCatalogo" formControlName="validaEstadoReserva">
+                <mat-option value="-1"> [Seleccione] </mat-option>
+                <mat-option *ngFor="let y of lstEstadoReserva" [value]="y.idDataCatalogo">
+                        {{y.descripcion}}
+                </mat-option> 
+            </mat-select> 
+
+            <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaEstadoReserva.touched">
+                <span *ngIf="formsRegistra.controls.validaEstadoReserva.hasError('min')">
+                   El estado de reserva es requerido                 
+                </span>
+            </mat-hint>
+        </mat-form-field>
+    </div>
+
+
         <div  class="row" >
-            <button mat-raised-button type="submit" (click)="registra()" color="primary" >Registra</button>
+            <button mat-raised-button type="submit" [disabled]="formsRegistra.invalid" (click)="registra()" color="primary" >Registra</button>
         </div>
 
+    </form>
 </div>
