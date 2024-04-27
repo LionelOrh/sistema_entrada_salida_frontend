@@ -80,5 +80,7 @@ export class AgregarTesisComponent implements OnInit {
           },
         );
     }
+    // Reiniciar el formulario
+    this.formsRegistra.reset();
   }
 }
