@@ -9,7 +9,7 @@ export class Editorial {
     ruc?:string;
     gerente?:string;
     fechaCreacion?:Date;
-    estado?: number;
+
     pais?:Pais;
     usuarioRegistro?:Usuario;
     usuarioActualiza?:Usuario;
