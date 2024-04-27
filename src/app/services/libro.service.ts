@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../app.settings';
+import { Libro } from '../models/libro.model';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 const baseUrlLibro = AppSettings.API_ENDPOINT+ '/libro';
 
@@ -8,5 +11,11 @@ const baseUrlLibro = AppSettings.API_ENDPOINT+ '/libro';
 })
 export class LibroService {
 
-  constructor() { }
+  constructor(private http:HttpClient) { }
+
+  registrar(data:Libro):Observable<any>{
+    return this.http.post(baseUrlLibro, data);
+  }
+
+  
 }
