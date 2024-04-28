@@ -14,22 +14,21 @@ import Swal from 'sweetalert2';
 @Component({
   standalone: true,
   imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent],
-  selector: 'app-agregar-Proveedor',
-  templateUrl: './agregar-Proveedor.component.html',
-  styleUrls: ['./agregar-Proveedor.component.css']
+  selector: 'app-agregar-proveedor',
+  templateUrl: './agregar-proveedor.component.html',
+  styleUrls: ['./agregar-proveedor.component.css']
 })
 export class AgregarProveedorComponent {
 
   lstPais: Pais[] = [];
   lstTipo: DataCatalogo[] = []; 
   objProveedor: Proveedor ={
-        razonSocial: "",
+        razonsocial: "",
         ruc:"",
         direccion: "",
         telefono:"",
         celular:"",
         contacto:"",
-        fechaRegistro : new Date(),
         pais:{
           idPais:-1
         },

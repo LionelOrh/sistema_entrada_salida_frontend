@@ -7,7 +7,7 @@
     <div class="row" style="margin-top: 3%">
         <mat-form-field class="col-md-4">
             <mat-label>Razon social</mat-label>
-            <input matInput [(ngModel)]="objProveedor.razonSocial">
+            <input matInput [(ngModel)]="objProveedor.razonsocial">
         </mat-form-field>
         <mat-form-field class="col-md-4">
             <mat-label>Ruc</mat-label>
@@ -34,21 +34,15 @@
     </div>
     <div class="row" style="margin-top: 3%">
         <mat-form-field class="col-md-4">
-            <mat-label>Fecha de Creación</mat-label>
-            <input matInput [(ngModel)]="objRevista.fechaCreacion" [matDatepicker]="picker">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field class="col-md-4">
             <mat-label>País</mat-label>
-            <mat-select [(ngModel)]="objProveedor.pais?.idPais">
+            <mat-select [(ngModel)]="objProveedor.pais!.idPais">
                 <mat-option value="-1">[Seleccione]</mat-option>
                 <mat-option *ngFor="let x of lstPais" [value]="x.idPais">{{x.nombre}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field class="col-md-4">
             <mat-label>Tipo Proveedor</mat-label>
-            <mat-select [(ngModel)]="objProveedor.tipoProveedor?.idDataCatalogo">
+            <mat-select [(ngModel)]="objProveedor.tipoProveedor!.idDataCatalogo">
                 <mat-option value="-1">[Seleccione]</mat-option>
                 <mat-option *ngFor="let y of lstTipo" [value]="y.idDataCatalogo">{{y.descripcion}}</mat-option>
             </mat-select>

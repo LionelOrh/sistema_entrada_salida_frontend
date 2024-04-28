@@ -6,7 +6,7 @@ export class Proveedor {
 
 
     idEditorial?: number;
-    razonSocial?:string;
+    razonsocial?:string;
     ruc?:string;
     direccion?:string;
     telefono?:string;
