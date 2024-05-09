@@ -51,7 +51,7 @@ export class AgregarProveedorComponent {
 
   constructor(private utilService: UtilService, 
               private tokenService: TokenService,
-              private ProveedorService: ProveedorService,
+              private proveedorService: ProveedorService,
               private FormBuilder: FormBuilder){
                 this.utilService.listaTipoProveedor().subscribe(
                   x =>  this.lstTipo = x
@@ -66,7 +66,7 @@ export class AgregarProveedorComponent {
     this.objProveedor.usuarioActualiza=this.objUsuario;
     this.objProveedor.usuarioRegistro = this.objUsuario;
 
-    this.ProveedorService.registrar(this.objProveedor).subscribe(
+    this.proveedorService.registrar(this.objProveedor).subscribe(
         x =>
           Swal.fire({
             icon: 'success',

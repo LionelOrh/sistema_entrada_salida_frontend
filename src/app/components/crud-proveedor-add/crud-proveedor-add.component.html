@@ -1,1 +1,74 @@
-<p>crud-proveedor-add works!</p>
+<div class="container">
+    <div class="mat-dialog-content"  id="idFormModalidad" >
+                <div class="row">
+                        <mat-toolbar color="primary" >    
+                        <span>Registra Editorial</span>    
+                        </mat-toolbar>  
+                </div>
+                <div  class="row"  style="margin-top: 3%">
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Razon Social</mat-label>
+                                <input  matInput [(ngModel)] ="objProveedor.razonsocial">
+                            </mat-form-field>
+                            <mat-form-field class="col-md-4">
+                                <mat-label>RUC</mat-label>
+                                <input  matInput [(ngModel)] ="objProveedor.ruc">
+                            </mat-form-field>
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Direccion</mat-label>
+                                <input  matInput [(ngModel)] ="objProveedor.direccion">
+                            </mat-form-field>          
+                </div>
+                <div  class="row"  style="margin-top: 3%">
+                    <mat-form-field class="col-md-4">
+                        <mat-label>telefono</mat-label>
+                        <input  matInput [(ngModel)] ="objProveedor.telefono">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-4">
+                        <mat-label>celular</mat-label>
+                        <input  matInput [(ngModel)] ="objProveedor.celular">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-4">
+                        <mat-label>contacto</mat-label>
+                        <input  matInput [(ngModel)] ="objProveedor.contacto">
+                    </mat-form-field>          
+        </div>
+                <div class="row"  style="margin-top: 3%">
+                   
+                    
+
+                            <mat-form-field class="col-md-4">
+                                <mat-label>País</mat-label>
+                                <mat-select [(ngModel)] ="objProveedor.pais!.idPais">
+                                    <mat-option value="-1"> [Seleccione] </mat-option>
+                                    <mat-option *ngFor="let x of lstPais" [value]="x.idPais">
+                                                {{x.nombre}}
+                                    </mat-option> 
+                                </mat-select> 
+                            </mat-form-field> 
+                            <mat-form-field class="col-md-4">
+                                <mat-label>Tipo Proveedor</mat-label>
+                                <mat-select [(ngModel)]="objProveedor.tipoProveedor!.idDataCatalogo">
+                                    <mat-option value="-1">[Seleccione]</mat-option>
+                                    <mat-option *ngFor="let y of lstTipo" [value]="y.idDataCatalogo">{{y.descripcion}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            
+                </div>
+                <div  mat-dialog-actions>
+                    <button mat-raised-button 
+                            type="submit" 
+                            (click) = "registra()"
+                            color="primary" 
+                            [mat-dialog-close]="1">
+                            Registra
+                    </button>
+                    <button mat-button 
+                            color="primary">
+                            Salir
+                    </button>
+            </div>
+ </div>
+  </div>
+  
+
