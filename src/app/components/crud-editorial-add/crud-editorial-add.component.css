@@ -1,0 +1,8 @@
+.custom-margin {
+    margin-bottom: 20px;
+}
+.error-hint {
+    color: red; 
+    display: block; 
+    text-align: center; 
+}
