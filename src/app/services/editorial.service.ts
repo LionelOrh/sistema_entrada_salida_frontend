@@ -31,5 +31,4 @@ export class EditorialService {
   consultarCrud(filtro:string):Observable<any>{
     return this.http.get(baseUrlCrudEditorial+"/listaEditorialPorRazonSocialLike/"+filtro);
   }
-  
 }

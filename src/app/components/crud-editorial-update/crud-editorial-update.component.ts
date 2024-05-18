@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AppMaterialModule } from '../../app.material.module';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
 import { Pais } from '../../models/pais.model';
@@ -14,9 +14,28 @@ import Swal from 'sweetalert2';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
+// Validador personalizado para comprobar si el RUC comienza con 10
+function rucStartsWith10(control: AbstractControl): ValidationErrors | null {
+  const ruc = control.value;
+  if (ruc && !ruc.startsWith('10')) {
+    return { startsWith10: true };
+  }
+  return null;
+}
+
+// Validador personalizado para comprobar si la fecha es de 1980 en adelante
+function dateFrom1980Onwards(control: AbstractControl): ValidationErrors | null {
+  const date = new Date(control.value);
+  if (date.getFullYear() < 1980) {
+    return { dateFrom1980Onwards: true };
+  }
+  return null;
+}
+
+
 @Component({
   standalone: true,
-  imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent],
+  imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent, ReactiveFormsModule],
   selector: 'app-crud-editorial-update',
   templateUrl: './crud-editorial-update.component.html',
   styleUrls: ['./crud-editorial-update.component.css'],
@@ -26,6 +45,15 @@ export class CrudEditorialUpdateComponent {
   lstPais: Pais[] = [];
   lstTipo: DataCatalogo[] = [];
   fecha = new FormControl(new Date());
+
+  formsActualiza = this.formBuilder.group({ 
+    validarazonSocial: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
+    validadireccion: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(40)]],
+    validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}'), rucStartsWith10]],
+    validagerente: ['', [Validators.required, Validators.pattern('^[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
+    validafechaCreacion: ['', [Validators.required, dateFrom1980Onwards]],
+    validaPais: ['', [Validators.min(1)]],
+});
 
   objEditorial: Editorial ={
     razonSocial: "",
@@ -42,12 +70,10 @@ objUsuario: Usuario = {} ;
   constructor(private utilService: UtilService, 
               private tokenService: TokenService,
               private editorialService: EditorialService,
-              @Inject(MAT_DIALOG_DATA) public data: any){
-            
-
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private formBuilder : FormBuilder){
             data.fechaCreacion = new Date( new Date(data.fechaCreacion).getTime() + (1000 * 60 * 60 * 24));
             this.objEditorial = data; 
-
             console.log(">>>> [ini] >>> objRevista");
             console.log(this.objEditorial);
             this.utilService.listaPais().subscribe(

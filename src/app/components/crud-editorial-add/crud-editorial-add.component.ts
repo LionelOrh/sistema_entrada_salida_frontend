@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppMaterialModule } from '../../app.material.module';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
 import { Pais } from '../../models/pais.model';
@@ -11,9 +11,22 @@ import { TokenService } from '../../security/token.service';
 import { Usuario } from '../../models/usuario.model';
 import { EditorialService } from '../../services/editorial.service';
 import Swal from 'sweetalert2';
-import { BrowserModule } from '@angular/platform-browser';
-import { MatDialogRef } from '@angular/material/dialog';
 
+// Validador personalizado para comprobar si el RUC comienza con 10
+function rucStartsWith10(control: AbstractControl): ValidationErrors | null {
+  const ruc = control.value;
+  if (ruc && !ruc.startsWith('10')) {
+    return { startsWith10: true };
+  }
+  return null;
+}
+// Validador personalizado para comprobar si la fecha es de 1980 en adelante
+function dateFrom1980Onwards(control: AbstractControl): ValidationErrors | null {
+  const date = new Date(control.value);
+  if (date.getFullYear() < 1980) {
+    return { dateFrom1980Onwards: true };
+  }
+  return null;}
 @Component({
   standalone: true,
   selector: 'app-crud-editorial-add',
@@ -37,12 +50,12 @@ export class CrudEditorialAddComponent {
 }
 objUsuario: Usuario = {} ;
 formsRegistra = this.formBuilder.group({  
-  validarazonSocial: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,100}')]],
- validadireccion: ['', [Validators.required, Validators.maxLength(100)]],
- validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}')]], 
- validagerente: ['', [Validators.required, Validators.maxLength(50)]],
- validafechaCreacion: ['', [Validators.required] ] , 
- validaPais: ['', Validators.min(1)],
+  validarazonSocial: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
+    validadireccion: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(40)]],
+    validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}'), rucStartsWith10]],
+    validagerente: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
+    validafechaCreacion: ['', [Validators.required, dateFrom1980Onwards]],
+    validaPais: ['', [Validators.min(1)]],
    });
    
 
@@ -69,7 +82,6 @@ formsRegistra = this.formBuilder.group({
             })
           },
         );
-  }
-  
+  } 
 }
 

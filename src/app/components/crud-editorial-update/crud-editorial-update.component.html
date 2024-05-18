@@ -1,4 +1,5 @@
 <div class="container">
+    <form  id="idForm" [formGroup]="formsActualiza" >
     <div class="mat-dialog-content"  id="idFormModalidad" >
                 <div class="row">
                         <mat-toolbar color="primary" >    
@@ -7,57 +8,106 @@
                 </div>
                 <div  class="row"  style="margin-top: 3%">
                             <mat-form-field class="col-md-4">
-                                <mat-label>Razon Social</mat-label>
-                                <input  matInput [(ngModel)] ="objEditorial.razonSocial">
+                                <mat-label>Razón Social</mat-label>
+                                <input  matInput [(ngModel)] ="objEditorial.razonSocial" formControlName="validarazonSocial">
+                                <mat-hint style="color: red"  *ngIf="formsActualiza.controls.validarazonSocial.touched">
+                                    <span *ngIf="formsActualiza.controls.validarazonSocial.hasError('required')">
+                                        La razón social es obligatoria.
+                                    </span>
+                                    <span *ngIf="formsActualiza.controls.validarazonSocial.hasError('pattern')">
+                                        La razón social debe tener entre 4 y 40 caracteres.
+                                    </span>
+                              </mat-hint>
                             </mat-form-field>
                             <mat-form-field class="col-md-4">
-                                <mat-label>Direccion</mat-label>
-                                <input  matInput [(ngModel)] ="objEditorial.direccion">
+                                <mat-label>Dirección</mat-label>
+                                <input  matInput [(ngModel)] ="objEditorial.direccion" formControlName="validadireccion">
+                                <mat-hint style="color: red"  *ngIf="formsActualiza.controls.validadireccion.touched">
+                                    <span *ngIf="formsActualiza.controls.validadireccion.hasError('required')">
+                                        La dirección es requerida.
+                                    </span>
+                                    <span *ngIf="formsActualiza.controls.validadireccion.hasError('pattern')">
+                                        La dirección debe tener entre 4 y 40 caracteres.
+                                    </span>
+                                    
+                              </mat-hint>
                             </mat-form-field>
                             <mat-form-field class="col-md-4">
                                 <mat-label>RUC</mat-label>
-                                <input  matInput [(ngModel)] ="objEditorial.ruc">
+                                <input  matInput [(ngModel)] ="objEditorial.ruc" formControlName="validaruc">
+                                <mat-hint style="color: red"  *ngIf="formsActualiza.controls.validaruc.touched">
+                                    <span *ngIf="formsActualiza.controls.validaruc.hasError('required')">
+                                        El RUC es obligatorio.
+                                    </span>
+                                    <span *ngIf="formsActualiza.controls.validaruc.hasError('pattern')">
+                                        El RUC debe contener 11 digitos numericos .                      
+                                    </span>
+                                    <span *ngIf="formsActualiza.controls.validaruc.hasError('startsWith10')">
+                                        El RUC debe comenzar con 10.
+                                      </span>
+                              </mat-hint>
                             </mat-form-field>
                             
                 </div>
                 <div class="row"  style="margin-top: 3%">
                             <mat-form-field class="col-md-4">
                                 <mat-label>Gerente</mat-label>
-                                <input  matInput [(ngModel)] ="objEditorial.gerente">
+                                <input  matInput [(ngModel)] ="objEditorial.gerente" formControlName="validagerente">
+                                <mat-hint style="color: red"  *ngIf="formsActualiza.controls.validagerente.touched">
+                                    <span *ngIf="formsActualiza.controls.validagerente.hasError('required')">
+                                        El nombre del gerente es requerido.                       
+                                    </span>
+                                    <span *ngIf="formsActualiza.controls.validagerente.hasError('pattern')">
+                                        El nombre del gerente debe tener entre 3 y 50 caracteres.
+                                    </span>
+                              </mat-hint>
                             </mat-form-field>
                             <mat-form-field class="col-md-4">
                                 <mat-label>Fecha de Creación</mat-label>
                                 <mat-hint>DD/MM/YYYY</mat-hint>
-                                <input  matInput [(ngModel)] ="objEditorial.fechaCreacion" [matDatepicker]="picker" >
+                                <input  matInput [(ngModel)] ="objEditorial.fechaCreacion" [matDatepicker]="picker" formControlName="validafechaCreacion">
                                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
+                                <mat-hint style="color: red"  *ngIf="formsActualiza.controls.validafechaCreacion.touched">
+                                    <span *ngIf="formsActualiza.controls.validafechaCreacion.hasError('required')">
+                                    La fecha de creación es requerido.                        
+                                    </span>
+                                    <span *ngIf="formsActualiza.controls.validafechaCreacion.hasError('dateFrom1980Onwards')">
+                                        La fecha de creación debe ser desde 1980 en adelante.
+                                      </span>
+                                    
+                              </mat-hint>
                             </mat-form-field>
 
                             <mat-form-field class="col-md-4">
                                 <mat-label>País</mat-label>
-                                <mat-select [(ngModel)] ="objEditorial.pais!.idPais">
+                                <mat-select [(ngModel)] ="objEditorial.pais!.idPais" formControlName="validaPais">
                                     <mat-option value="-1"> [Seleccione] </mat-option>
                                     <mat-option *ngFor="let x of lstPais" [value]="x.idPais">
                                                 {{x.nombre}}
                                     </mat-option> 
                                 </mat-select> 
+                                <mat-hint style="color: red"  *ngIf="formsActualiza.controls.validaPais.touched">
+                                    <span *ngIf="formsActualiza.controls.validaPais.hasError('min')">
+                                        El País es requerido.                       
+                                    </span>
+                                </mat-hint>
                             </mat-form-field> 
                             
                 </div>
                 <div  mat-dialog-actions>
                     <button mat-raised-button 
-                            type="submit" 
-                            (click) = "actualizar()"
-                            color="primary" 
-                            [mat-dialog-close]="1">
-                            Actualiza
-                    </button>
-                    <button mat-button 
-                            color="primary">
-                            Salir
-                    </button>
+                    type="submit" 
+                    (click) = "actualizar()"
+                    color="primary" 
+                    [mat-dialog-close]="1"
+                    [disabled]="formsActualiza.invalid">
+                    Actualiza
+            </button>                    <button mat-button color="primary" [mat-dialog-close]="0">Salir</button>
+
             </div>
  </div>
+</form>
   </div>
   
 
