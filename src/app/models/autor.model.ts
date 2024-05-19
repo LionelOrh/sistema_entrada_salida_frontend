@@ -14,4 +14,5 @@ export class Autor {
     grado?:            DataCatalogo;
     usuarioRegistro?:  Usuario;
     usuarioActualiza?: Usuario;
+    estado?: number;
 }
