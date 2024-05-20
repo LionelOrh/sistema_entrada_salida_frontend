@@ -13,6 +13,7 @@ export class Alumno {
     tipoSangre?: string;
     fechaNacimiento?: Date;
     pais?: Pais;
+    estado?: number;
     modalidad?: DataCatalogo;
     usuarioRegistro?: Usuario;
     usuarioActualiza?: Usuario
