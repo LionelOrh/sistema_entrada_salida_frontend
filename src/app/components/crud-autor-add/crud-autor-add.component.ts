@@ -44,10 +44,10 @@ export class CrudAutorAddComponent {
 
   //PARA LAS VALIDACIONES
   formsRegistra = this.formBuilder.group({ 
-    validaNombres: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,30}')]] ,
-    validaApellidos: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,30}')]] ,  
+    validaNombres: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]] ,
+    validaApellidos: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]] ,  
     validaFechaNacimiento: ['', [Validators.required] ] , 
-    validaTelefono: ['', [Validators.required, Validators.pattern('01[0-9]{7}')]], 
+    validaTelefono: ['', [Validators.required, Validators.pattern('018[0-9]{6}')]], 
     validaCelular: ['', [Validators.required, Validators.pattern('9[0-9]{8}')] ] ,  
     validaOrcid: ['', [Validators.required, Validators.pattern('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}')] ],
     validaPais: ['', Validators.min(1)] , 
