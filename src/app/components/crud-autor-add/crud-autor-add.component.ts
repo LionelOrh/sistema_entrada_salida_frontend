@@ -92,6 +92,10 @@ registra(){
       },
     );
     }
+    //borra los errores
+    Object.keys(this.formsRegistra.controls).forEach(x => {
+      this.formsRegistra.get(x)?.setErrors(null);
+});
   }
   
   validateFechaNacimiento(control: AbstractControl): { [key: string]: boolean } | null {

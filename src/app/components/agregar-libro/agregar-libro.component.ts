@@ -47,13 +47,13 @@ export class AgregarLibroComponent  {
   objUsuario: Usuario = {};
 
   formsRegistra = this.formBuilder.group({
-    validaTitulo: ['', [Validators.required, Validators.minLength(3)]],
-    validaAnio: ['', [Validators.required, Validators.pattern('[0-9]{4}')]],
-    validaSerie: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9!@#$%^&*()_+{}|:"<>?]{9}')]],
-    validaEditorial: ['', Validators.min(1)],
+    validatitulo: ['', [Validators.required, Validators.pattern('^[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
+    validaserie: ['', [Validators.required, Validators.pattern('^[A-Z]{3}[0-9]{7}$')]],
+    validaanio: ['', [Validators.required, Validators.pattern('^(18[0-9]{2}|19[0-9]{2}|20[0-2][0-4])$')]],
     validaCategoriaLibro: ['', Validators.min(1)],
     validaEstadoPrestamo: ['', Validators.min(1)],
     validaTipoLibro: ['', Validators.min(1)],
+    validaEditorial: ['', Validators.min(1)],
   });
   
   constructor(

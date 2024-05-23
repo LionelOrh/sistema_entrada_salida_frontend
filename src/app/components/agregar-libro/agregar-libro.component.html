@@ -10,97 +10,104 @@
         <div class="row" style="margin-top: 3%">
             <mat-form-field class="col-md-4">
                 <mat-label>Título</mat-label>
-                <input matInput [(ngModel)]="libro.titulo" formControlName="validaTitulo">
-                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaTitulo.touched">
-                    <span *ngIf="formsRegistra.controls.validaTitulo.hasError('required')">
+                <input matInput [(ngModel)]="libro.titulo" formControlName="validatitulo">
+                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validatitulo.touched">
+                    <span *ngIf="formsRegistra.controls.validatitulo.hasError('required')">
                         El título es requerido
                     </span>
-                    <span *ngIf="formsRegistra.controls.validaTitulo.hasError('pattern')">
-                        El nombre es de 3 a 30 caracteres
-                    </span>
-                </mat-hint>
-            </mat-form-field>
-            <mat-form-field class="col-md-4">
-                <mat-label>Año</mat-label>
-                <input matInput [(ngModel)]="libro.anio" formControlName="validaAnio">
-                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaAnio.touched">
-                    <span *ngIf="formsRegistra.controls.validaAnio.hasError('required')">
-                        El año es requerido
-                    </span>
-                    <span *ngIf="formsRegistra.controls.validaAnio.hasError('pattern')">
-                        El año es de 4 caracteres
-                    </span>
-                </mat-hint>
-            </mat-form-field>
-            <mat-form-field class="col-md-4">
-                <mat-label>Serie</mat-label>
-                <input matInput [(ngModel)]="libro.serie" formControlName="validaSerie">
-                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaSerie.touched">
-                    <span *ngIf="formsRegistra.controls.validaSerie.hasError('required')">
-                        La serie es requerida
-                    </span>
-                    <span *ngIf="formsRegistra.controls.validaSerie.hasError('pattern')">
-                        La serie es de 9 caracteres
-                    </span>
-                </mat-hint>
-            </mat-form-field>
-            <mat-form-field class="col-md-4">
-                <mat-label>Editorial</mat-label>
-                <mat-select [(ngModel)]="libro.editorial!.idEditorial" formControlName="validaEditorial">
-                    <mat-option value="-1"> [Seleccione] </mat-option>
-                    <mat-option *ngFor="let x of lstEditorial" [value]="x.idEditorial">
-                        {{x.razonSocial}}
-                    </mat-option>
-                </mat-select>
-                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaEditorial.touched">
-                    <span *ngIf="formsRegistra.controls.validaEditorial.hasError('min')">
-                        El editorial es requerido
-                    </span>
-                </mat-hint>
-            </mat-form-field>
-            <mat-form-field class="col-md-4">
-                <mat-label>Categoría</mat-label>
-                <mat-select [(ngModel)]="libro.categoriaLibro!.idDataCatalogo" formControlName="validaCategoriaLibro">
-                    <mat-option value="-1"> [Seleccione] </mat-option>
-                    <mat-option *ngFor="let x of lstCategoria" [value]="x.idDataCatalogo">
-                        {{x.descripcion}}
-                    </mat-option>
-                </mat-select>
-                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaCategoriaLibro.touched">
-                    <span *ngIf="formsRegistra.controls.validaCategoriaLibro.hasError('min')">
-                        La categoría es requerida
-                    </span>
-                </mat-hint>
-            </mat-form-field>
-            <mat-form-field class="col-md-4">
-                <mat-label>Estado Préstamo</mat-label>
-                <mat-select [(ngModel)]="libro.estadoPrestamo!.idDataCatalogo" formControlName="validaEstadoPrestamo">
-                    <mat-option value="-1"> [Seleccione] </mat-option>
-                    <mat-option *ngFor="let x of lstEstadoPrestamo" [value]="x.idDataCatalogo">
-                        {{x.descripcion}}
-                    </mat-option>
-                </mat-select>
-                <mat-hint style="color:red" *ngIf="formsRegistra.controls.validaEstadoPrestamo.touched">
-                    <span *ngIf="formsRegistra.controls.validaEstadoPrestamo.hasError('min')">
-                        El estado de préstamo es requerido
-                    </span>
-                </mat-hint>
-            </mat-form-field>
-            <mat-form-field class="col-md-4">
-                <mat-label>Tipo de Libro</mat-label>
-                <mat-select [(ngModel)]="libro.tipoLibro!.idDataCatalogo" formControlName="validaTipoLibro">
-                    <mat-option value="-1"> [Seleccione] </mat-option>
-                    <mat-option *ngFor="let x of lstTipoLibro" [value]="x.idDataCatalogo">
-                        {{x.descripcion}}
-                    </mat-option>
-                </mat-select>
-                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaTipoLibro.touched">
-                    <span *ngIf="formsRegistra.controls.validaTipoLibro.hasError('min')">
-                        El tipo de libro es requerido
+                    <span *ngIf="formsRegistra.controls.validatitulo.hasError('pattern')">
+                        El título debe tener entre 3 y 50 caracteres
                     </span>
                 </mat-hint>
             </mat-form-field>
 
+            <mat-form-field class="col-md-4">
+                <mat-label>Año</mat-label>
+                <input matInput [(ngModel)]="libro.anio" formControlName="validaanio">
+                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaanio.touched">
+                    <span *ngIf="formsRegistra.controls.validaanio.hasError('required')">
+                        El año es requerido
+                    </span>
+                    <span *ngIf="formsRegistra.controls.validaanio.hasError('pattern')">
+                        El año debe ser entre 1800 y el año 2024
+                    </span>
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4">
+                <mat-label>Serie</mat-label>
+                <input matInput [(ngModel)]="libro.serie" formControlName="validaserie">
+                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaserie.touched">
+                    <span *ngIf="formsRegistra.controls.validaserie.hasError('required')">
+                        La serie es requerida
+                    </span>
+                    <span *ngIf="formsRegistra.controls.validaserie.hasError('pattern')">
+                        La serie debe tener 3 letras mayúsculas y 7 dígitos
+                    </span>
+                </mat-hint>
+            </mat-form-field>
+        </div>
+        
+        <div class="row" style="margin-top: 3%">
+            <mat-form-field class="col-md-4">
+                <mat-label>Editorial</mat-label>
+                <mat-select [(ngModel)]="libro.editorial!.idEditorial" formControlName="validaEditorial">
+                    <mat-option value="-1">[Seleccione]</mat-option>
+                    <mat-option *ngFor="let x of lstEditorial" [value]="x.idEditorial">
+                        {{x.razonSocial}}
+                    </mat-option>   
+                </mat-select> 
+                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaEditorial.touched">
+                    <span *ngIf="formsRegistra.controls.validaEditorial.hasError('min')">
+                        El editorial es requerido                     
+                    </span>
+                </mat-hint>
+            </mat-form-field> 
+
+            <mat-form-field class="col-md-4">
+                <mat-label>Categoría</mat-label>
+                <mat-select [(ngModel)]="libro.categoriaLibro!.idDataCatalogo" formControlName="validaCategoriaLibro">
+                    <mat-option value="-1">[Seleccione]</mat-option>
+                    <mat-option *ngFor="let x of lstCategoria" [value]="x.idDataCatalogo">
+                        {{x.descripcion}}
+                    </mat-option>   
+                </mat-select> 
+                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaCategoriaLibro.touched">
+                    <span *ngIf="formsRegistra.controls.validaCategoriaLibro.hasError('min')">
+                        La categoría es requerida                       
+                    </span>
+                </mat-hint>
+            </mat-form-field> 
+  
+            <mat-form-field class="col-md-4">
+                <mat-label>Estado del préstamo</mat-label>
+                <mat-select [(ngModel)]="libro.estadoPrestamo!.idDataCatalogo" formControlName="validaEstadoPrestamo">
+                    <mat-option value="-1">[Seleccione]</mat-option>
+                    <mat-option *ngFor="let x of lstEstadoPrestamo" [value]="x.idDataCatalogo">
+                        {{x.descripcion}}
+                    </mat-option>   
+                </mat-select> 
+                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaEstadoPrestamo.touched">
+                    <span *ngIf="formsRegistra.controls.validaEstadoPrestamo.hasError('min')">
+                        El estado del préstamo es requerido                    
+                    </span>
+                </mat-hint>
+            </mat-form-field> 
+          
+            <mat-form-field class="col-md-4">
+                <mat-label>Tipo de libro</mat-label>
+                <mat-select [(ngModel)]="libro.tipoLibro!.idDataCatalogo" formControlName="validaTipoLibro">
+                    <mat-option value="-1">[Seleccione]</mat-option>
+                    <mat-option *ngFor="let x of lstTipoLibro" [value]="x.idDataCatalogo">
+                        {{x.descripcion}}
+                    </mat-option>   
+                </mat-select> 
+                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaTipoLibro.touched">
+                    <span *ngIf="formsRegistra.controls.validaTipoLibro.hasError('min')">
+                        El tipo de libro es requerido                  
+                    </span>
+                </mat-hint>
+            </mat-form-field> 
         </div>
         <div class="row">
             <button mat-raised-button type="submit" [disabled]="formsRegistra.invalid" color="primary"

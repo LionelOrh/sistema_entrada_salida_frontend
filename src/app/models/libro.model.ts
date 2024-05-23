@@ -13,6 +13,7 @@ export class Libro {
         editorial?: Editorial;
         usuarioRegistro?: Usuario;
         usuarioActualiza?: Usuario;
+        estado?: number;
     }
     
 
