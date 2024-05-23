@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../../app.material.module';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
 import { DataCatalogo } from '../../models/dataCatalogo.model';
@@ -12,6 +11,8 @@ import { LibroService } from '../../services/libro.service';
 import { UtilService } from '../../services/util.service';
 import { TokenService } from '../../security/token.service';
 import Swal from 'sweetalert2';
+import { MatDialogRef } from '@angular/material/dialog'; 
+import { CrudLibroAddComponent } from '../crud-libro-add/crud-libro-add.component';
 
 @Component({
   selector: 'app-agregar-libro',
@@ -46,21 +47,32 @@ export class AgregarLibroComponent  {
 
   objUsuario: Usuario = {};
 
+  yearValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    const currentYear = new Date().getFullYear();
+    if (value && (value < 1800 || value > currentYear)) {
+      return { yearInvalid: true };
+    }
+    return null;
+  };
+  
   formsRegistra = this.formBuilder.group({
     validatitulo: ['', [Validators.required, Validators.pattern('^[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
     validaserie: ['', [Validators.required, Validators.pattern('^[A-Z]{3}[0-9]{7}$')]],
-    validaanio: ['', [Validators.required, Validators.pattern('^(18[0-9]{2}|19[0-9]{2}|20[0-2][0-4])$')]],
+    validaanio: ['', [Validators.required, this.yearValidator]], // Aplicar el validador personalizado aquí
     validaCategoriaLibro: ['', Validators.min(1)],
     validaEstadoPrestamo: ['', Validators.min(1)],
     validaTipoLibro: ['', Validators.min(1)],
     validaEditorial: ['', Validators.min(1)],
   });
   
+  
   constructor(
     private libroService: LibroService,
     private utilService: UtilService,
     private tokenService: TokenService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<CrudLibroAddComponent>, 
   ) {
     utilService.listaEditorial().subscribe(
       x => (this.lstEditorial = x)
@@ -76,32 +88,21 @@ export class AgregarLibroComponent  {
     );
     this.objUsuario.idUsuario = tokenService.getUserId();
   }
-
-  registra(){
-    if (this.formsRegistra.valid){
+  libroExistente: boolean = false;
+  registra() {
+    if (this.formsRegistra.valid) {
       this.libro.usuarioActualiza = this.objUsuario;
       this.libro.usuarioRegistro = this.objUsuario;
-  
-      this.libroService.registrar(this.libro).subscribe(
-        x => 
+
+      this.libroService.registrarCrud(this.libro).subscribe(
+        x => {
           Swal.fire({
-            icon: 'success',
+            icon: 'info',
             title: 'Resultado del Registro',
             text: x.mensaje,
-          })
+          });
+        }
       );
-           
-          this.libro ={
-   titulo: "",
-    anio: 0,
-    serie: "",
-    editorial: {idEditorial: -1},
-    categoriaLibro: {idDataCatalogo: -1},
-    estadoPrestamo: {idDataCatalogo: -1},
-    tipoLibro: {idDataCatalogo: -1 }
-         
-          };
-          this.formsRegistra.reset();
     }
   }
 }

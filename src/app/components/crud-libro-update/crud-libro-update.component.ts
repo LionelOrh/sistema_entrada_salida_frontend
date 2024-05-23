@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { AppMaterialModule } from '../../app.material.module';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
 import { DataCatalogo } from '../../models/dataCatalogo.model';
@@ -11,7 +10,9 @@ import { UtilService } from '../../services/util.service';
 import { TokenService } from '../../security/token.service';
 import { LibroService } from '../../services/libro.service';
 import Swal from 'sweetalert2';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AppMaterialModule } from '../../app.material.module';
+import { CrudLibroAddComponent } from '../crud-libro-add/crud-libro-add.component';
 
 @Component({  
   standalone: true,
@@ -20,12 +21,17 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './crud-libro-update.component.html',
   styleUrls: ['./crud-libro-update.component.css']
 })
-
-
-  
-
 export class CrudLibroUpdateComponent {
- 
+  // Definición del validador personalizado
+  yearValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    const currentYear = new Date().getFullYear();
+    if (value && (value < 1800 || value > currentYear)) {
+      return { yearInvalid: true };
+    }
+    return null;
+  };
+
   lstTipo: DataCatalogo[] = [];
   lstCategoria: DataCatalogo[] = [];
   lstEstado: DataCatalogo[] = [];
@@ -54,7 +60,7 @@ export class CrudLibroUpdateComponent {
   formsActualizar = this.formBuilder.group({
     validatitulo: ['', [Validators.required, Validators.pattern('^[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
     validaserie: ['', [Validators.required, Validators.pattern('^[A-Z]{3}[0-9]{7}$')]],
-    validaanio: ['', [Validators.required, Validators.pattern('^(18[0-9]{2}|19[0-9]{2}|20[0-2][0-4])$')]],
+    validaanio: ['', [Validators.required, this.yearValidator]], // Aplicar el validador personalizado aquí
     validaCategoriaLibro: ['', Validators.min(1)],
     validaEstadoPrestamo: ['', Validators.min(1)],
     validaTipoLibro: ['', Validators.min(1)],
@@ -66,11 +72,10 @@ export class CrudLibroUpdateComponent {
     private tokenService: TokenService,
     private libroService: LibroService,
     private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<CrudLibroAddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
     this.libro = data;
-    
 
     console.log(">>>> [ini] >>> libro");
     console.log(this.libro);
@@ -90,20 +95,29 @@ export class CrudLibroUpdateComponent {
 
     this.objUsuario.idUsuario = this.tokenService.getUserId();
   }
+
+  libroExistente: boolean = false;
+
   actualizar() {
     if (this.formsActualizar.valid) {
       this.libro.usuarioActualiza = this.objUsuario;
       this.libro.usuarioRegistro = this.objUsuario;
-
-      this.libroService.actualizarCrud(this.libro).subscribe((x) => {
-        Swal.fire({
-          icon: 'info',
-          title: 'Resultado de la Actualización',
-          text: x.mensaje,
-        });
-      });
+      this.libroService.actualizarCrud(this.libro).subscribe(
+        x => {
+          if (x.mensaje === "El libro " + this.libro.titulo + " ya existe") {
+            this.libroExistente = true;
+            this.formsActualizar.controls.validatitulo.setErrors({'libroExistente': true});
+          } else {
+            this.libroExistente = false;
+            Swal.fire({
+              icon: 'success',
+              title: 'Resultado del Registro',
+              text: x.mensaje,
+            });
+        this.dialogRef.close(); // Cierra la ventana de registro
+          }
     }
-  }
-
+  );
 }
-
+  }
+}
