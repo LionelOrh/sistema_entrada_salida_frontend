@@ -11,6 +11,7 @@ import { UtilService } from '../../services/util.service';
 import { TokenService } from '../../security/token.service';
 import Swal from 'sweetalert2';
 import { DataCatalogo } from '../../models/dataCatalogo.model';
+import { MatDialogRef } from '@angular/material/dialog'; 
 
 
 @Component({
@@ -55,7 +56,7 @@ export class CrudAutorAddComponent {
   });
 
   constructor(private autorService:AutorService , private utilService: UtilService, private tokenService: TokenService,
-              private formBuilder: FormBuilder
+              private formBuilder: FormBuilder,  private dialogRef: MatDialogRef<CrudAutorAddComponent> 
   ) {
         utilService.listaPais().subscribe(
           x   =>   this.lstPais=x
@@ -67,35 +68,46 @@ export class CrudAutorAddComponent {
 
         this.objUsuario.idUsuario = tokenService.getUserId();
   }
-
-registra(){
-  if (this.formsRegistra.valid){
-
-    this.autor.usuarioActualiza = this.objUsuario;
-    this.autor.usuarioRegistro = this.objUsuario;
   
-    
-    this.autorService.registrarCrud(this.autor).subscribe(
-      x => {
-        Swal.fire({
-          icon: 'info',
-          title: 'Resultado del Registro',
-          text: x.mensaje,
-        })
-        //limpia el formulario
-        this.formsRegistra.reset();
-                    
-        //borra los errores
-        Object.keys(this.formsRegistra.controls).forEach(x => {
-              this.formsRegistra.get(x)?.setErrors(null);
-        });
-      },
-    );
+  autorExistente: boolean = false;
+
+  registra() {
+    if (this.formsRegistra.valid) {
+      this.autor.usuarioActualiza = this.objUsuario;
+      this.autor.usuarioRegistro = this.objUsuario;
+
+      this.autorService.registrarCrud(this.autor).subscribe(
+        x => {
+          if(x.mensaje === 'El Autor con el nombre ' + this.autor.nombres + ' ya existe'){
+            this.autorExistente = true;
+            this.formsRegistra.controls.validaNombres.setErrors({'autorExistente': true});
+          } 
+          else if (x.mensaje === 'El Autor con el apellido ' + this.autor.apellidos + ' ya existe'){
+            this.autorExistente = true;
+            this.formsRegistra.controls.validaApellidos.setErrors({'autorExistente': true});
+          }
+          else if (x.mensaje === 'El teléfono ' + this.autor.telefono + ' ya está en uso'){
+            this.autorExistente = true;
+            this.formsRegistra.controls.validaTelefono.setErrors({'autorExistente': true});
+          }
+          else if (x.mensaje === 'El número de celular ' + this.autor.celular + ' ya está en uso'){
+            this.autorExistente = true;
+            this.formsRegistra.controls.validaCelular.setErrors({'autorExistente': true});
+          }
+          else{
+            this.autorExistente = false;
+          Swal.fire({
+            icon: 'success',
+            title: 'Resultado del Registro',
+            text: x.mensaje,
+          });
+          // Limpia el formulario
+          this.formsRegistra.reset();
+          this.dialogRef.close(); // Cierra la ventana de registro
+        }
+        },
+      );
     }
-    //borra los errores
-    Object.keys(this.formsRegistra.controls).forEach(x => {
-      this.formsRegistra.get(x)?.setErrors(null);
-});
   }
   
   validateFechaNacimiento(control: AbstractControl): { [key: string]: boolean } | null {

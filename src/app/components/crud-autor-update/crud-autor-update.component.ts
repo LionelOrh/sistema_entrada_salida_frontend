@@ -28,6 +28,19 @@ export class CrudAutorUpdateComponent {
   lstPais: Pais[] = [];
   lstGrado: DataCatalogo[] = [];
   fecha = new FormControl(new Date());
+  
+  //PARA LAS VALIDACIONES
+  formsActualizar = this.formBuilder.group({
+    validaNombres: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
+    validaApellidos: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
+    validaFechaNacimiento: ['', [Validators.required, this.validateFechaNacimiento]] , 
+    validaTelefono: ['', [Validators.required, Validators.pattern('018[0-9]{6}')]],
+    validaCelular: ['', [Validators.required, Validators.pattern('9[0-9]{8}')]],
+    validaOrcid: ['', [Validators.required, Validators.pattern('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}')]],
+    validaPais: ['', Validators.min(1)],
+    validaGrado: ['', Validators.min(1)],
+  });
+
   autor: Autor = {
     nombres: "",
     apellidos: "",
@@ -45,18 +58,6 @@ export class CrudAutorUpdateComponent {
 
   objUsuario: Usuario = {};
 
-  //PARA LAS VALIDACIONES
-  formsActualizar = this.formBuilder.group({
-    validaNombres: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
-    validaApellidos: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
-    validaFechaNacimiento: ['', [Validators.required, this.validateFechaNacimiento]] , 
-    validaTelefono: ['', [Validators.required, Validators.pattern('018[0-9]{6}')]],
-    validaCelular: ['', [Validators.required, Validators.pattern('9[0-9]{8}')]],
-    validaOrcid: ['', [Validators.required, Validators.pattern('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}')]],
-    validaPais: ['', Validators.min(1)],
-    validaGrado: ['', Validators.min(1)],
-  });
-
   constructor(
     private autorService: AutorService, 
     private utilService: UtilService, 
@@ -64,6 +65,7 @@ export class CrudAutorUpdateComponent {
     private formBuilder: FormBuilder, 
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    data.fechaNacimiento = new Date( new Date(data.fechaNacimiento).getTime() + (1000 * 60 * 60 * 24));
     this.autor = data;
 
     console.log(">>>> [ini] >>> autor");
@@ -80,20 +82,6 @@ export class CrudAutorUpdateComponent {
     this.objUsuario.idUsuario = tokenService.getUserId();
   }
 
-  actualizar() {
-    if (this.formsActualizar.valid) {
-      this.autor.usuarioActualiza = this.objUsuario;
-      this.autor.usuarioRegistro = this.objUsuario;
-
-      this.autorService.actualizarCrud(this.autor).subscribe((x) => {
-        Swal.fire({
-          icon: 'info',
-          title: 'Resultado de la Actualización',
-          text: x.mensaje,
-        });
-      });
-    }
-  }
 
   validateFechaNacimiento(control: AbstractControl): { [key: string]: boolean } | null {
     const fechaNacimiento = new Date(control.value);
@@ -113,9 +101,19 @@ export class CrudAutorUpdateComponent {
     return null;
   }
 
+    actualizar() {
+    if (this.formsActualizar.valid) {
+      this.autor.usuarioActualiza = this.objUsuario;
+      this.autor.usuarioRegistro = this.objUsuario;
+
+      this.autorService.actualizarCrud(this.autor).subscribe((x) => {
+        Swal.fire({
+          icon: 'info',
+          title: 'Resultado de la Actualización',
+          text: x.mensaje,
+        });
+      });
+    }
+  }
 }
 
-
-/**
- 
- */

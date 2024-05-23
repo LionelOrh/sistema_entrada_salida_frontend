@@ -33,3 +33,7 @@ button[type="submit"] {
 button[type="button"] {
   margin-top: 20px; /* Espacio superior para el botón de enviar */
 }
+
+.campo-error .mat-form-field-wrapper {
+  border-color: red;
+}

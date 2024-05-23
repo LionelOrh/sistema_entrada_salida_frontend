@@ -35,12 +35,15 @@
 
             <mat-form-field class="col-md-4">
                 <mat-label>Fecha de Nacimiento</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="validaFechaNacimiento">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <input  matInput [(ngModel)] ="autor.fechaNacimiento" [matDatepicker]="picker" formControlName="validaFechaNacimiento">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                <mat-hint style="color: red" *ngIf="formsActualizar.controls.validaFechaNacimiento.touched">
+                <mat-hint style="color: red"  *ngIf="formsActualizar.controls.validaFechaNacimiento.touched">
                     <span *ngIf="formsActualizar.controls.validaFechaNacimiento.hasError('required')">
-                        La fecha de nacimiento es requerido
+                    La fecha de creación es requerida.                        
+                    </span>
+                    <span *ngIf="formsActualizar.controls.validaFechaNacimiento.hasError('menorEdad')">
+                        La persona debe ser mayor de edad.
                     </span>
                 </mat-hint>
             </mat-form-field>
