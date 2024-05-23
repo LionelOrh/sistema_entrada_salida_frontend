@@ -118,13 +118,22 @@
         </div>
         <hr>
 
-        <div class="row">
-            <button mat-raised-button type="submit" [disabled]="formsActualizar.invalid" color="primary"
-                (click)="actualizar()">Actualizar</button>
-            <button mat-button color="primary">
+        <div  class="row" >
+            <button
+                mat-raised-button 
+                type="submit" 
+                [disabled]="formsActualizar.invalid" 
+                color="primary" 
+                (click)="actualizar()"
+                [mat-dialog-close]="1">
+                Actualizar
+            </button>
+            <button 
+                mat-button 
+                color="primary" 
+                [mat-dialog-close]="0">
                 Salir
             </button>
         </div>
-
-    </form>
+</form>
 </div>

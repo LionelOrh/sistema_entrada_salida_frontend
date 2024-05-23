@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppMaterialModule } from '../../app.material.module';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
 import { Pais } from '../../models/pais.model';
@@ -28,7 +28,7 @@ export class CrudAutorAddComponent {
   autor: Autor = {
     nombres: "",
     apellidos: "",
-    fechaNacimiento: new Date,
+    fechaNacimiento: new Date(),
     telefono: "",
     celular: "",
     orcid: "",
@@ -46,7 +46,7 @@ export class CrudAutorAddComponent {
   formsRegistra = this.formBuilder.group({ 
     validaNombres: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]] ,
     validaApellidos: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]] ,  
-    validaFechaNacimiento: ['', [Validators.required] ] , 
+    validaFechaNacimiento: ['', [Validators.required, this.validateFechaNacimiento]] , 
     validaTelefono: ['', [Validators.required, Validators.pattern('018[0-9]{6}')]], 
     validaCelular: ['', [Validators.required, Validators.pattern('9[0-9]{8}')] ] ,  
     validaOrcid: ['', [Validators.required, Validators.pattern('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}')] ],
@@ -75,17 +75,40 @@ registra(){
     this.autor.usuarioRegistro = this.objUsuario;
   
     
-    this.autorService.registrar(this.autor).subscribe(
+    this.autorService.registrarCrud(this.autor).subscribe(
       x => {
         Swal.fire({
           icon: 'info',
           title: 'Resultado del Registro',
           text: x.mensaje,
         })
+        //limpia el formulario
+        this.formsRegistra.reset();
+                    
+        //borra los errores
+        Object.keys(this.formsRegistra.controls).forEach(x => {
+              this.formsRegistra.get(x)?.setErrors(null);
+        });
       },
     );
-    // Reiniciar el formulario
-    this.formsRegistra.reset();
     }
   }
+  
+  validateFechaNacimiento(control: AbstractControl): { [key: string]: boolean } | null {
+    const fechaNacimiento = new Date(control.value);
+    const fechaActual = new Date();
+    
+    if (control.value === '') {
+        return { 'required': true }; // Devuelve 'required' si la fecha es requerida
+    }
+
+    const edadActual = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
+    const cumpleañosEsteAño = new Date(fechaActual.getFullYear(), fechaNacimiento.getMonth(), fechaNacimiento.getDate());
+    
+    if (edadActual < 18 || (edadActual === 18 && fechaActual < cumpleañosEsteAño)) {
+        return { 'menorEdad': true }; // Devuelve 'menorEdad' si la persona es menor de 18 años
+    }
+
+    return null;
   }
+}

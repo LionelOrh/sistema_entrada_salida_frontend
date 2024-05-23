@@ -31,3 +31,6 @@
 .mat-column-acciones {
     flex: 0 0 15%;
 }
+.botones{
+    margin: 10px;
+}
