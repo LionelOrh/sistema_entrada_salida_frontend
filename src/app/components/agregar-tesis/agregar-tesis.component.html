@@ -14,11 +14,14 @@
                 <input  matInput [(ngModel)] ="objTesis.titulo" formControlName="validaTitulo">
                 <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaTitulo.touched">
                         <span *ngIf="formsRegistra.controls.validaTitulo.hasError('required')">
-                        El título es requerido.                        
-                        </span>
-                        <span *ngIf="formsRegistra.controls.validaTitulo.hasError('pattern')">
-                        El título es de 5 a 40 caracteres.                        
-                        </span>
+                                El título es requerido.
+                              </span>
+                              <span *ngIf="formsRegistra.controls.validaTitulo.hasError('pattern')">
+                                El título es de 5 a 45 caracteres.
+                              </span>
+                              <span *ngIf="formsRegistra.controls.validaTitulo.hasError('tesisExistente')">
+                                La Tesis ya existe.
+                              </span>
                         </mat-hint>
                 </mat-form-field>
 

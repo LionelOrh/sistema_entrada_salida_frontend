@@ -10,6 +10,8 @@ import { TokenService } from '../../security/token.service';
 import { Usuario } from '../../models/usuario.model';
 import { TesisService } from '../../services/tesis.service';
 import Swal from 'sweetalert2';
+import { MatDialogRef } from '@angular/material/dialog'; 
+
 
 @Component({
   standalone: true,
@@ -51,7 +53,8 @@ export class CrudTesisAddComponent {
   constructor(private utilService: UtilService, 
               private tokenService: TokenService,
               private tesisService: TesisService,
-              private formBuilder : FormBuilder  ){
+              private formBuilder : FormBuilder,
+              private dialogRef: MatDialogRef<CrudTesisAddComponent>  ){
           this.utilService.listaTemaTesis().subscribe(
                 x =>  this.lstTema = x
           );
@@ -79,27 +82,29 @@ export class CrudTesisAddComponent {
     return null;
 }
 
+tesisExistente: boolean = false;
 
-  registra(){
-    if (this.formsRegistra.valid){
-        this.objTesis.usuarioActualiza = this.objUsuario;
-        this.objTesis.usuarioRegistro = this.objUsuario;
-        this.tesisService.registrarCrud(this.objTesis).subscribe(
-          x=>{
-            Swal.fire({
-              icon: 'info',
-              title: 'Resultado del Registro',
-              text: x.mensaje,
-            })
-           //limpia el formulario
-           this.formsRegistra.reset();
-                    
-           //borra los errores
-           Object.keys(this.formsRegistra.controls).forEach(x => {
-                 this.formsRegistra.get(x)?.setErrors(null);
-           });
-        },
-      );
-    }
+registra() {
+  if (this.formsRegistra.valid) {
+    this.objTesis.usuarioActualiza = this.objUsuario;
+    this.objTesis.usuarioRegistro = this.objUsuario;
+
+    this.tesisService.registrarCrud(this.objTesis).subscribe(
+      x => {
+        if (x.mensaje === 'La Tesis ' + this.objTesis.titulo + ' ya existe') {
+          this.tesisExistente = true;
+          this.formsRegistra.controls.validaTitulo.setErrors({'tesisExistente': true});
+        } else {
+          this.tesisExistente = false;
+          Swal.fire({
+            icon: 'success',
+            title: 'Resultado del Registro',
+            text: x.mensaje,
+          });
+          this.dialogRef.close(); // Cierra la ventana de registro
+        }
+      }
+    );
   }
+}
 }

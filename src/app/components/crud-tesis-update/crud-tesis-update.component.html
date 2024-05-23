@@ -13,11 +13,14 @@
                         <input  matInput [(ngModel)] ="objTesis.titulo" formControlName="validaTitulo">
                         <mat-hint style="color: red"  *ngIf="formsActualiza.controls.validaTitulo.touched">
                             <span *ngIf="formsActualiza.controls.validaTitulo.hasError('required')">
-                                El Título es requerido.                        
-                            </span>
-                            <span *ngIf="formsActualiza.controls.validaTitulo.hasError('pattern')">
-                                El Título es de 5 a 45 caracteres.                       
-                            </span>
+                                El título es requerido.
+                              </span>
+                              <span *ngIf="formsActualiza.controls.validaTitulo.hasError('pattern')">
+                                El título es de 5 a 45 caracteres.
+                              </span>
+                              <span *ngIf="formsActualiza.controls.validaTitulo.hasError('tesisExistente')">
+                                La Tesis ya existe.
+                              </span>
                         </mat-hint>
                     </mat-form-field>
 
@@ -88,7 +91,7 @@
                             type="submit" 
                             (click) = "actualizar()"
                             color="primary" 
-                            [mat-dialog-close]="1"
+                           
                             [disabled]="formsActualiza.invalid">
                             Actualiza
                     </button>

@@ -13,6 +13,7 @@ import { TesisService } from '../../services/tesis.service';
 import Swal from 'sweetalert2';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDialogRef } from '@angular/material/dialog'; 
 
 @Component({
   standalone: true,
@@ -57,7 +58,8 @@ export class CrudTesisUpdateComponent {
               private tokenService: TokenService,
               private tesisService: TesisService,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private formBuilder : FormBuilder){
+              private formBuilder : FormBuilder,
+              private dialogRef: MatDialogRef<CrudTesisUpdateComponent> ){
 
                 data.fechaCreacion = new Date( new Date(data.fechaCreacion).getTime() + (1000 * 60 * 60 * 24));
                 this.objTesis = data; 
@@ -91,17 +93,30 @@ export class CrudTesisUpdateComponent {
     return null;
 }
 
-  actualizar() {
-    this.objTesis.usuarioActualiza = this.objUsuario;
-    this.objTesis.usuarioRegistro = this.objUsuario;
-    this.tesisService.actualizarCrud(this.objTesis).subscribe((x) => {
-      Swal.fire({
-        icon: 'info',
-        title: 'Resultado del Registro',
-        text: x.mensaje,
-      });
-    });
-  }
+tesisExistente: boolean = false;
 
+  actualizar() {
+    if (this.formsActualiza.valid) {
+      this.objTesis.usuarioActualiza = this.objUsuario;
+      this.objTesis.usuarioRegistro = this.objUsuario;
+  
+      this.tesisService.actualizarCrud(this.objTesis).subscribe(
+        x => {
+          if (x.mensaje === 'La Tesis ' + this.objTesis.titulo + ' ya existe') {
+            this.tesisExistente = true;
+            this.formsActualiza.controls.validaTitulo.setErrors({'tesisExistente': true});
+          } else {
+            this.tesisExistente = false;
+            Swal.fire({
+              icon: 'success',
+              title: 'Resultado del Registro',
+              text: x.mensaje,
+            });
+            this.dialogRef.close(); // Cierra la ventana de registro
+          }
+        }
+      );
+    }
+  }
   
 }

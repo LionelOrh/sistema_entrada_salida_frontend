@@ -80,28 +80,37 @@ validateFechaCreacion(control: AbstractControl): { [key: string]: boolean } | nu
   return null;
 }
 
+tesisExistente: boolean = false;
+
 registra() {
   if (this.formsRegistra.valid) {
     this.objTesis.usuarioActualiza = this.objUsuario;
     this.objTesis.usuarioRegistro = this.objUsuario;
+
     this.tesisService.registrarCrud(this.objTesis).subscribe(
       x => {
-        Swal.fire({
-          icon: 'info',
-          title: 'Resultado del Registro',
-          text: x.mensaje,
-        }).then((result) => {
-          if (result.isConfirmed || result.isDismissed) {
-            // Limpia el formulario
-            this.formsRegistra.reset();
-            // Borra los errores
-            Object.keys(this.formsRegistra.controls).forEach(controlName => {
-              this.formsRegistra.get(controlName)?.setErrors(null);
-            });
-            // Recarga la página
-            window.location.reload();
-          }
-        });
+        if (x.mensaje === 'La Tesis ' + this.objTesis.titulo + ' ya existe') {
+          this.tesisExistente = true;
+          this.formsRegistra.controls.validaTitulo.setErrors({'tesisExistente': true});
+        } else {
+          this.tesisExistente = false;
+          Swal.fire({
+            icon: 'success',
+            title: 'Resultado del Registro',
+            text: x.mensaje,
+          }).then((result) => {
+            if (result.isConfirmed || result.isDismissed) {
+              // Limpia el formulario
+              this.formsRegistra.reset();
+              // Borra los errores
+              Object.keys(this.formsRegistra.controls).forEach(controlName => {
+                this.formsRegistra.get(controlName)?.setErrors(null);
+              });
+              // Recarga la página
+              window.location.reload();
+            }
+          });
+        }
       }
     );
   }
