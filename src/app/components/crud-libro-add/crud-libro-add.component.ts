@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { DataCatalogo } from '../../models/dataCatalogo.model';
 import { Libro } from '../../models/libro.model';
 import { Usuario } from '../../models/usuario.model';
@@ -11,6 +11,7 @@ import { AppMaterialModule } from '../../app.material.module';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
 import { Editorial } from '../../models/editorial.model';
+import { MatDialogRef } from '@angular/material/dialog'; 
 
 @Component({
   standalone: true,
@@ -21,10 +22,20 @@ import { Editorial } from '../../models/editorial.model';
 })
 
 export class CrudLibroAddComponent {
+  // Definición del validador personalizado
+  yearValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    const currentYear = new Date().getFullYear();
+    if (value && (value < 1800 || value > currentYear)) {
+      return { yearInvalid: true };
+    }
+    return null;
+  };
+
   formsRegistra = this.formBuilder.group({
     validatitulo: ['', [Validators.required, Validators.pattern('^[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
     validaserie: ['', [Validators.required, Validators.pattern('^[A-Z]{3}[0-9]{7}$')]],
-    validaanio: ['', [Validators.required, Validators.pattern('^(18[0-9]{2}|19[0-9]{2}|20[0-2][0-4])$')]],
+    validaanio: ['', [Validators.required, this.yearValidator]], // Aplicar el validador personalizado aquí
     validaCategoriaLibro: ['', Validators.min(1)],
     validaEstadoPrestamo: ['', Validators.min(1)],
     validaTipoLibro: ['', Validators.min(1)],
@@ -60,7 +71,8 @@ export class CrudLibroAddComponent {
     private utilService: UtilService,
     private tokenService: TokenService,
     private libroService: LibroService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<CrudLibroAddComponent>
   ) {
     utilService.listaCategoriaDeLibro().subscribe(
       x => this.lstCategoria = x
@@ -78,26 +90,28 @@ export class CrudLibroAddComponent {
     this.objUsuario.idUsuario = this.tokenService.getUserId();
   }
 
+
+  libroExistente: boolean = false;
+
   registra() {
     if (this.formsRegistra.valid) {
       this.libro.usuarioActualiza = this.objUsuario;
       this.libro.usuarioRegistro = this.objUsuario;
       this.libroService.registrarCrud(this.libro).subscribe(
         x => {
-          Swal.fire({
-            icon: 'info',
-            title: 'Resultado del Registro',
-            text: x.mensaje,
-          });
-
-          // Limpia el formulario
-          this.formsRegistra.reset();
-
-          // Borra los errores
-          Object.keys(this.formsRegistra.controls).forEach(x => {
-            this.formsRegistra.get(x)?.setErrors(null);
-          });
-        },
+          if (x.mensaje === "El libro " + this.libro.titulo + " ya existe") {
+            this.libroExistente = true;
+            this.formsRegistra.controls.validatitulo.setErrors({'libroExistente': true});
+          } else {
+            this.libroExistente = false;
+            Swal.fire({
+              icon: 'success',
+              title: 'Resultado del Registro',
+              text: x.mensaje,
+            });
+            this.dialogRef.close(); // Cierra la ventana de registro
+          }
+        }
       );
     }
   }

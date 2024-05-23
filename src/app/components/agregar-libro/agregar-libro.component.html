@@ -24,15 +24,16 @@
             <mat-form-field class="col-md-4">
                 <mat-label>Año</mat-label>
                 <input matInput [(ngModel)]="libro.anio" formControlName="validaanio">
-                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaanio.touched">
-                    <span *ngIf="formsRegistra.controls.validaanio.hasError('required')">
-                        El año es requerido
-                    </span>
-                    <span *ngIf="formsRegistra.controls.validaanio.hasError('pattern')">
-                        El año debe ser entre 1800 y el año 2024
-                    </span>
+                <mat-hint style="color: red" *ngIf="formsRegistra.controls['validaanio'].touched">
+                  <span *ngIf="formsRegistra.controls['validaanio'].hasError('required')">
+                    El año es requerido
+                  </span>
+                  <span *ngIf="formsRegistra.controls['validaanio'].hasError('yearInvalid')">
+                    El año debe ser mayor a 1799 y menor o igual al año actual
+                  </span>
                 </mat-hint>
-            </mat-form-field>
+              </mat-form-field>
+              
 
             <mat-form-field class="col-md-4">
                 <mat-label>Serie</mat-label>
@@ -47,7 +48,6 @@
                 </mat-hint>
             </mat-form-field>
         </div>
-        
         <div class="row" style="margin-top: 3%">
             <mat-form-field class="col-md-4">
                 <mat-label>Editorial</mat-label>
