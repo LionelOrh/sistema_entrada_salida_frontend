@@ -12,6 +12,7 @@ import { TokenService } from '../../security/token.service';
 import { CrudAlumnoAddComponent } from '../crud-alumno-add/crud-alumno-add.component';
 import { Usuario } from '../../models/usuario.model';
 import Swal from 'sweetalert2';
+import { CrudAlumnoUpdateComponent } from '../crud-alumno-update/crud-alumno-update.component';
 
 @Component({
   standalone: true,
@@ -81,6 +82,20 @@ export class CrudAlumnoComponent {
 
     console.log(">>> openDialog  [fin]");
   }
+
+  openUpdateDialog(obj:Alumno){
+    console.log(">>> openUpdateDialog [ini]");
+    const dialogo = this.dialogService.open(CrudAlumnoUpdateComponent, {data:obj});
+    dialogo.afterClosed().subscribe(
+          x => {
+               console.log(">>> x >> "  +  x); 
+               if (x === 1){
+                  this.refreshTable();
+               }
+          }
+    );
+    console.log(">>> openUpdateDialog [fin]");
+}
 
   elimina(obj:Alumno){
     Swal.fire({

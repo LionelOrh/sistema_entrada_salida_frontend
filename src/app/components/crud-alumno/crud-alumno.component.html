@@ -80,7 +80,7 @@
                                [checked]="aux.estado==1?true:false" (change)="actualizaEstado(aux)"/>
                         <label class="custom-control-label" for="idEstado_{{ aux.idAlumno }}"></label>
                     </div>
-                    <button mat-icon-button color="accent">
+                    <button mat-icon-button color="accent" (click)="openUpdateDialog(aux)">
                         <mat-icon aria-label="Edit">edit</mat-icon>
                     </button>
                     <button mat-icon-button color="accent" (click)="elimina(aux)">

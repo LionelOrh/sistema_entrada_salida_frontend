@@ -12,7 +12,9 @@ const baseUrlCrudAlumno = AppSettings.API_ENDPOINT+ '/crudAlumno';
 })
 export class AlumnoService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) {
+
+   }
   registra(data:Alumno):Observable<any>{
     return this.http.post(baseUrlAlumno,data);
   }
