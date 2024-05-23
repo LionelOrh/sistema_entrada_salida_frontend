@@ -10,6 +10,7 @@ export class Tesis {
     centroEstudios?:DataCatalogo;
     usuarioRegistro?:Usuario;
     usuarioActualiza?:Usuario;
+    estado?: number;
 }
 
 
