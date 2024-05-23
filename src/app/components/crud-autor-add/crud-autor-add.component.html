@@ -1,12 +1,12 @@
 <div class="container">
     <form id="idFormAutor" [formGroup]="formsRegistra" >
-        <div class="row">
+        <div class="mat-dialog-content"  id="idFormModalidad" >
+            <div class="row">
                 <mat-toolbar color="primary" >    
                 <span>Registra Autor</span>    
                 </mat-toolbar>  
-        </div>
-        <hr>    
-        <div  class="row"  style="margin-top: 3%">
+            </div>   
+            <div  class="row"  style="margin-top: 3%">
                     <mat-form-field class="col-md-4">
                         <mat-label>Nombre</mat-label>
                         <input  matInput [(ngModel)] ="autor.nombres" formControlName="validaNombres">
@@ -42,8 +42,12 @@
                             <span *ngIf="formsRegistra.controls.validaFechaNacimiento.hasError('required')">
                                 La fecha de nacimiento es requerido                        
                             </span>
+                            <span *ngIf="formsRegistra.controls.validaFechaNacimiento.hasError('menorEdad')">
+                                La persona debe ser mayor de edad.
+                            </span>
                       </mat-hint>
                     </mat-form-field>
+
 
 
                     <mat-form-field class="col-md-4">
@@ -114,12 +118,25 @@
                             </span>
                       </mat-hint>
                     </mat-form-field> 
-  
-        </div>
-        <hr>  
+            </div> 
 
-        <div  class="row" >
-            <button mat-raised-button type="submit" [disabled]="formsRegistra.invalid" color="primary" (click)="registra()">Registra</button>
+            <div  class="row" >
+                <button
+                    mat-raised-button 
+                    type="submit" 
+                    [disabled]="formsRegistra.invalid" 
+                    color="primary" 
+                    (click)="registra()"
+                    [mat-dialog-close]="1">
+                    Registra
+                </button>
+                <button 
+                    mat-button 
+                    color="primary" 
+                    [mat-dialog-close]="0">
+                    Salir
+                </button>
+            </div>
         </div>
     </form>
 </div>

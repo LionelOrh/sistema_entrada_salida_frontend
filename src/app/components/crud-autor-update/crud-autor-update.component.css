@@ -1,20 +1,35 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    min-width: 900px;
-    min-height: 400px;
-  }
-  
-  .container > * {
-    width: 100%;
-  }
-  
-  .form {
-    display: flex;
-    padding-top: 6px;
-  }
-  
-  .mat-form-field {
-    font-size: 16px;
-    flex-grow: 1;
-  }
+  display: flex;
+  flex-direction: column;
+  min-width: 900px;
+  min-height: 400px;
+  margin: auto; /* Centra el contenido horizontalmente */
+  padding: 20px;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los campos se envuelvan en varias líneas */
+  justify-content: space-between; /* Espacio uniforme entre los campos */
+  gap: 20px; /* Espacio entre los campos */
+}
+
+.mat-form-field {
+  flex-basis: calc(33.33% - 20px); /* Ancho de cada campo, ajustable según tus necesidades */
+}
+
+.mat-toolbar {
+  margin-bottom: 20px; /* Espacio bajo la barra de título */
+}
+
+.mat-hint {
+  font-size: 14px;
+}
+
+button[type="submit"] {
+  margin-top: 20px; /* Espacio superior para el botón de enviar */
+}
+
+button[type="button"] {
+  margin-top: 20px; /* Espacio superior para el botón de enviar */
+}

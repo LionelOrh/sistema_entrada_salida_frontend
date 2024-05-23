@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { AppMaterialModule } from '../../app.material.module';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
 import { Pais } from '../../models/pais.model';
@@ -12,24 +12,26 @@ import { TokenService } from '../../security/token.service';
 import Swal from 'sweetalert2';
 import { DataCatalogo } from '../../models/dataCatalogo.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   standalone: true,
   imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent, ReactiveFormsModule],
   selector: 'app-crud-autor-update',
   templateUrl: './crud-autor-update.component.html',
-  styleUrls: ['./crud-autor-update.component.css']
+  styleUrls: ['./crud-autor-update.component.css'],
+  providers: [provideNativeDateAdapter()],
 })
 
 export class CrudAutorUpdateComponent {
 
   lstPais: Pais[] = [];
   lstGrado: DataCatalogo[] = [];
+  fecha = new FormControl(new Date());
   autor: Autor = {
     nombres: "",
     apellidos: "",
-    fechaNacimiento: new Date,
+    fechaNacimiento: new Date(),
     telefono: "",
     celular: "",
     orcid: "",
@@ -47,7 +49,7 @@ export class CrudAutorUpdateComponent {
   formsActualizar = this.formBuilder.group({
     validaNombres: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
     validaApellidos: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
-    validaFechaNacimiento: ['', [Validators.required]],
+    validaFechaNacimiento: ['', [Validators.required, this.validateFechaNacimiento]] , 
     validaTelefono: ['', [Validators.required, Validators.pattern('018[0-9]{6}')]],
     validaCelular: ['', [Validators.required, Validators.pattern('9[0-9]{8}')]],
     validaOrcid: ['', [Validators.required, Validators.pattern('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}')]],
@@ -55,24 +57,25 @@ export class CrudAutorUpdateComponent {
     validaGrado: ['', Validators.min(1)],
   });
 
-
-  constructor(private autorService: AutorService, private utilService: UtilService, private tokenService: TokenService,
-    private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any
+  constructor(
+    private autorService: AutorService, 
+    private utilService: UtilService, 
+    private tokenService: TokenService,
+    private formBuilder: FormBuilder, 
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
     this.autor = data;
-    
 
     console.log(">>>> [ini] >>> autor");
     console.log(this.autor);
 
     utilService.listaPais().subscribe(
       x => this.lstPais = x
-    )
+    );
 
     utilService.listaGradoAutor().subscribe(
       x => this.lstGrado = x
-    )
+    );
 
     this.objUsuario.idUsuario = tokenService.getUserId();
   }
@@ -92,4 +95,27 @@ export class CrudAutorUpdateComponent {
     }
   }
 
+  validateFechaNacimiento(control: AbstractControl): { [key: string]: boolean } | null {
+    const fechaNacimiento = new Date(control.value);
+    const fechaActual = new Date();
+    
+    if (control.value === '') {
+        return { 'required': true }; // Devuelve 'required' si la fecha es requerida
+    }
+
+    const edadActual = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
+    const cumpleañosEsteAño = new Date(fechaActual.getFullYear(), fechaNacimiento.getMonth(), fechaNacimiento.getDate());
+    
+    if (edadActual < 18 || (edadActual === 18 && fechaActual < cumpleañosEsteAño)) {
+        return { 'menorEdad': true }; // Devuelve 'menorEdad' si la persona es menor de 18 años
+    }
+
+    return null;
+  }
+
 }
+
+
+/**
+ 
+ */
