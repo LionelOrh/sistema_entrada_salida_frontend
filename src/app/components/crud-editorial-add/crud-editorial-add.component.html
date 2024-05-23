@@ -16,7 +16,10 @@
                           </span>
                           <span *ngIf="formsRegistra.controls.validarazonSocial.hasError('pattern')">
                             La razón social debe tener entre 4 y 40 caracteres.
-                          </span>
+                          </span>    
+                          <span *ngIf="formsRegistra.controls.validarazonSocial.hasError('razonSocialNotUnique')">
+                            La razón social ya existe.
+                        </span>
                     </mat-hint>
                 </mat-form-field>
                 <mat-form-field class="col-md-4">
@@ -44,7 +47,9 @@
                         <span *ngIf="formsRegistra.controls.validaruc.hasError('startsWith10')">
                             El RUC debe comenzar con 10.
                         </span>
-                        
+                        <span *ngIf="formsRegistra.controls.validaruc.hasError('rucNotUnique')">
+                            El RUC ya existe.
+                          </span>
                         
                     </mat-hint>
                 </mat-form-field>
@@ -69,7 +74,7 @@
                     <mat-datepicker #picker></mat-datepicker>
                     <mat-hint class="error-hint" *ngIf="formsRegistra.controls.validafechaCreacion.touched">
                         <span *ngIf="formsRegistra.controls.validafechaCreacion.hasError('required')">
-                            La fecha de creación es requerida.
+                            La fecha de creación es obligatorio.
                           </span>
                           <span *ngIf="formsRegistra.controls.validafechaCreacion.hasError('dateFrom1980Onwards')">
                             La fecha de creación debe ser desde 1980 en adelante.
@@ -86,13 +91,14 @@
                     </mat-select>
                     <mat-hint class="error-hint" *ngIf="formsRegistra.controls.validaPais.touched">
                         <span *ngIf="formsRegistra.controls.validaPais.hasError('min')">
-                            El País es requerido.
+                            El País es obligatorio.
                         </span>
                     </mat-hint>
                 </mat-form-field>
             </div>
             <div mat-dialog-actions class="custom-margin">
-                <button mat-raised-button type="submit"  (click)="registra()" color="primary" [mat-dialog-close]="1">Registra</button>
+                <button mat-raised-button type="submit"  (click)="registra()" color="primary" [mat-dialog-close]="1"[disabled]="formsRegistra.invalid">Registra</button>
+               
                 <button mat-button color="primary" [mat-dialog-close]="0">Salir</button>
             </div>
         </div>

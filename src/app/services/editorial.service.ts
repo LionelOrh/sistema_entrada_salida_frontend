@@ -31,4 +31,15 @@ export class EditorialService {
   consultarCrud(filtro:string):Observable<any>{
     return this.http.get(baseUrlCrudEditorial+"/listaEditorialPorRazonSocialLike/"+filtro);
   }
+  validaRucActualiza(ruc: string): Observable<any> {
+    return this.http.get(baseUrlCrudEditorial + "/buscarEditorialPorRucActualiza", {
+      params: { ruc }
+    });
+  }
+  validaRazonSocial(razonSocial: string): Observable<any> {
+    return this.http.get(baseUrlCrudEditorial + "/buscarEditorialPorRazonSocialActualiza", {
+        params: { razonSocial }
+    });
+}
+
 }

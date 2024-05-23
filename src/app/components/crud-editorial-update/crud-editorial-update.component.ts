@@ -11,6 +11,8 @@ import { TokenService } from '../../security/token.service';
 import { Usuario } from '../../models/usuario.model';
 import { EditorialService } from '../../services/editorial.service';
 import Swal from 'sweetalert2';
+import { Observable, of } from 'rxjs';
+import { map, catchError, debounceTime, switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
@@ -22,6 +24,19 @@ function rucStartsWith10(control: AbstractControl): ValidationErrors | null {
   }
   return null;
 }
+// Validador  para verificar si el RUC es único
+function rucUnique(editorialService: EditorialService) {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    if (!control.value) {
+      return of(null);
+    }
+    return editorialService.validaRucActualiza(control.value).pipe(
+      debounceTime(500),
+      map(response => (response.valid ? null : { rucNotUnique: true })),
+      catchError(() => of(null))
+    );
+  };
+}
 
 // Validador personalizado para comprobar si la fecha es de 1980 en adelante
 function dateFrom1980Onwards(control: AbstractControl): ValidationErrors | null {
@@ -31,7 +46,6 @@ function dateFrom1980Onwards(control: AbstractControl): ValidationErrors | null 
   }
   return null;
 }
-
 
 @Component({
   standalone: true,
@@ -49,8 +63,8 @@ export class CrudEditorialUpdateComponent {
   formsActualiza = this.formBuilder.group({ 
     validarazonSocial: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
     validadireccion: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(40)]],
-    validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}'), rucStartsWith10]],
-    validagerente: ['', [Validators.required, Validators.pattern('^[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
+    validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}'), rucStartsWith10], [rucUnique(this.editorialService)]],
+    validagerente: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
     validafechaCreacion: ['', [Validators.required, dateFrom1980Onwards]],
     validaPais: ['', [Validators.min(1)]],
 });

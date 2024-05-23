@@ -45,6 +45,10 @@
                                     <span *ngIf="formsActualiza.controls.validaruc.hasError('startsWith10')">
                                         El RUC debe comenzar con 10.
                                       </span>
+                                      <span *ngIf="formsActualiza.controls.validaruc.hasError('rucNotUnique')">
+                                        El RUC debe ser único.
+                                      </span>
+                                      
                               </mat-hint>
                             </mat-form-field>
                             
