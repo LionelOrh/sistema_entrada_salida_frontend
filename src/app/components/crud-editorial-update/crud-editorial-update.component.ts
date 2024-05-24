@@ -24,10 +24,11 @@ function rucStartsWith10(control: AbstractControl): ValidationErrors | null {
   }
   return null;
 }
-// Validador  para verificar si el RUC es único
-function rucUnique(editorialService: EditorialService) {
+
+// Validador para verificar si el RUC es único, exceptuando el original
+function rucUnique(editorialService: EditorialService, originalRuc: string) {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
-    if (!control.value) {
+    if (!control.value || control.value === originalRuc) {
       return of(null);
     }
     return editorialService.validaRucActualiza(control.value).pipe(
@@ -55,48 +56,54 @@ function dateFrom1980Onwards(control: AbstractControl): ValidationErrors | null 
   styleUrls: ['./crud-editorial-update.component.css'],
   providers: [provideNativeDateAdapter()],
 })
-export class CrudEditorialUpdateComponent {
+export class CrudEditorialUpdateComponent implements OnInit {
   lstPais: Pais[] = [];
   lstTipo: DataCatalogo[] = [];
   fecha = new FormControl(new Date());
+  originalRuc: string;
 
-  formsActualiza = this.formBuilder.group({ 
+  formsActualiza = this.formBuilder.group({
     validarazonSocial: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
     validadireccion: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(40)]],
-    validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}'), rucStartsWith10], [rucUnique(this.editorialService)]],
+    validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}'), rucStartsWith10], [this.rucUniqueValidator.bind(this)]],
     validagerente: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
     validafechaCreacion: ['', [Validators.required, dateFrom1980Onwards]],
     validaPais: ['', [Validators.min(1)]],
-});
+  });
 
-  objEditorial: Editorial ={
+  objEditorial: Editorial = {
     razonSocial: "",
     direccion: "",
-    ruc:"",
-    gerente:"",
-    fechaCreacion : new Date(),
-    pais:{
-      idPais:-1
+    ruc: "",
+    gerente: "",
+    fechaCreacion: new Date(),
+    pais: {
+      idPais: -1
     }
-}
-objUsuario: Usuario = {} ;
+  };
+  objUsuario: Usuario = {};
 
-  constructor(private utilService: UtilService, 
+  constructor(private utilService: UtilService,
               private tokenService: TokenService,
               private editorialService: EditorialService,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private formBuilder : FormBuilder){
-            data.fechaCreacion = new Date( new Date(data.fechaCreacion).getTime() + (1000 * 60 * 60 * 24));
-            this.objEditorial = data; 
-            console.log(">>>> [ini] >>> objRevista");
-            console.log(this.objEditorial);
-            this.utilService.listaPais().subscribe(
-              x =>  this.lstPais = x
-            );
-        this.objUsuario.idUsuario = tokenService.getUserId();
-        
+              private formBuilder: FormBuilder) {
+    this.data.fechaCreacion = new Date(new Date(this.data.fechaCreacion).getTime() + (1000 * 60 * 60 * 24));
+    this.objEditorial = this.data;
+    this.originalRuc = this.data.ruc; // Guardar el RUC original
+    console.log(">>>> [ini] >>> objRevista");
+    console.log(this.objEditorial);
+    this.utilService.listaPais().subscribe(
+      x => this.lstPais = x
+    );
+    this.objUsuario.idUsuario = tokenService.getUserId();
   }
-  
+
+  ngOnInit(): void {}
+
+  rucUniqueValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    return rucUnique(this.editorialService, this.originalRuc)(control);
+  }
 
   actualizar() {
     this.objEditorial.usuarioActualiza = this.objUsuario;
@@ -109,6 +116,4 @@ objUsuario: Usuario = {} ;
       });
     });
   }
-
-  
 }
