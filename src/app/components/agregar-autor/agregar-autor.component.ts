@@ -65,48 +65,6 @@ export class AgregarAutorComponent {
     this.objUsuario.idUsuario = tokenService.getUserId();
     
   }
-  autorExistente: boolean = false;
-
-  
-  registra() {
-    if (this.formsRegistra.valid) {
-      this.autor.usuarioActualiza = this.objUsuario;
-      this.autor.usuarioRegistro = this.objUsuario;
-
-      this.autorService.registrarCrud(this.autor).subscribe(
-        x => {
-          if(x.mensaje === 'El Autor con el nombre ' + this.autor.nombres + ' ya existe'){
-            this.autorExistente = true;
-            this.formsRegistra.controls.validaNombres.setErrors({'autorExistente': true});
-          } 
-          else if (x.mensaje === 'El Autor con el apellido ' + this.autor.apellidos + ' ya existe'){
-            this.autorExistente = true;
-            this.formsRegistra.controls.validaApellidos.setErrors({'autorExistente': true});
-          }
-          else if (x.mensaje === 'El teléfono ' + this.autor.telefono + ' ya está en uso'){
-            this.autorExistente = true;
-            this.formsRegistra.controls.validaTelefono.setErrors({'autorExistente': true});
-          }
-          else if (x.mensaje === 'El número de celular ' + this.autor.celular + ' ya está en uso'){
-            this.autorExistente = true;
-            this.formsRegistra.controls.validaCelular.setErrors({'autorExistente': true});
-          }
-          else{
-            this.autorExistente = false;
-          Swal.fire({
-            icon: 'success',
-            title: 'Resultado del Registro',
-            text: x.mensaje,
-          });
-          // Limpia el formulario
-          this.formsRegistra.reset();
-          
-        }
-        },
-      );
-    }
-  }
-
 
   validateFechaNacimiento(control: AbstractControl): { [key: string]: boolean } | null {
     const fechaNacimiento = new Date(control.value);
@@ -125,4 +83,53 @@ export class AgregarAutorComponent {
 
     return null;
   }
-}
+
+  autorExistente: boolean = false;
+
+  
+  registra() {
+    if (this.formsRegistra.valid) {
+      this.autor.usuarioActualiza = this.objUsuario;
+      this.autor.usuarioRegistro = this.objUsuario;
+  
+      this.autorService.registrarCrud(this.autor).subscribe(
+        x => {
+          if (x.mensaje === 'El Autor con el nombre ' + this.autor.nombres + ' ya existe') {
+            this.autorExistente = true;
+            this.formsRegistra.controls.validaNombres.setErrors({'autorExistente': true});
+          } 
+          else if (x.mensaje === 'El Autor con el apellido ' + this.autor.apellidos + ' ya existe') {
+            this.autorExistente = true;
+            this.formsRegistra.controls.validaApellidos.setErrors({'autorExistente': true});
+          }
+          else if (x.mensaje === 'El teléfono ' + this.autor.telefono + ' ya está en uso') {
+            this.autorExistente = true;
+            this.formsRegistra.controls.validaTelefono.setErrors({'autorExistente': true});
+          }
+          else if (x.mensaje === 'El número de celular ' + this.autor.celular + ' ya está en uso') {
+            this.autorExistente = true;
+            this.formsRegistra.controls.validaCelular.setErrors({'autorExistente': true});
+          }
+          else {
+            this.autorExistente = false;
+            Swal.fire({
+              icon: 'success',
+              title: 'Resultado del Registro',
+              text: x.mensaje,
+              showConfirmButton: true,
+              confirmButtonText: 'OK'
+            }).then(() => {
+              // Borra los errores
+              Object.keys(this.formsRegistra.controls).forEach(controlName => {
+                this.formsRegistra.get(controlName)?.setErrors(null);
+              });
+              // Recarga la página
+              window.location.reload();
+            });
+          }
+        }
+      );
+    }
+  }
+  
+    }

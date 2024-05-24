@@ -1,10 +1,10 @@
 .container {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   min-width: 900px;
-  min-height: 400px;
+  min-height: 300px;
   margin: auto; /* Centra el contenido horizontalmente */
-  padding: 20px;
+  padding: 15px;
 }
 
 .form {
@@ -26,14 +26,50 @@
   font-size: 14px;
 }
 
-button[type="submit"] {
-  margin-top: 20px; /* Espacio superior para el botón de enviar */
-}
-
+button[type="submit"],
 button[type="button"] {
-  margin-top: 20px; /* Espacio superior para el botón de enviar */
+  margin-top: 10px; /* Espacio superior para los botones */
+  margin-left: 20px;
 }
 
 .campo-error .mat-form-field-wrapper {
   border-color: red;
+}
+
+/* Estilos responsivos */
+@media (max-width: 1200px) {
+  .container {
+    min-width: 700px;
+  }
+
+  .mat-form-field {
+    flex-basis: calc(50% - 20px); /* Ajusta el ancho de cada campo para pantallas medianas */
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    min-width: 500px;
+  }
+
+  .mat-form-field {
+    flex-basis: 100%; /* Cada campo ocupa el 100% del ancho en pantallas pequeñas */
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    min-width: 300px;
+    padding: 10px;
+  }
+
+  .mat-form-field {
+    flex-basis: 100%; /* Cada campo ocupa el 100% del ancho en pantallas pequeñas */
+  }
+
+  button[type="submit"],
+  button[type="button"] {
+    margin-left: 0;
+    width: 100%; /* Los botones ocupan el 100% del ancho en pantallas pequeñas */
+  }
 }

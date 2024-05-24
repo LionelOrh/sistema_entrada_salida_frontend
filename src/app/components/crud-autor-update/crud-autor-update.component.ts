@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { DataCatalogo } from '../../models/dataCatalogo.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDialogRef } from '@angular/material/dialog'; 
 
 @Component({
   standalone: true,
@@ -28,12 +29,11 @@ export class CrudAutorUpdateComponent {
   lstPais: Pais[] = [];
   lstGrado: DataCatalogo[] = [];
   fecha = new FormControl(new Date());
-  
-  //PARA LAS VALIDACIONES
+
   formsActualizar = this.formBuilder.group({
     validaNombres: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
     validaApellidos: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
-    validaFechaNacimiento: ['', [Validators.required, this.validateFechaNacimiento]] , 
+    validaFechaNacimiento: ['', [Validators.required, this.validateFechaNacimiento]],
     validaTelefono: ['', [Validators.required, Validators.pattern('018[0-9]{6}')]],
     validaCelular: ['', [Validators.required, Validators.pattern('9[0-9]{8}')]],
     validaOrcid: ['', [Validators.required, Validators.pattern('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}')]],
@@ -59,13 +59,14 @@ export class CrudAutorUpdateComponent {
   objUsuario: Usuario = {};
 
   constructor(
-    private autorService: AutorService, 
-    private utilService: UtilService, 
+    private autorService: AutorService,
+    private utilService: UtilService,
     private tokenService: TokenService,
-    private formBuilder: FormBuilder, 
-    @Inject(MAT_DIALOG_DATA) public data: any
+    private formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<CrudAutorUpdateComponent>  
   ) {
-    data.fechaNacimiento = new Date( new Date(data.fechaNacimiento).getTime() + (1000 * 60 * 60 * 24));
+    data.fechaNacimiento = new Date(new Date(data.fechaNacimiento).getTime() + (1000 * 60 * 60 * 24));
     this.autor = data;
 
     console.log(">>>> [ini] >>> autor");
@@ -86,34 +87,60 @@ export class CrudAutorUpdateComponent {
   validateFechaNacimiento(control: AbstractControl): { [key: string]: boolean } | null {
     const fechaNacimiento = new Date(control.value);
     const fechaActual = new Date();
-    
+
     if (control.value === '') {
-        return { 'required': true }; // Devuelve 'required' si la fecha es requerida
+      return { 'required': true }; // Devuelve 'required' si la fecha es requerida
     }
 
     const edadActual = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
     const cumpleañosEsteAño = new Date(fechaActual.getFullYear(), fechaNacimiento.getMonth(), fechaNacimiento.getDate());
-    
+
     if (edadActual < 18 || (edadActual === 18 && fechaActual < cumpleañosEsteAño)) {
-        return { 'menorEdad': true }; // Devuelve 'menorEdad' si la persona es menor de 18 años
+      return { 'menorEdad': true }; // Devuelve 'menorEdad' si la persona es menor de 18 años
     }
 
     return null;
   }
 
-    actualizar() {
+  autorExistente: boolean = false;
+
+  actualizar() {
     if (this.formsActualizar.valid) {
       this.autor.usuarioActualiza = this.objUsuario;
       this.autor.usuarioRegistro = this.objUsuario;
 
-      this.autorService.actualizarCrud(this.autor).subscribe((x) => {
-        Swal.fire({
-          icon: 'info',
-          title: 'Resultado de la Actualización',
-          text: x.mensaje,
+      this.autorService.actualizarCrud(this.autor).subscribe(
+        x => {
+          console.log('Respuesta del servicio:', x);
+          if (x.mensaje === 'El Autor ' + this.autor.nombres + ' ya existe') {
+            this.autorExistente = true;
+            this.formsActualizar.controls.validaNombres.setErrors({ 'autorExistente': true });
+          }
+          else if (x.mensaje === 'El Autor con el apellido ' + this.autor.apellidos + ' ya existe') {
+            this.autorExistente = true;
+            this.formsActualizar.controls.validaApellidos.setErrors({ 'autorExistente': true });
+          }
+          else if (x.mensaje === 'El teléfono ' + this.autor.telefono + ' ya está en uso') {
+            this.autorExistente = true;
+            this.formsActualizar.controls.validaTelefono.setErrors({ 'autorExistente': true });
+          }
+          else if (x.mensaje === 'El número de celular ' + this.autor.celular + ' ya está en uso') {
+            this.autorExistente = true;
+            this.formsActualizar.controls.validaCelular.setErrors({ 'autorExistente': true });
+          }
+          else {
+            this.autorExistente = false;
+            Swal.fire({
+              icon: 'success',
+              title: 'Resultado de la Actualización',
+              text: x.mensaje,
+              showConfirmButton: true,
+              confirmButtonText: 'OK'
+            });
+            this.dialogRef.close(); // Cierra la ventana de actualizar
+          }
         });
-      });
+
     }
   }
 }
-
