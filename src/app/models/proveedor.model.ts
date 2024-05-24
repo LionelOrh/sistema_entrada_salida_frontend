@@ -5,7 +5,7 @@ import { Pais } from "./pais.model";
 export class Proveedor {
 
 
-    idEditorial?: number;
+    idProveedor?: number;
     razonsocial?:string;
     ruc?:string;
     direccion?:string;
