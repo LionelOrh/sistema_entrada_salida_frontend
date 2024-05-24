@@ -7,7 +7,7 @@
         </div>
         <hr>
         <div class="row" style="margin-top: 3%">
-            <mat-form-field class="col-md-4">
+            <mat-form-field class="col-md-4" [ngClass]="{'campo-error': autorExistente}">
                 <mat-label>Nombre</mat-label>
                 <input matInput [(ngModel)]="autor.nombres" formControlName="validaNombres">
                 <mat-hint style="color: red" *ngIf="formsActualizar.controls.validaNombres.touched">
@@ -17,10 +17,13 @@
                     <span *ngIf="formsActualizar.controls.validaNombres.hasError('pattern')">
                         El nombre es de 4 a 40 caracteres
                     </span>
+                    <span *ngIf="formsActualizar.controls.validaNombres.hasError('autorExistente')">
+                        El Nombre ya existe
+                    </span>
                 </mat-hint>
             </mat-form-field>
 
-            <mat-form-field class="col-md-4">
+            <mat-form-field class="col-md-4" [ngClass]="{'campo-error': autorExistente}">
                 <mat-label>Apellidos</mat-label>
                 <input matInput [(ngModel)]="autor.apellidos" formControlName="validaApellidos">
                 <mat-hint style="color: red" *ngIf="formsActualizar.controls.validaApellidos.touched">
@@ -30,17 +33,21 @@
                     <span *ngIf="formsActualizar.controls.validaApellidos.hasError('pattern')">
                         El apellido es de 4 a 40 caracteres
                     </span>
+                    <span *ngIf="formsActualizar.controls.validaApellidos.hasError('autorExistente')">
+                        El Apellido ya existe
+                    </span>
                 </mat-hint>
             </mat-form-field>
 
             <mat-form-field class="col-md-4">
                 <mat-label>Fecha de Nacimiento</mat-label>
-                <input  matInput [(ngModel)] ="autor.fechaNacimiento" [matDatepicker]="picker" formControlName="validaFechaNacimiento">
+                <input matInput [(ngModel)]="autor.fechaNacimiento" [matDatepicker]="picker"
+                    formControlName="validaFechaNacimiento">
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                <mat-hint style="color: red"  *ngIf="formsActualizar.controls.validaFechaNacimiento.touched">
+                <mat-hint style="color: red" *ngIf="formsActualizar.controls.validaFechaNacimiento.touched">
                     <span *ngIf="formsActualizar.controls.validaFechaNacimiento.hasError('required')">
-                    La fecha de creación es requerida.                        
+                        La fecha de creación es requerida.
                     </span>
                     <span *ngIf="formsActualizar.controls.validaFechaNacimiento.hasError('menorEdad')">
                         La persona debe ser mayor de edad.
@@ -49,7 +56,7 @@
             </mat-form-field>
 
 
-            <mat-form-field class="col-md-4">
+            <mat-form-field class="col-md-4" [ngClass]="{'campo-error': autorExistente}">
                 <mat-label>Teléfono</mat-label>
                 <input matInput [(ngModel)]="autor.telefono" formControlName="validaTelefono">
                 <mat-hint style="color: red" *ngIf="formsActualizar.controls.validaTelefono.touched">
@@ -59,10 +66,13 @@
                     <span *ngIf="formsActualizar.controls.validaTelefono.hasError('pattern')">
                         Teléfono es de 9 dígitos, '018XXXXXX'
                     </span>
+                    <span *ngIf="formsActualizar.controls.validaTelefono.hasError('autorExistente')">
+                        El teléfono ya existe
+                    </span>
                 </mat-hint>
             </mat-form-field>
 
-            <mat-form-field class="col-md-4">
+            <mat-form-field class="col-md-4" [ngClass]="{'campo-error': autorExistente}">
                 <mat-label>Celular</mat-label>
                 <input matInput [(ngModel)]="autor.celular" formControlName="validaCelular">
                 <mat-hint style="color: red" *ngIf="formsActualizar.controls.validaCelular.touched">
@@ -71,6 +81,9 @@
                     </span>
                     <span *ngIf="formsActualizar.controls.validaCelular.hasError('pattern')">
                         Celular es de 9 dígitos, '9XXXXXXXX'
+                    </span>
+                    <span *ngIf="formsActualizar.controls.validaCelular.hasError('autorExistente')">
+                        El número de celular ya existe
                     </span>
                 </mat-hint>
             </mat-form-field>
@@ -121,22 +134,14 @@
         </div>
         <hr>
 
-        <div  class="row" >
-            <button
-                mat-raised-button 
-                type="submit" 
-                [disabled]="formsActualizar.invalid" 
-                color="primary" 
-                (click)="actualizar()"
-                [mat-dialog-close]="1">
+        <div class="row">
+            <button mat-raised-button type="submit" [disabled]="formsActualizar.invalid" color="primary"
+                (click)="actualizar()" >
                 Actualizar
             </button>
-            <button 
-                mat-button 
-                color="primary" 
-                [mat-dialog-close]="0">
+            <button mat-button color="primary" [mat-dialog-close]="0">
                 Salir
             </button>
         </div>
-</form>
+    </form>
 </div>
