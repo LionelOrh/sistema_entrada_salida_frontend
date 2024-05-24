@@ -111,7 +111,6 @@ export class CrudAutorUpdateComponent {
 
       this.autorService.actualizarCrud(this.autor).subscribe(
         x => {
-          console.log('Respuesta del servicio:', x);
           if (x.mensaje === 'El Autor ' + this.autor.nombres + ' ya existe') {
             this.autorExistente = true;
             this.formsActualizar.controls.validaNombres.setErrors({ 'autorExistente': true });
