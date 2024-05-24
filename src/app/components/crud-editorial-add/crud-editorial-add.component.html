@@ -1,1 +1,106 @@
-<p>crud-editorial-add works!</p>
+<div class="container custom-margin">
+    <form id="idFormModalidad" [formGroup]="formsRegistra" class="custom-margin">
+        <div class="mat-dialog-content custom-margin" id="idFormModalidad">
+            <div class="row custom-margin">
+                <mat-toolbar color="primary">
+                    <span>Registra Editorial</span>
+                </mat-toolbar>
+            </div>
+            <div class="row custom-margin" style="margin-top: 3%">
+                <mat-form-field class="col-md-4">
+                    <mat-label>Razón Social</mat-label>
+                    <input matInput [(ngModel)]="objEditorial.razonSocial" formControlName="validarazonSocial">
+                    <mat-hint class="error-hint" *ngIf="formsRegistra.controls.validarazonSocial.touched">
+                        <span *ngIf="formsRegistra.controls.validarazonSocial.hasError('required')">
+                            La razón social es obligatoria.
+                          </span>
+                          <span *ngIf="formsRegistra.controls.validarazonSocial.hasError('pattern')">
+                            La razón social debe tener entre 4 y 40 caracteres.
+                          </span>    
+                          <span *ngIf="formsRegistra.controls.validarazonSocial.hasError('razonSocialNotUnique')">
+                            La razón social ya existe.
+                        </span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <mat-label>Dirección</mat-label>
+                    <input matInput [(ngModel)]="objEditorial.direccion" formControlName="validadireccion">
+                    <mat-hint class="error-hint" *ngIf="formsRegistra.controls.validadireccion.touched">
+                        <span *ngIf="formsRegistra.controls.validadireccion.hasError('required')">
+                            La dirección es requerida.
+                        </span>
+                        <span *ngIf="formsRegistra.controls.validadireccion.hasError('pattern')">
+                            La dirección debe tener entre 4 y 40 caracteres.
+                        </span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <mat-label>RUC</mat-label>
+                    <input matInput [(ngModel)]="objEditorial.ruc" formControlName="validaruc">
+                    <mat-hint class="error-hint" *ngIf="formsRegistra.controls.validaruc.touched">
+                        <span *ngIf="formsRegistra.controls.validaruc.hasError('required')">
+                            El campo RUC es obligatorio
+                        </span>
+                        <span *ngIf="formsRegistra.controls.validaruc.hasError('pattern')">
+                            El RUC debe contener 11 digitos numericos.                       
+                        </span>
+                        <span *ngIf="formsRegistra.controls.validaruc.hasError('startsWith10')">
+                            El RUC debe comenzar con 10.
+                        </span>
+                        <span *ngIf="formsRegistra.controls.validaruc.hasError('rucNotUnique')">
+                            El RUC ya existe.
+                          </span>
+                        
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="row custom-margin" style="margin-top: 3%">
+                <mat-form-field class="col-md-4">
+                    <mat-label>Gerente</mat-label>
+                    <input matInput [(ngModel)]="objEditorial.gerente" formControlName="validagerente">
+                    <mat-hint class="error-hint" *ngIf="formsRegistra.controls.validagerente.touched">
+                        <span *ngIf="formsRegistra.controls.validagerente.hasError('required')">
+                            El nombre del gerente es obligatorio.
+                        </span>
+                        <span *ngIf="formsRegistra.controls.validagerente.hasError('pattern')">
+                            El nombre del gerente debe tener entre 3 y 50 caracteres.
+                        </span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <mat-label>Fecha de Creación</mat-label>
+                    <input matInput [(ngModel)]="objEditorial.fechaCreacion" [matDatepicker]="picker" formControlName="validafechaCreacion">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-hint class="error-hint" *ngIf="formsRegistra.controls.validafechaCreacion.touched">
+                        <span *ngIf="formsRegistra.controls.validafechaCreacion.hasError('required')">
+                            La fecha de creación es obligatorio.
+                          </span>
+                          <span *ngIf="formsRegistra.controls.validafechaCreacion.hasError('dateFrom1980Onwards')">
+                            La fecha de creación debe ser desde 1980 en adelante.
+                        </span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <mat-label>País</mat-label>
+                    <mat-select [(ngModel)]="objEditorial.pais!.idPais" formControlName="validaPais">
+                        <mat-option value="-1"> [Seleccione] </mat-option>
+                        <mat-option *ngFor="let x of lstPais" [value]="x.idPais">
+                            {{x.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint class="error-hint" *ngIf="formsRegistra.controls.validaPais.touched">
+                        <span *ngIf="formsRegistra.controls.validaPais.hasError('min')">
+                            El País es obligatorio.
+                        </span>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+            <div mat-dialog-actions class="custom-margin">
+                <button mat-raised-button type="submit"  (click)="registra()" color="primary" [mat-dialog-close]="1"[disabled]="formsRegistra.invalid">Registra</button>
+               
+                <button mat-button color="primary" [mat-dialog-close]="0">Salir</button>
+            </div>
+        </div>
+    </form>
+</div>

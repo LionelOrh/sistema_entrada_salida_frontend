@@ -13,4 +13,5 @@ export class Editorial {
     pais?:Pais;
     usuarioRegistro?:Usuario;
     usuarioActualiza?:Usuario;
+    estado?:number
 }
