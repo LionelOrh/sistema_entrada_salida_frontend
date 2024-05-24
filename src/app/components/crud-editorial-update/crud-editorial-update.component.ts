@@ -48,6 +48,20 @@ function dateFrom1980Onwards(control: AbstractControl): ValidationErrors | null 
   return null;
 }
 
+// Validador para verificar si la razon social es única, exceptuando la original
+function razonSocialUnique(editorialService: EditorialService, originalRazonSocial: string) {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    if (!control.value || control.value === originalRazonSocial) {
+      return of(null);
+    }
+    return editorialService.validaRazonSocial(control.value).pipe(
+      debounceTime(500),
+      map(response => (response.valid ? null : { razonSocialNotUnique: true })),
+      catchError(() => of(null))
+    );
+  };
+}
+
 @Component({
   standalone: true,
   imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent, ReactiveFormsModule],
@@ -61,9 +75,10 @@ export class CrudEditorialUpdateComponent implements OnInit {
   lstTipo: DataCatalogo[] = [];
   fecha = new FormControl(new Date());
   originalRuc: string;
+  originalRazonSocial: string;
 
   formsActualiza = this.formBuilder.group({
-    validarazonSocial: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')]],
+    validarazonSocial: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{4,40}')], [this.razonSocialUniqueValidator.bind(this)]],
     validadireccion: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(40)]],
     validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}'), rucStartsWith10], [this.rucUniqueValidator.bind(this)]],
     validagerente: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,50}$')]],
@@ -91,6 +106,7 @@ export class CrudEditorialUpdateComponent implements OnInit {
     this.data.fechaCreacion = new Date(new Date(this.data.fechaCreacion).getTime() + (1000 * 60 * 60 * 24));
     this.objEditorial = this.data;
     this.originalRuc = this.data.ruc; // Guardar el RUC original
+    this.originalRazonSocial = this.data.razonSocial; // Guardar la razon social original
     console.log(">>>> [ini] >>> objRevista");
     console.log(this.objEditorial);
     this.utilService.listaPais().subscribe(
@@ -103,6 +119,10 @@ export class CrudEditorialUpdateComponent implements OnInit {
 
   rucUniqueValidator(control: AbstractControl): Observable<ValidationErrors | null> {
     return rucUnique(this.editorialService, this.originalRuc)(control);
+  }
+
+  razonSocialUniqueValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    return razonSocialUnique(this.editorialService, this.originalRazonSocial)(control);
   }
 
   actualizar() {
