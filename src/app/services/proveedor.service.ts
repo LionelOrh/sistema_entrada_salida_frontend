@@ -30,4 +30,24 @@ export class ProveedorService {
   consultarCrud(filtro:string):Observable<any>{
     return this.http.get(baseUrlCrudProveedor+"/listaProveedorPorRazonSocialLike/"+filtro);
   }
+  validaRucActualiza(ruc: string): Observable<any> {
+    return this.http.get(baseUrlCrudProveedor + "/buscarProveedorPorRucActualiza", {
+      params: { ruc }
+    });
+  }
+  validaRazonSocial(razonsocial: string): Observable<any> {
+    return this.http.get(baseUrlCrudProveedor + "/buscarProveedorPorRazonSocialActualiza", {
+        params: { razonsocial }
+    });
+  }
+  validaCelular(celular: string): Observable<any> {
+    return this.http.get(baseUrlCrudProveedor + "/buscarProveedorPorCelularActualiza", {
+        params: { celular }
+    });
+  }
+  validaContacto(contacto: string): Observable<any> {
+    return this.http.get(baseUrlCrudProveedor + "/buscarProveedorPorContactoActualiza", {
+        params: { contacto }
+    });
+  }
 }

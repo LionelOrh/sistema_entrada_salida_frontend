@@ -1,74 +1,147 @@
 <div class="container">
-    <div class="mat-dialog-content"  id="idFormModalidad" >
-                <div class="row">
-                        <mat-toolbar color="primary" >    
-                        <span>Actualiza Proveedor</span>    
-                        </mat-toolbar>  
-                </div>
-                <div  class="row"  style="margin-top: 3%">
-                            <mat-form-field class="col-md-4">
-                                <mat-label>Razon Social</mat-label>
-                                <input  matInput [(ngModel)] ="objProveedor.razonsocial">
-                            </mat-form-field>
-                            <mat-form-field class="col-md-4">
-                                <mat-label>RUC</mat-label>
-                                <input  matInput [(ngModel)] ="objProveedor.ruc">
-                            </mat-form-field>
-                            <mat-form-field class="col-md-4">
-                                <mat-label>direccion</mat-label>
-                                <input  matInput [(ngModel)] ="objProveedor.direccion">
-                            </mat-form-field>
-                            
-                </div>
-                <div  class="row"  style="margin-top: 3%">
-                    <mat-form-field class="col-md-4">
-                        <mat-label>telefono</mat-label>
-                        <input  matInput [(ngModel)] ="objProveedor.telefono">
-                    </mat-form-field>
-                    <mat-form-field class="col-md-4">
-                        <mat-label>celular</mat-label>
-                        <input  matInput [(ngModel)] ="objProveedor.celular">
-                    </mat-form-field>
-                    <mat-form-field class="col-md-4">
-                        <mat-label>contacto</mat-label>
-                        <input  matInput [(ngModel)] ="objProveedor.contacto">
-                    </mat-form-field>
-                    
-        </div>
-                <div class="row"  style="margin-top: 3%">
-                            <mat-form-field class="col-md-4">
-                                <mat-label>País</mat-label>
-                                <mat-select [(ngModel)] ="objProveedor.pais!.idPais">
-                                    <mat-option value="-1"> [Seleccione] </mat-option>
-                                    <mat-option *ngFor="let x of lstPais" [value]="x.idPais">
-                                                {{x.nombre}}
-                                    </mat-option> 
-                                </mat-select> 
-                            </mat-form-field> 
-                            <mat-form-field class="col-md-4">
-                                <mat-label>Tipo Proveedor</mat-label>
-                                <mat-select  [(ngModel)] ="objProveedor.tipoProveedor!.idDataCatalogo">
-                                    <mat-option value="-1"> [Seleccione] </mat-option>
-                                    <mat-option *ngFor="let y of lstTipo" [value]="y.idDataCatalogo">
-                                            {{y.descripcion}}
-                                    </mat-option> 
-                                </mat-select> 
-                            </mat-form-field>
-                </div>
-                <div  mat-dialog-actions>
-                    <button mat-raised-button 
-                            type="submit" 
-                            (click) = "actualizar()"
-                            color="primary" 
-                            [mat-dialog-close]="1">
-                            Actualiza
-                    </button>
-                    <button mat-button 
-                            color="primary">
-                            Salir
-                    </button>
-            </div>
- </div>
-  </div>
-  
+    <form id="idForm" [formGroup]="formsActualiza">
 
+        <div class="mat-dialog-content" id="idFormModalidad">
+            <div class="row">
+                <mat-toolbar color="primary">
+                    <span>Actualiza Proveedor</span>
+                </mat-toolbar>
+            </div>
+            <div class="row" style="margin-top: 3%">
+                <mat-form-field class="col-md-4">
+                    <mat-label>Razón Social</mat-label>
+                    <input matInput [(ngModel)]="objProveedor.razonsocial" formControlName="validarazonsocial">
+                    <mat-hint style="color: red" *ngIf="formsActualiza.controls.validarazonsocial.touched">
+                        <span *ngIf="formsActualiza.controls.validarazonsocial.hasError('required')">
+                            La razón social es obligatoria.
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validarazonsocial.hasError('pattern')">
+                            La razón social debe tener entre 4 y 40 caracteres.
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validarazonsocial.hasError('razonSocialNotUnique')">
+                            La razón social ya existe.
+                        </span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <mat-label>RUC</mat-label>
+                    <input matInput [(ngModel)]="objProveedor.ruc" formControlName="validaruc">
+                    <mat-hint style="color: red" *ngIf="formsActualiza.controls.validaruc.touched">
+                        <span *ngIf="formsActualiza.controls.validaruc.hasError('required')">
+                            El  RUC es obligatorio
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validaruc.hasError('pattern')">
+                            El  RUC debe de tener 11 digitos
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validaruc.hasError('ruc10')">
+                            El RUC debe comenzar con 10.
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validaruc.hasError('rucNotUnique')">
+                            El RUC ya existe.
+                          </span>
+                             </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <mat-label>Dirección</mat-label>
+                    <input matInput [(ngModel)]="objProveedor.direccion" formControlName="validadireccion">
+                    <mat-hint style="color: red" *ngIf="formsActualiza.controls.validadireccion.touched">
+                        <span *ngIf="formsActualiza.controls.validadireccion.hasError('required')">
+                            La  dirección es obligatorio
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validadireccion.hasError('pattern')">
+                            La dirección debe tener entre 4 y 40 caracteres.
+                        </span>
+                             </mat-hint>
+                </mat-form-field>
+
+            </div>
+            <div class="row" style="margin-top: 3%">
+                <mat-form-field class="col-md-4">
+                    <mat-label>Teléfono</mat-label>
+                    <input matInput [(ngModel)]="objProveedor.telefono" formControlName="validatelefono">
+                    <mat-hint style="color: red" *ngIf="formsActualiza.controls.validatelefono.touched">
+                        <span *ngIf="formsActualiza.controls.validatelefono.hasError('required')">
+                            El teléfono es obligatorio
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validatelefono.hasError('pattern')">
+                            El teléfono debe de tener 9 digitos
+                        </span>
+                             </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <mat-label>Celular</mat-label>
+                    <input matInput [(ngModel)]="objProveedor.celular" formControlName="validacelular">
+                    <mat-hint style="color: red" *ngIf="formsActualiza.controls.validacelular.touched">
+                        <span *ngIf="formsActualiza.controls.validacelular.hasError('required')">
+                            El celular es obligatorio
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validacelular.hasError('pattern')">
+                            El celular debe de tener 9 digitos
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validacelular.hasError('cel8')">
+                            El celular debe comenzar con 8
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validacelular.hasError('celularNotUnique')">
+                            El celular ya existe.
+                        </span>
+                             </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <mat-label>Contacto</mat-label>
+                    <input matInput [(ngModel)]="objProveedor.contacto" formControlName="validacontacto">
+                    <mat-hint style="color: red" *ngIf="formsActualiza.controls.validacontacto.touched">
+                        <span *ngIf="formsActualiza.controls.validacontacto.hasError('required')">
+                            El contacto es obligatorio
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validacontacto.hasError('pattern')">
+                            El contacto debe de tener de 4 a 40 caracteres.
+                        </span>
+                        <span *ngIf="formsActualiza.controls.validacontacto.hasError('contactoNotUnique')">
+                            El contacto ya existe.
+                        </span>
+                             </mat-hint>
+                </mat-form-field>
+
+            </div>
+            <div class="row" style="margin-top: 3%">
+                <mat-form-field class="col-md-4">
+                    <mat-label>País</mat-label>
+                    <mat-select [(ngModel)]="objProveedor.pais!.idPais" formControlName="validapais">
+                        <mat-option value="-1"> [Seleccione] </mat-option>
+                        <mat-option *ngFor="let x of lstPais" [value]="x.idPais">
+                            {{x.nombre}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint style="color: red" *ngIf="formsActualiza.controls.validapais.touched">
+                        <span *ngIf="formsActualiza.controls.validapais.hasError('min')">
+                            El País es requerido.
+                        </span>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <mat-label>Tipo Proveedor</mat-label>
+                    <mat-select [(ngModel)]="objProveedor.tipoProveedor!.idDataCatalogo"
+                        formControlName="validatipoProveedor">
+                        <mat-option value="-1"> [Seleccione] </mat-option>
+                        <mat-option *ngFor="let y of lstTipo" [value]="y.idDataCatalogo">
+                            {{y.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint style="color: red" *ngIf="formsActualiza.controls.validatipoProveedor.touched">
+                        <span *ngIf="formsActualiza.controls.validatipoProveedor.hasError('min')">
+                            El tipo proveedor es requerido.
+                        </span>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+            <div mat-dialog-actions>
+                <button mat-raised-button type="submit" (click)="actualizar()" color="primary" [mat-dialog-close]="1"
+                    [disabled]="formsActualiza.invalid">
+                    Actualiza
+                </button> <button mat-button color="primary" [mat-dialog-close]="0">Salir</button>
+
+            </div>
+        </div>
+    </form>
+
+</div>

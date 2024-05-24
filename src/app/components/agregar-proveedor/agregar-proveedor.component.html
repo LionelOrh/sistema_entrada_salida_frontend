@@ -69,11 +69,11 @@
         <mat-form-field class="col-md-4">
             <mat-label>Contacto</mat-label>
             <input matInput [(ngModel)]="objProveedor.contacto" formControlName="validacontacto">
-            <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validacelular.touched">
-                <span *ngIf="formsRegistra.controls.validacelular.hasError('required')">
+            <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validacontacto.touched">
+                <span *ngIf="formsRegistra.controls.validacontacto.hasError('required')">
                     El campo contacto es obligatorio                        
                 </span>
-                <span *ngIf="formsRegistra.controls.validacelular.hasError('pattern')">
+                <span *ngIf="formsRegistra.controls.validacontacto.hasError('pattern')">
                     El campo contacto debe de tener de 3 a 30 caracteres                       
                 </span>
              </mat-hint>
