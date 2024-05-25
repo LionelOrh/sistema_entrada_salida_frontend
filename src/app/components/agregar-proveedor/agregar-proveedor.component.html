@@ -11,10 +11,13 @@
             <input matInput [(ngModel)]="objProveedor.razonsocial" formControlName="validarazonsocial">
             <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validarazonsocial.touched">
                 <span *ngIf="formsRegistra.controls.validarazonsocial.hasError('required')">
-                    El campo razon social es obligatorio                        
+                    La razón social es obligatoria.
                 </span>
                 <span *ngIf="formsRegistra.controls.validarazonsocial.hasError('pattern')">
-                    El nombre es de 3 a 100 carácteres                        
+                    La razón social debe tener entre 4 y 40 caracteres.
+                </span>
+                <span *ngIf="formsRegistra.controls.validarazonsocial.hasError('razonSocialNotUnique')">
+                    La razón social ya existe.
                 </span>
              </mat-hint>
         </mat-form-field>
@@ -23,11 +26,17 @@
             <input matInput [(ngModel)]="objProveedor.ruc" formControlName="validaruc">
             <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaruc.touched">
                 <span *ngIf="formsRegistra.controls.validaruc.hasError('required')">
-                    El campo RUC es obligatorio                        
+                    El  RUC es obligatorio
                 </span>
                 <span *ngIf="formsRegistra.controls.validaruc.hasError('pattern')">
-                    El campo RUC debe de tener 11 digitos                       
+                    El  RUC debe de tener 11 digitos
                 </span>
+                <span *ngIf="formsRegistra.controls.validaruc.hasError('ruc10')">
+                    El RUC debe comenzar con 10.
+                </span>
+                <span *ngIf="formsRegistra.controls.validaruc.hasError('rucNotUnique')">
+                    El RUC es unico.
+                  </span>
              </mat-hint>
         </mat-form-field>
         <mat-form-field class="col-md-4">
@@ -35,7 +44,10 @@
             <input matInput [(ngModel)]="objProveedor.direccion" formControlName="validadireccion">
             <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validadireccion.touched">
                 <span *ngIf="formsRegistra.controls.validadireccion.hasError('required')">
-                    El campo direccion es obligatorio                        
+                    La  dirección es obligatorio
+                </span>
+                <span *ngIf="formsRegistra.controls.validadireccion.hasError('pattern')">
+                    La dirección debe tener entre 4 y 40 caracteres.
                 </span>
              </mat-hint>
         </mat-form-field>
@@ -47,10 +59,10 @@
             <input matInput [(ngModel)]="objProveedor.telefono" formControlName="validatelefono">
             <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validatelefono.touched">
                 <span *ngIf="formsRegistra.controls.validatelefono.hasError('required')">
-                    El campo telefono es obligatorio                        
+                    El teléfono es obligatorio
                 </span>
                 <span *ngIf="formsRegistra.controls.validatelefono.hasError('pattern')">
-                    El campo telefono debe de tener 9 digitos                       
+                    El teléfono debe de tener 9 digitos
                 </span>
              </mat-hint>
         </mat-form-field>
@@ -59,10 +71,16 @@
             <input matInput [(ngModel)]="objProveedor.celular" formControlName="validacelular">
             <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validacelular.touched">
                 <span *ngIf="formsRegistra.controls.validacelular.hasError('required')">
-                    El campo celular es obligatorio                        
+                    El celular es obligatorio
                 </span>
                 <span *ngIf="formsRegistra.controls.validacelular.hasError('pattern')">
-                    El campo celular debe de tener 9 digitos                       
+                    El celular debe de tener 9 digitos
+                </span>
+                <span *ngIf="formsRegistra.controls.validacelular.hasError('cel8')">
+                    El celular debe comenzar con 8
+                </span>
+                <span *ngIf="formsRegistra.controls.validacelular.hasError('celularNotUnique')">
+                    El celular ya existe.
                 </span>
              </mat-hint>
         </mat-form-field>
@@ -71,10 +89,13 @@
             <input matInput [(ngModel)]="objProveedor.contacto" formControlName="validacontacto">
             <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validacontacto.touched">
                 <span *ngIf="formsRegistra.controls.validacontacto.hasError('required')">
-                    El campo contacto es obligatorio                        
+                    El contacto es obligatorio
                 </span>
                 <span *ngIf="formsRegistra.controls.validacontacto.hasError('pattern')">
-                    El campo contacto debe de tener de 3 a 30 caracteres                       
+                    El contacto debe de tener de 4 a 40 caracteres
+                </span>
+                <span *ngIf="formsRegistra.controls.validacontacto.hasError('contactoNotUnique')">
+                    El contacto ya existe.
                 </span>
              </mat-hint>
         </mat-form-field>

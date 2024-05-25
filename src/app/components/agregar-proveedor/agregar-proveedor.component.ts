@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppMaterialModule } from '../../app.material.module';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
 import { Pais } from '../../models/pais.model';
@@ -11,6 +11,74 @@ import { ProveedorService } from '../../services/proveedor.service';
 import { TokenService } from '../../security/token.service';
 import { Proveedor } from '../../models/proveedor.model';
 import Swal from 'sweetalert2';
+import { Observable, of } from 'rxjs';
+import { map, catchError, debounceTime, switchMap } from 'rxjs/operators';
+function ruc10(control: AbstractControl): ValidationErrors | null {
+  const ruc = control.value;
+  if (ruc && !ruc.startsWith('10')) {
+    return { ruc10: true };
+  }
+  return null;
+}
+function cel8(control: AbstractControl): ValidationErrors | null {
+  const celular = control.value;
+  if (celular && !celular.startsWith('8')) {
+    return { cel8: true };
+  }
+  return null;
+}
+// Validador  para verificar si el RUC es único
+function rucUnique(ProveedorService: ProveedorService) {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    if (!control.value) {
+      return of(null);
+    }
+    return ProveedorService.validaRucActualiza(control.value).pipe(
+      debounceTime(500),
+      map(response => (response.valid ? null : { rucNotUnique: true })),
+      catchError(() => of(null))
+    );
+  };
+}
+// Validador  para verificar si la razon social es única
+function razonSocialUnique(ProveedorService: ProveedorService) {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    if (!control.value) {
+      return of(null);
+    }
+    return ProveedorService.validaRazonSocial(control.value).pipe(
+      debounceTime(500),
+      map(response => (response.valid ? null : { razonSocialNotUnique: true })),
+      catchError(() => of(null))
+    );
+  };
+}
+// Validador  para verificar si el celular es único
+function celularUnique(ProveedorService: ProveedorService) {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    if (!control.value) {
+      return of(null);
+    }
+    return ProveedorService.validaCelular(control.value).pipe(
+      debounceTime(500),
+      map(response => (response.valid ? null : { celularNotUnique: true })),
+      catchError(() => of(null))
+    );
+  };
+}
+// Validador  para verificar si el contacto es único
+function contactoUnique(ProveedorService: ProveedorService) {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    if (!control.value) {
+      return of(null);
+    }
+    return ProveedorService.validaContacto(control.value).pipe(
+      debounceTime(500),
+      map(response => (response.valid ? null : { contactoNotUnique: true })),
+      catchError(() => of(null))
+    );
+  };
+}
 @Component({
   standalone: true,
   imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent,ReactiveFormsModule],
@@ -39,14 +107,15 @@ export class AgregarProveedorComponent {
     objUsuario: Usuario = {} ;
     
     formsRegistra = this.FormBuilder.group({ 
-      validarazonsocial: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,100}')]],
-      validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}')]],
-      validadireccion: ['', [Validators.required]],
-      validatelefono: ['', [Validators.required, Validators.pattern('[0-9]{9}')]],
-      validacelular: ['', [Validators.required, Validators.pattern('[0-9]{9}')]],
-      validacontacto: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,30}')]],
-      validapais: ['', Validators.min(1)] , 
-      validatipoProveedor: ['', Validators.min(1)] ,
+      validarazonsocial: ['', [Validators.required, Validators.pattern('^[a-zA-Zá-úÁ-ÚñÑ ]{4,40}$')], [razonSocialUnique(this.proveedorService)]],
+      validaruc: ['', [Validators.required, Validators.pattern('[0-9]{11}'), ruc10], [rucUnique(this.proveedorService)]],
+      validadireccion: ['', [Validators.required, Validators.pattern('^.{4,40}$')]],
+      validatelefono: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
+      validacelular: ['', [Validators.required, Validators.pattern('^[0-9]{9}$'),cel8], [celularUnique(this.proveedorService)]],    
+      validacontacto: ['', [Validators.required, Validators.pattern('^[a-zA-Zá-úÁ-ÚñÑ ]{4,40}$')], [contactoUnique(this.proveedorService)]],
+      validapais: ['', [Validators.min(1)]],
+      validatipoProveedor: ['', [Validators.min(1)]],
+  
       });
 
   constructor(private utilService: UtilService, 
