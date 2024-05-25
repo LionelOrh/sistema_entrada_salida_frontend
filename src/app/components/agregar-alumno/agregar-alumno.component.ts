@@ -26,22 +26,22 @@ export class AgregarAlumnoComponent{
   ltsPais: Pais[]=[]
   ltsModalidad: DataCatalogo[]=[]
 
-  objAlumno: Alumno={
-    nombres:"",
-    apellidos:"",
-    telefono:"",
-    celular:"",
-    dni:"",
-    correo:"",
-    tipoSangre:"",
-    fechaNacimiento : undefined,
+  objAlumno: Alumno ={
+    nombres: "",
+    apellidos: "",
+    telefono: undefined,
+    celular: undefined,
+    dni: undefined,
+    correo: "",
+    tipoSangre: "",
+    fechaNacimiento: undefined,
     pais:{
       idPais:-1
     },
     modalidad:{
-      idDataCatalogo : -1
+      idDataCatalogo: -1
     }
-  }
+}
 
 
   objUsuario : Usuario={};
@@ -53,7 +53,7 @@ export class AgregarAlumnoComponent{
         validaCelular: ['', [Validators.required, Validators.pattern('[0-9]{9}')] ] ,
         validaDni: ['', [Validators.required, Validators.pattern('[0-8]{8}')] ] ,  
         validaCorreo: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}')]] ,
-        validaTipoSangre: ['', [Validators.required, Validators.pattern('^[ABO][+-]?$|^(A|B|AB|O)(\\+|-)$-----------------')]],
+        validaTipoSangre: ['', [Validators.required]],
         validaFecha: ['', [Validators.required] ] , 
          validaPais: ['', Validators.min(1)] , 
         validaModalidad: ['', Validators.min(1)] , 
@@ -77,7 +77,6 @@ export class AgregarAlumnoComponent{
     if (this.formsRegistra.valid){
     this.objAlumno.usuarioActualiza=this.objUsuario;
     this.objAlumno.usuarioRegistro = this.objUsuario;
-
     this.alumnoService.registra(this.objAlumno).subscribe(
         x =>
           Swal.fire({
@@ -86,19 +85,23 @@ export class AgregarAlumnoComponent{
             text: x.mensaje,
           })
     );
-    this.objAlumno = {
+    this.objAlumno={
       nombres: "",
       apellidos: "",
-      telefono: "",
-      celular: "",
-      dni: "",
+      telefono: undefined,
+      celular: undefined,
+      dni: undefined,
       correo: "",
       tipoSangre: "",
       fechaNacimiento: undefined,
-      pais: { idPais: -1 },
-      modalidad: { idDataCatalogo: -1 }
-    };
-    this.formsRegistra.reset();
+      pais:{
+        idPais:-1
+      },
+      modalidad:{
+        idDataCatalogo: -1
+      }
+    },
+      this.formsRegistra.reset();
     
 }
 }

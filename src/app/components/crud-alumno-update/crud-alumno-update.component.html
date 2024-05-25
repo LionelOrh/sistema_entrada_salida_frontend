@@ -2,7 +2,7 @@
     <form id="idFormAlumno" [formGroup]="formsActualizaCrud"  >
         <div class="row">
             <mat-toolbar color="primary">
-                <span>Registrar Alumno</span>
+                <span>Actualizar Alumno</span>
             </mat-toolbar>
         </div>
         <div class="row" style="margin-top: 3%">
@@ -18,7 +18,7 @@
                     </span>
                     <span *ngIf="formsActualizaCrud.controls['validaNombre'].hasError('NombreExistente')">
                         La Nombre ya existe.
-                      </span>
+                    </span>
 
                 </mat-hint>
             </mat-form-field>
@@ -174,9 +174,21 @@
             </mat-form-field>
 
         </div>
-        <div class="row">
-            <button mat-raised-button type="submit" [disabled]="formsActualizaCrud.invalid" color="primary"
-                (click)="actualizar()">Registrar</button>
+
+        <div  mat-dialog-actions align="center">
+            <button mat-raised-button 
+            type="submit" 
+            (click)="actualizar()"
+            color="primary" 
+            [mat-dialog-close]="1"
+            [disabled]="!hasChanges() || formsActualizaCrud.invalid">
+            Actualiza
+            </button>
+    
+            <button mat-button 
+            color="primary" (click)="cerrarDialogo()">
+                Salir
+            </button>
         </div>
     </form>
 </div>

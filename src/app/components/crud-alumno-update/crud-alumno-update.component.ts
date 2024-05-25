@@ -24,31 +24,33 @@ import Swal from 'sweetalert2';
 })
 export class CrudAlumnoUpdateComponent {
 
+  ltsPais: Pais[] = [];
+  ltsModalidad: DataCatalogo[] = [];
+
   formsActualizaCrud = this.formBuilder.group({
     validaNombre: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,30}')]],
     validaApellido: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,30}')]],
-    validaTelefono: ['', [Validators.required, Validators.pattern('^9[0-9]{8}$')]],
-    validaCelular: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
+    validaTelefono: ['', [Validators.required, Validators.pattern('^[9][0-9]{8}$')]],  
+    validaCelular: ['', [Validators.required, Validators.pattern('^[9][0-9]{8}$')]],  
     validaDni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
-    validaCorreo: ['', [Validators.required, Validators.pattern('^I(200[0-9]|201[0-9]|202[0-4])([0-9]{2})([0-9]{3})@cibertec\.edu\.pe$')]],
+    validaCorreo: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@(gmail|outlook|cibertec\.edu\.pe)\\.com$')]],
     validaTipoSangre: ['', Validators.required],
     validaFecha: ['', [Validators.required, this.mayorDeEdadValidator()]],
     validaPais: ['', Validators.min(1)],
     validaModalidad: ['', Validators.min(1)],
   });
 
-  ltsPais: Pais[] = [];
-  ltsModalidad: DataCatalogo[] = [];
+
 
   objAlumno: Alumno = {
     nombres: "",
     apellidos: "",
-    telefono: "",
-    celular: "",
-    dni: "",
+    telefono: 0,
+    celular: 0,
+    dni: 0,
     correo: "",
     tipoSangre: "",
-    fechaNacimiento: new Date(),
+    fechaNacimiento: undefined,
     pais: { idPais: -1 },
     modalidad: { idDataCatalogo: -1 }
   };
@@ -59,14 +61,17 @@ export class CrudAlumnoUpdateComponent {
     private utilService: UtilService,
     private tokenService: TokenService,
     private alumnoService: AlumnoService,
+  
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CrudAlumnoAddComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    data.fechaNacimiento = new Date( new Date(data.fechaNacimiento).getTime() + (1000 * 60 * 60 * 24));
     this.utilService.listaPais().subscribe(x => this.ltsPais = x);
     this.utilService.listaModalidadAlumno().subscribe(x => this.ltsModalidad = x);
     this.objUsuario.idUsuario = this.tokenService.getUserId();
     this.objAlumno = data; 
+
   }
 
   
@@ -98,4 +103,13 @@ export class CrudAlumnoUpdateComponent {
     });
   }
   }
+
+  hasChanges(): boolean {
+    return this.formsActualizaCrud.dirty;
+  }
+
+  cerrarDialogo(): void {
+    this.dialogRef.close();
+  }
+
 }
