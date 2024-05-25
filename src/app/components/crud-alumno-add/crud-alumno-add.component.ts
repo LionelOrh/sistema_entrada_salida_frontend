@@ -26,7 +26,6 @@ export class CrudAlumnoAddComponent implements OnInit {
   
   ltsPais: Pais[] = [];
   ltsModalidad: DataCatalogo[] = [];
-  minFechaNacimiento: Date = new Date('1975-01-01');
 
 
   formsRegistraCrud = this.formBuilder.group({
@@ -135,7 +134,5 @@ export class CrudAlumnoAddComponent implements OnInit {
       this.formsRegistraCrud.reset();
     }
   }
-
-
 }
 
