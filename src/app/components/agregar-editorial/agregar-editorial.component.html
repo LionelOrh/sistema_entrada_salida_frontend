@@ -13,10 +13,13 @@
                                 <input  matInput [(ngModel)] ="objEditorial.razonSocial" formControlName="validarazonSocial" >
                                 <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validarazonSocial.touched">
                                     <span *ngIf="formsRegistra.controls.validarazonSocial.hasError('required')">
-                                        La razon social es requerido                        
-                                    </span>
-                                    <span *ngIf="formsRegistra.controls.validarazonSocial.hasError('pattern')">
-                                        La razon social debe de tener  3 a 100 caracteres                        
+                                        La razón social es obligatoria.
+                                      </span>
+                                      <span *ngIf="formsRegistra.controls.validarazonSocial.hasError('pattern')">
+                                        La razón social debe tener entre 4 y 40 caracteres.
+                                      </span>    
+                                      <span *ngIf="formsRegistra.controls.validarazonSocial.hasError('razonSocialNotUnique')">
+                                        La razón social ya existe.
                                     </span>
                               </mat-hint>
                             </mat-form-field>
@@ -26,10 +29,10 @@
                                 <input  matInput [(ngModel)] ="objEditorial.direccion"formControlName="validadireccion">
                                 <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validadireccion.touched">
                                     <span *ngIf="formsRegistra.controls.validadireccion.hasError('required')">
-                                    La dirección es requerido                        
+                                        La dirección es requerida.
                                     </span>
                                     <span *ngIf="formsRegistra.controls.validadireccion.hasError('pattern')">
-                                    La direccion debe tener maximo 100 caracteres                   
+                                        La dirección debe tener entre 4 y 40 caracteres.
                                     </span>
                               </mat-hint>
                             </mat-form-field>
@@ -53,10 +56,10 @@
                                 <input  matInput [(ngModel)] ="objEditorial.gerente"formControlName="validagerente">
                                 <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validagerente.touched">
                                     <span *ngIf="formsRegistra.controls.validagerente.hasError('required')">
-                                       El nombre de gerente es obligatorio                      
+                                        El nombre del gerente es obligatorio.
                                     </span>
                                     <span *ngIf="formsRegistra.controls.validagerente.hasError('pattern')">
-                                        El nombre del gerente debe de ser menor de 50                  
+                                        El nombre del gerente debe tener entre 3 y 50 caracteres.
                                     </span>
                               </mat-hint>
                             </mat-form-field>
@@ -67,7 +70,10 @@
                                 <mat-datepicker #picker></mat-datepicker>
                                 <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validafechaCreacion.touched">
                                     <span *ngIf="formsRegistra.controls.validafechaCreacion.hasError('required')">
-                                    La fecha de Creación es requerido                        
+                                        La fecha de creación es obligatorio.
+                                      </span>
+                                      <span *ngIf="formsRegistra.controls.validafechaCreacion.hasError('dateFrom1980Onwards')">
+                                        La fecha de creación debe ser desde 1980 en adelante.
                                     </span>
                               </mat-hint>
                             </mat-form-field>
