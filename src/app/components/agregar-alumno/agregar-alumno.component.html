@@ -86,15 +86,21 @@
         <div class="row" style="margin-top: 3%">
             <mat-form-field class="col-md-4">
                 <mat-label>Tipo de Sangre</mat-label>
-                <input matInput [(ngModel)]="objAlumno.tipoSangre" formControlName="validaTipoSangre">
-                <mat-hint style="color: red" *ngIf="formsRegistra.controls.validaTipoSangre.touched">
-                    <span *ngIf="formsRegistra.controls.validaTipoSangre.hasError('required')">
+                <mat-select [(ngModel)]="objAlumno.tipoSangre" [formControlName]="'validaTipoSangre'">
+                    <mat-option value="A+">A positivo (A +)</mat-option>
+                    <mat-option value="A-">A negativo (A-)</mat-option>
+                    <mat-option value="B+">B positivo (B +)</mat-option>
+                    <mat-option value="B-">B negativo (B-)</mat-option>
+                    <mat-option value="AB+">AB positivo (AB+)</mat-option>
+                    <mat-option value="AB-">AB negativo (AB-)</mat-option>
+                    <mat-option value="O+">O positivo (O+)</mat-option>
+                    <mat-option value="O-">O negativo (O-)</mat-option>
+                </mat-select>
+                <mat-hint style="color: red" *ngIf="formsRegistra.controls['validaTipoSangre'].touched">
+                    <span *ngIf="formsRegistra.controls['validaTipoSangre'].hasError('required')">
                         El Tipo de Sangre es requerido
                     </span>
-                    <span *ngIf="formsRegistra.controls.validaTipoSangre.hasError('pattern')">
-                        El Tipo de Sangre no es válido
-                    </span>
-                         </mat-hint>
+                </mat-hint>
             </mat-form-field>
             <mat-form-field class="col-md-4">
                 <mat-label>Fecha de Nacimiento</mat-label>

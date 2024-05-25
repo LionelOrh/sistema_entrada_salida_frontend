@@ -15,6 +15,9 @@ export class AlumnoService {
   constructor(private http:HttpClient) {
 
    }
+   
+  private baseUrlCrudAlumno = AppSettings.API_ENDPOINT+ '/crudAlumno';
+
   registra(data:Alumno):Observable<any>{
     return this.http.post(baseUrlAlumno,data);
   }
@@ -29,6 +32,10 @@ export class AlumnoService {
   }
   eliminarCrud(id:number):Observable<any>{
     return this.http.delete(baseUrlCrudAlumno+"/eliminaAlumno/"+id);
+  }
+
+  validarNombre(nombre: string):Observable<any>{
+    return this.http.get<any>(`${this.baseUrlCrudAlumno}/buscaPorNombreIgual`,{params: {nombre}});
   }
   
 }

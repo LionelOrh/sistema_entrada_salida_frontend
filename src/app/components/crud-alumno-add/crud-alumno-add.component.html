@@ -40,10 +40,10 @@
 
             <mat-form-field class="col-md-4">
                 <mat-label>Fecha de Nacimiento</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="validaFecha">
+                <input matInput [matDatepicker]="picker" [(ngModel)]="objAlumno.fechaNacimiento" formControlName="validaFecha" readonly>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                <mat-hint style="color: red" *ngIf="formsRegistraCrud.controls['validaFecha'].touched">
+                <mat-hint style="color: red" *ngIf="formsRegistraCrud.controls.validaFecha.touched">
                     <span *ngIf="formsRegistraCrud.controls['validaFecha'].hasError('required')">
                         La fecha de nacimiento es requerida
                     </span>
@@ -53,6 +53,7 @@
                     </span>
                 </mat-hint>
             </mat-form-field>
+
 
 
         </div>
@@ -83,7 +84,7 @@
                         El celular es requerido
                     </span>
                     <span *ngIf="formsRegistraCrud.controls['validaCelular'].hasError('pattern')">
-                        El celular no es válido.
+                        El celular debe tener 9 dígitos y comenzar con 9
                     </span>
                          </mat-hint>
             </mat-form-field>
@@ -118,7 +119,7 @@
                     <span *ngIf="formsRegistraCrud.controls['validaCorreo'].hasError('pattern')">
                         El correo no es válido.
                     </span>
-                         </mat-hint>
+                    </mat-hint>
             </mat-form-field>
 
             <mat-form-field class="col-md-4">
@@ -174,9 +175,24 @@
             </mat-form-field>
 
         </div>
-        <div class="row">
-            <button mat-raised-button type="submit" [disabled]="formsRegistraCrud.invalid" color="primary"
-                (click)="registra()">Registrar</button>
-        </div>
+
+        <div  mat-dialog-actions align="center">
+            <button mat-raised-button 
+                    type="submit" 
+                    (click) = "registra()"
+                    color="primary" 
+                    [mat-dialog-close]="1"
+                    [disabled]="formsRegistraCrud.invalid">
+                    Registra
+                    
+            </button>
+    
+            <button mat-button 
+            color="primary" (click)="cerrarDialogo()">
+                Salir
+            </button>
+
+            </div>
+
     </form>
 </div>
