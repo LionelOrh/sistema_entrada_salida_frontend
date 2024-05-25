@@ -108,12 +108,20 @@ export class CrudAlumnoAddComponent implements OnInit {
               icon: 'success',
               title: 'Resultado del Registro',
               text: x.mensaje,
+              showConfirmButton: true,
+              confirmButtonText: 'OK'
+            }).then(() => {
+              // Borra los errores
+              Object.keys(this.formsRegistraCrud.controls).forEach(controlName => {
+                this.formsRegistraCrud.get(controlName)?.setErrors(null);
+              });
+              this.formsRegistraCrud.reset();
             });
-            this.dialogRef.close();
           }
         }
       );
     }
   }
-}
-
+  
+  
+    }

@@ -105,17 +105,20 @@ export class AgregarLibroComponent {
             Swal.fire({
               icon: 'success',
               title: 'Resultado del Registro',
-              text: x.mensaje,
+              text: x.mensaje,showConfirmButton: true,
+              confirmButtonText: 'OK'
+            }).then(() => {
+              // Borra los errores
+              Object.keys(this.formsRegistra.controls).forEach(controlName => {
+                this.formsRegistra.get(controlName)?.setErrors(null);
+              });
+              // Recarga la página
+              window.location.reload();
             });
-            this.formsRegistra.reset();
-            // Borra los errores
-            Object.keys(this.formsRegistra.controls).forEach(controlName => {
-              this.formsRegistra.get(controlName)?.setErrors(null);
-            });
-            // Recarga la página
-            window.location.reload();
           }
-        });
+        }
+      );
     }
   }
-}
+  
+    }
