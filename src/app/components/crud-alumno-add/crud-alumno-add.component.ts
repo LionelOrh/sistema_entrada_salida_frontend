@@ -31,10 +31,10 @@ export class CrudAlumnoAddComponent implements OnInit {
   formsRegistraCrud = this.formBuilder.group({
     validaNombre: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,30}')]],
     validaApellido: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,30}')]],
-    validaTelefono: ['', [Validators.required, Validators.pattern('^[9][0-9]{8}$')]],  
-    validaCelular: ['', [Validators.required, Validators.pattern('^[9][0-9]{8}$')]],  
-    validaDni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
-    validaCorreo: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@(gmail|outlook|cibertec\.edu\.pe)\\.com$')]],
+    validaTelefono: ['', [Validators.required, Validators.pattern('[0-9]{9}')]],
+    validaCelular: ['', [Validators.required, Validators.pattern('[0-9]{9}')]],
+    validaDni: ['', [Validators.required, Validators.pattern('[0-9]{8}')]],
+    validaCorreo: ['', [Validators.required, Validators.pattern('^I(200[0-9]|201[0-9]|202[0-4])([0-9]{2})([0-9]{3})@cibertec\.edu\.pe$')]],
     validaTipoSangre: ['', Validators.required],
     validaFecha: ['', [Validators.required, this.mayorDeEdadValidator()]], // Validación para fecha de nacimiento y mayor de edad
     validaPais: ['', Validators.min(1)],
