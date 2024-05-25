@@ -6,7 +6,7 @@
             </mat-toolbar>
         </div>
         <div class="row" style="margin-top: 3%">
-            <mat-form-field class="col-md-4"  [ngClass]="{'campo-error': NombreExistente}">
+            <mat-form-field class="col-md-4" [ngClass]="{'campo-error': NombreExistente}">
                 <mat-label>Nombres</mat-label>
                 <input matInput [(ngModel)]="objAlumno.nombres" [formControlName]="'validaNombre'">
                 <mat-hint style="color: red" *ngIf="formsRegistraCrud.controls['validaNombre'].touched">
@@ -18,7 +18,7 @@
                     </span>
                     <span *ngIf="formsRegistraCrud.controls['validaNombre'].hasError('NombreExistente')">
                         La Nombre ya existe.
-                      </span>
+                    </span>
 
                 </mat-hint>
             </mat-form-field>
@@ -34,13 +34,17 @@
                     <span *ngIf="formsRegistraCrud.controls['validaApellido'].hasError('pattern')">
                         El apellido no es válido.
                     </span>
+                    <span *ngIf="formsRegistraCrud.controls['validaApellido'].hasError('ApellidoExistente')">
+                        La apellido ya existe.
+                    </span>
                          </mat-hint>
             </mat-form-field>
 
 
             <mat-form-field class="col-md-4">
                 <mat-label>Fecha de Nacimiento</mat-label>
-                <input matInput [matDatepicker]="picker" [(ngModel)]="objAlumno.fechaNacimiento" formControlName="validaFecha" readonly>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="objAlumno.fechaNacimiento"
+                    formControlName="validaFecha" readonly>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-hint style="color: red" *ngIf="formsRegistraCrud.controls.validaFecha.touched">
@@ -62,7 +66,7 @@
 
             <mat-form-field class="col-md-4" [ngClass]="{'campo-error': TelefonoExistente}">
                 <mat-label>Teléfono</mat-label>
-                <input matInput [(ngModel)]="objAlumno.telefono" [formControlName]="'validaTelefono'" >
+                <input matInput [(ngModel)]="objAlumno.telefono" [formControlName]="'validaTelefono'">
                 <mat-hint style="color: red" *ngIf="formsRegistraCrud.controls['validaTelefono'].touched">
                     <span *ngIf="formsRegistraCrud.controls['validaTelefono'].hasError('required')">
                         El teléfono es requerido
@@ -72,7 +76,7 @@
                     </span>
                     <span *ngIf="formsRegistraCrud.controls['validaTelefono'].hasError('TelefonoExistente')">
                         La teléfono ya existe.
-                      </span>
+                    </span>
                          </mat-hint>
             </mat-form-field>
 
@@ -89,9 +93,9 @@
                          </mat-hint>
             </mat-form-field>
 
-            <mat-form-field class="col-md-4" >
+            <mat-form-field class="col-md-4">
                 <mat-label>DNI</mat-label>
-                <input matInput [(ngModel)]="objAlumno.dni" [formControlName]="'validaDni'" >
+                <input matInput [(ngModel)]="objAlumno.dni" [formControlName]="'validaDni'">
                 <mat-hint style="color: red" *ngIf="formsRegistraCrud.controls['validaDni'].touched">
                     <span *ngIf="formsRegistraCrud.controls['validaDni'].hasError('required')">
                         El dni es requerido
@@ -101,7 +105,7 @@
                     </span>
                     <span *ngIf="formsRegistraCrud.controls['validaDni'].hasError('DniExistente')">
                         La Dni ya existe.
-                      </span>
+                    </span>
                          </mat-hint>
             </mat-form-field>
         </div>
@@ -119,7 +123,7 @@
                     <span *ngIf="formsRegistraCrud.controls['validaCorreo'].hasError('pattern')">
                         El correo no es válido.
                     </span>
-                    </mat-hint>
+                </mat-hint>
             </mat-form-field>
 
             <mat-form-field class="col-md-4">
@@ -176,23 +180,16 @@
 
         </div>
 
-        <div  mat-dialog-actions align="center">
-            <button mat-raised-button 
-                    type="submit" 
-                    (click) = "registra()"
-                    color="primary" 
-                    [mat-dialog-close]="1"
-                    [disabled]="formsRegistraCrud.invalid">
-                    Registra
-                    
+        <div mat-dialog-actions align="center">
+            <button mat-raised-button type="submit" (click)="registra()" color="primary"[disabled]="formsRegistraCrud.invalid">
+                Registra
             </button>
-    
-            <button mat-button 
-            color="primary" (click)="cerrarDialogo()">
+
+            <button mat-button color="primary" (click)="cerrarDialogo()">
                 Salir
             </button>
 
-            </div>
+        </div>
 
     </form>
 </div>

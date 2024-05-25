@@ -30,9 +30,9 @@ export class AgregarAlumnoComponent {
   objAlumno: Alumno = {
     nombres: "",
     apellidos: "",
-    telefono: undefined,
-    celular: undefined,
-    dni: undefined,
+    telefono: "",
+    celular: "",
+    dni: "",
     correo: "",
     tipoSangre: "",
     fechaNacimiento: undefined,
@@ -82,37 +82,75 @@ export class AgregarAlumnoComponent {
       return edad >= 18 ? null : { mayorDeEdad: true };
     };
   }
+  NombreExistente: boolean = false;
+  ApellidoExistente: boolean = false;
+  TelefonoExistente: boolean = false;
+  DniExistente: boolean = false;
 
   registra() {
     if (this.formsRegistra.valid) {
       this.objAlumno.usuarioActualiza = this.objUsuario;
       this.objAlumno.usuarioRegistro = this.objUsuario;
-      this.alumnoService.registra(this.objAlumno).subscribe(
-        x =>
-          Swal.fire({
-            icon: 'success',
-            title: 'Resultado del Registro',
-            text: x.mensaje,
-          })
-      );
-      this.objAlumno = {
-        nombres: "",
-        apellidos: "",
-        telefono: undefined,
-        celular: undefined,
-        dni: undefined,
-        correo: "",
-        tipoSangre: "",
-        fechaNacimiento: undefined,
-        pais: {
-          idPais: -1
-        },
-        modalidad: {
-          idDataCatalogo: -1
-        }
-      },
-        this.formsRegistra.reset();
 
+      this.alumnoService.registrarCrud(this.objAlumno).subscribe(
+        x => {
+          if (x.mensaje === "El nombre " + this.objAlumno.nombres + " ya existe") {
+            this.NombreExistente = true;
+            this.formsRegistra.controls.validaNombre.setErrors({ 'NombreExistente': true });
+          }
+          else if (x.mensaje === "El apellido " + this.objAlumno.apellidos + " ya existe") {
+            this.ApellidoExistente = true;
+            this.formsRegistra.controls.validaApellido.setErrors({ 'ApellidoExistente': true });
+          }
+          else if (x.mensaje === "El teléfono " + this.objAlumno.telefono + " ya existe") {
+            this.TelefonoExistente = true;
+            this.formsRegistra.controls.validaTelefono.setErrors({ 'TelefonoExistente': true });
+          }
+          else if (x.mensaje === "El Dni " + this.objAlumno.dni + " ya existe") {
+            this.DniExistente = true;
+            this.formsRegistra.controls.validaDni.setErrors({ 'DniExistente': true });
+          }
+          else {
+            this.NombreExistente = false;
+            this.ApellidoExistente = false;
+            this.TelefonoExistente = false;
+            this.DniExistente = false;
+            
+            Swal.fire({
+              icon: 'success',
+              title: 'Resultado del Registro',
+              text: x.mensaje,
+            });
+
+            // Restablecer el formulario y el objeto Alumno
+            this.objAlumno = {
+              nombres: "",
+              apellidos: "",
+              telefono: "",
+              celular: "",
+              dni: "",
+              correo: "",
+              tipoSangre: "",
+              fechaNacimiento: undefined,
+              pais: { idPais: -1 },
+              modalidad: { idDataCatalogo: -1 }
+            };
+
+            this.formsRegistra.reset(); // Restablece el formulario
+        // Elimina las clases de error de los campos
+        Object.keys(this.formsRegistra.controls).forEach((key: string) => {
+          (this.formsRegistra.controls as any)[key].setErrors(null);
+      });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ocurrió un error al registrar el alumno. Inténtelo nuevamente.',
+          });
+        }
+      );
     }
   }
 }

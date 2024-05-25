@@ -4,21 +4,19 @@ import { Usuario } from "./usuario.model";
 
 export class Alumno {
 
-    idAlumno?: number;
+    idAlumno?:number;
     nombres?: string;
     apellidos?: string;
-    telefono?: number;
-    celular?: number;
-    dni?: number;
+    telefono?:string;
+    celular?:string;
+    dni?: string;
     correo?: string;
     tipoSangre?: string;
     fechaNacimiento?: Date;
-
-    pais?:Pais;
-    modalidad?: DataCatalogo;
-
-    usuarioRegistro?:Usuario;
-    usuarioActualiza?:Usuario;
-
+    pais?: Pais;
     estado?: number;
+    modalidad?: DataCatalogo;
+    usuarioRegistro?: Usuario;
+    usuarioActualiza?: Usuario
+
 }

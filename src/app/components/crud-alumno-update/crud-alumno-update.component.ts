@@ -45,9 +45,9 @@ export class CrudAlumnoUpdateComponent {
   objAlumno: Alumno = {
     nombres: "",
     apellidos: "",
-    telefono: 0,
-    celular: 0,
-    dni: 0,
+    telefono: "",
+    celular: "",
+    dni: "",
     correo: "",
     tipoSangre: "",
     fechaNacimiento: undefined,
