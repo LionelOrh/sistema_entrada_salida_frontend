@@ -17,6 +17,9 @@
                     <span *ngIf="formsRegistra.controls.validaNombre.hasError('pattern')">
                         El nombre es de 3 a 30 carácteres
                     </span>
+                    <span *ngIf="formsRegistra.controls['validaNombre'].hasError('NombreExistente')">
+                        La Nombre ya existe.
+                    </span>
                          </mat-hint>
             </mat-form-field>
             <mat-form-field class="col-md-4">
@@ -28,6 +31,9 @@
                     </span>
                     <span *ngIf="formsRegistra.controls.validaApellido.hasError('pattern')">
                         El apellido es de 3 a 30 carácteres
+                    </span>
+                    <span *ngIf="formsRegistra.controls['validaApellido'].hasError('ApellidoExistente')">
+                        La apellido ya existe.
                     </span>
                          </mat-hint>
             </mat-form-field>
@@ -41,6 +47,9 @@
                     </span>
                     <span *ngIf="formsRegistra.controls.validaTelefono.hasError('pattern')">
                         El teléfono es de 9 caracteres
+                    </span>
+                    <span *ngIf="formsRegistra.controls['validaTelefono'].hasError('TelefonoExistente')">
+                        La teléfono ya existe.
                     </span>
                          </mat-hint>
             </mat-form-field>
@@ -67,6 +76,9 @@
                     </span>
                     <span *ngIf="formsRegistra.controls.validaDni.hasError('pattern')">
                         El dni es de 8 caracteres
+                    </span>
+                    <span *ngIf="formsRegistra.controls['validaDni'].hasError('DniExistente')">
+                        La Dni ya existe.
                     </span>
                          </mat-hint>
             </mat-form-field>

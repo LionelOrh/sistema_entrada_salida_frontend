@@ -111,6 +111,7 @@ export class CrudAutorAddComponent {
             this.autorExistente = true;
             this.formsRegistra.controls.validaCelular.setErrors({'autorExistente': true});
           }
+          
           else {
             this.autorExistente = false;
             Swal.fire({

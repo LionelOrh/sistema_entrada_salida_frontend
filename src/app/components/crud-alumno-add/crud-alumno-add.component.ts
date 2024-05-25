@@ -23,7 +23,7 @@ import moment from 'moment';
   styleUrls: ['./crud-alumno-add.component.css']
 })
 export class CrudAlumnoAddComponent implements OnInit {
-  
+
   ltsPais: Pais[] = [];
   ltsModalidad: DataCatalogo[] = [];
 
@@ -46,9 +46,9 @@ export class CrudAlumnoAddComponent implements OnInit {
   objAlumno: Alumno = {
     nombres: "",
     apellidos: "",
-    telefono: 0,
-    celular: 0,
-    dni: 0,
+    telefono: "",
+    celular: "",
+    dni: "",
     correo: "",
     tipoSangre: "",
     fechaNacimiento: undefined,
@@ -65,13 +65,13 @@ export class CrudAlumnoAddComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CrudAlumnoAddComponent>
   ) {
-
-  }
-  ngOnInit(): void {
     this.utilService.listaPais().subscribe(x => this.ltsPais = x);
     this.utilService.listaModalidadAlumno().subscribe(x => this.ltsModalidad = x);
     this.objUsuario.idUsuario = this.tokenService.getUserId();
-   }
+  }
+  ngOnInit(): void {
+
+  }
 
 
   mayorDeEdadValidator(): ValidatorFn {
@@ -83,55 +83,54 @@ export class CrudAlumnoAddComponent implements OnInit {
     };
   }
 
-  
+
   cerrarDialogo(): void {
     this.dialogRef.close();
   }
 
   NombreExistente: boolean = false;
+  ApellidoExistente: boolean = false;
   TelefonoExistente: boolean = false;
   DniExistente: boolean = false;
 
-  registra(){
+  registra() {
     if (this.formsRegistraCrud.valid) {
       this.objAlumno.usuarioActualiza = this.objUsuario;
-
       this.objAlumno.usuarioRegistro = this.objUsuario;
 
       this.alumnoService.registrarCrud(this.objAlumno).subscribe(
         x => {
-          if (x.mensaje.includes("existe")) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Resultado del Registro',
-              text: x.mensaje,
-
-            });
-          } else {
+          if (x.mensaje === "El nombre " + this.objAlumno.nombres + " ya existe") {
+            this.NombreExistente = true;
+            this.formsRegistraCrud.controls.validaNombre.setErrors({ 'NombreExistente': true });
+          }
+          else if (x.mensaje === "El apellido " + this.objAlumno.apellidos + " ya existe") {
+            this.ApellidoExistente = true;
+            this.formsRegistraCrud.controls.validaApellido.setErrors({ 'ApellidoExistente': true });
+          }
+          else if (x.mensaje === "El teléfono " + this.objAlumno.telefono + " ya existe") {
+            this.TelefonoExistente = true;
+            this.formsRegistraCrud.controls.validaTelefono.setErrors({ 'TelefonoExistente': true });
+          }
+          else if (x.mensaje === "El Dni " + this.objAlumno.dni + " ya existe") {
+            this.DniExistente = true;
+            this.formsRegistraCrud.controls.validaDni.setErrors({ 'DniExistente': true });
+          }
+          else {
+            this.NombreExistente = false;
+            this.ApellidoExistente = false;
+            this.TelefonoExistente = false;
+            this.DniExistente = false;
+            
             Swal.fire({
               icon: 'success',
               title: 'Resultado del Registro',
               text: x.mensaje,
-              
             });
+            this.dialogRef.close();
           }
         }
       );
-
-      // Restablece el formulario
-      this.objAlumno = {
-        nombres: "",
-        apellidos: "",
-        telefono: 0,
-        celular: 0,
-        dni: 0,
-        correo: "",
-        tipoSangre: "",
-        fechaNacimiento: undefined,
-        pais: { idPais: -1 },
-        modalidad: { idDataCatalogo: -1 }
-      };
-      this.formsRegistraCrud.reset();
     }
   }
 }
