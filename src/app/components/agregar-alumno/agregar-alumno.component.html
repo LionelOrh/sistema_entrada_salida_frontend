@@ -112,6 +112,10 @@
                     <span *ngIf="formsRegistra.controls.validaFecha.hasError('required')">
                         La fecha de nacimiento es requerido
                     </span>
+                    <span
+                        *ngIf="!formsRegistra.controls['validaFecha'].hasError('required') && formsRegistra.controls['validaFecha'].hasError('mayorDeEdad')">
+                        El alumno debe ser mayor de edad
+                    </span>
                 </mat-hint>
 
             </mat-form-field>
