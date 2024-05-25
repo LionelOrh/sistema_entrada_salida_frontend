@@ -11,27 +11,26 @@
         <div  class="row"  style="margin-top: 3%">
 
                     <mat-form-field class="col-md-4">
-                        <mat-label>Nro De Sala</mat-label>
+                        <mat-label>Nro De Aula</mat-label>
                         <input  matInput [(ngModel)] ="objSala.numero" formControlName="validaNumero" >
 
                         <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaNumero.touched">
                             <span *ngIf="formsRegistra.controls.validaNumero.hasError('required')">
-                                El número es requerido                        
+                                El número de aula es requerido                        
                             </span>
                       </mat-hint>
                     </mat-form-field>
 
-
                     <mat-form-field class="col-md-4">
-                        <mat-label>Piso</mat-label>
+                        <mat-label>Nro de Piso</mat-label>
                         <input  matInput [(ngModel)] ="objSala.piso" formControlName="validaPiso" >
 
                         <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaPiso.touched">
                             <span *ngIf="formsRegistra.controls.validaPiso.hasError('required')">
-                                El piso es requerido                        
+                                El número de piso es requerido                        
                             </span>
                             <span *ngIf="formsRegistra.controls.validaPiso.hasError('pattern')">
-                                El piso  debe cotener de 1 a 2 dígitos                        
+                                El número de piso  debe contener de 1 a 2 dígitos                        
                             </span>
                       </mat-hint>
 
@@ -77,8 +76,8 @@
                         <mat-label>Tipo De Sala</mat-label>
                         <mat-select  [(ngModel)] ="objSala.tipoSala!.idDataCatalogo" formControlName="validaTipoSala">
                             <mat-option value="-1"> [Seleccione] </mat-option>
-                            <mat-option *ngFor="let y of lstTipoSala" [value]="y.idDataCatalogo">
-                                    {{y.descripcion}}
+                            <mat-option *ngFor="let x of lstTipoSala" [value]="x.idDataCatalogo">
+                                    {{x.descripcion}}
                             </mat-option> 
                         </mat-select>
                         
@@ -114,8 +113,8 @@
             <mat-label>Estado De Reserva </mat-label>
             <mat-select  [(ngModel)] ="objSala.estadoReserva!.idDataCatalogo" formControlName="validaEstadoReserva">
                 <mat-option value="-1"> [Seleccione] </mat-option>
-                <mat-option *ngFor="let y of lstEstadoReserva" [value]="y.idDataCatalogo">
-                        {{y.descripcion}}
+                <mat-option *ngFor="let z of lstEstadoReserva" [value]="z.idDataCatalogo">
+                        {{z.descripcion}}
                 </mat-option> 
             </mat-select> 
 

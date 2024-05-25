@@ -13,6 +13,8 @@ export class Sala {
     sede?: DataCatalogo;
     estadoReserva?: DataCatalogo;
     usuarioRegistro?: Usuario;
-    usuarioActualiza?: Usuario
+    usuarioActualiza?: Usuario;
+    estado?: number;
+
 
 }
