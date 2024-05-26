@@ -1,7 +1,7 @@
 <app-menu></app-menu>
 <div class="container" style="padding: 2%">
     
-    <form  id="idFormCatalogo" [formGroup]="formsRegistra" > 
+    <form  id="idFormSala" [formGroup]="formsRegistra" > 
 
         <div class="row">
                 <mat-toolbar color="primary" >    
@@ -11,27 +11,34 @@
         <div  class="row"  style="margin-top: 3%">
 
                     <mat-form-field class="col-md-4">
-                        <mat-label>Nro De Sala</mat-label>
+                        <mat-label>Nro De Aula</mat-label>
                         <input  matInput [(ngModel)] ="objSala.numero" formControlName="validaNumero" >
 
                         <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaNumero.touched">
                             <span *ngIf="formsRegistra.controls.validaNumero.hasError('required')">
-                                El número es requerido                        
+                                El número de aula es requerido                        
+                            </span>
+
+                            <span *ngIf="formsRegistra.controls.validaNumero.hasError('pattern')">
+                                El número de aula  debe contener letra mayúscula y tres números                      
+                            </span>
+
+                            <span *ngIf="formsRegistra.controls.validaNumero.hasError('numeroRepetido')">
+                                El número de aula ya existe
                             </span>
                       </mat-hint>
                     </mat-form-field>
 
-
                     <mat-form-field class="col-md-4">
-                        <mat-label>Piso</mat-label>
+                        <mat-label>Nro de Piso</mat-label>
                         <input  matInput [(ngModel)] ="objSala.piso" formControlName="validaPiso" >
 
                         <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaPiso.touched">
                             <span *ngIf="formsRegistra.controls.validaPiso.hasError('required')">
-                                El piso es requerido                        
+                                El número de piso es requerido                        
                             </span>
-                            <span *ngIf="formsRegistra.controls.validaPiso.hasError('pattern')">
-                                El piso  debe cotener de 1 a 2 dígitos                        
+                            <span *ngIf="formsRegistra.controls.validaPiso.hasError('min') || formsRegistra.controls.validaPiso.hasError('max')">
+                                El número de piso debe estar entre 1 y 10                         
                             </span>
                       </mat-hint>
 
@@ -41,14 +48,14 @@
 
                     <mat-form-field class="col-md-4">
                         <mat-label>Nro De Alumnos</mat-label>
-                          <input  matInput [(ngModel)] ="objSala.numAlumnos" formControlName="validaNumAlumnos" >
+                          <input  matInput [(ngModel)] ="objSala.numAlumnos" formControlName="validaNumAlumno" >
 
-                        <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaNumAlumnos.touched">
-                            <span *ngIf="formsRegistra.controls.validaNumAlumnos.hasError('required')">
+                        <mat-hint style="color: red"  *ngIf="formsRegistra.controls.validaNumAlumno.touched">
+                            <span *ngIf="formsRegistra.controls.validaNumAlumno.hasError('required')">
                                 El número de alumnos es requerido                        
                             </span>
-                            <span *ngIf="formsRegistra.controls.validaNumAlumnos.hasError('pattern')">
-                                El número de alumnos debe ser de 1 a 3 dígitos                      
+                            <span *ngIf="formsRegistra.controls.validaNumAlumno.hasError('min') || formsRegistra.controls.validaNumAlumno.hasError('max')">
+                                El número de alumnos debe estar entre 1 y 5                        
                             </span>
                       </mat-hint>
                     </mat-form-field>         
@@ -66,7 +73,7 @@
                         El recurso es requerido                        
                     </span>
                     <span *ngIf="formsRegistra.controls.validaRecursos.hasError('pattern')">
-                        El recurso es de 3 a 40 caracteres                      
+                        El recurso debe contener de 3 a 60 carácteres                        
                     </span>
               </mat-hint>
 
@@ -77,8 +84,8 @@
                         <mat-label>Tipo De Sala</mat-label>
                         <mat-select  [(ngModel)] ="objSala.tipoSala!.idDataCatalogo" formControlName="validaTipoSala">
                             <mat-option value="-1"> [Seleccione] </mat-option>
-                            <mat-option *ngFor="let y of lstTipoSala" [value]="y.idDataCatalogo">
-                                    {{y.descripcion}}
+                            <mat-option *ngFor="let x of lstTipoSala" [value]="x.idDataCatalogo">
+                                    {{x.descripcion}}
                             </mat-option> 
                         </mat-select>
                         
@@ -111,11 +118,11 @@
 
     <div class="row"  style="margin-top: 3%">
         <mat-form-field class="col-md-4">
-            <mat-label>Estado De Reserva </mat-label>
+            <mat-label>Estado de Reserva </mat-label>
             <mat-select  [(ngModel)] ="objSala.estadoReserva!.idDataCatalogo" formControlName="validaEstadoReserva">
                 <mat-option value="-1"> [Seleccione] </mat-option>
-                <mat-option *ngFor="let y of lstEstadoReserva" [value]="y.idDataCatalogo">
-                        {{y.descripcion}}
+                <mat-option *ngFor="let z of lstEstadoReserva" [value]="z.idDataCatalogo">
+                        {{z.descripcion}}
                 </mat-option> 
             </mat-select> 
 

@@ -1,0 +1,33 @@
+.mat-column-idSala {
+    flex: 0 0 10%;
+}
+.mat-column-numero {
+    flex: 0 0 10%;
+}
+.mat-column-piso {
+    flex: 0 0 7%;
+}
+.mat-column-numAlumnos {
+    flex: 0 0 10%;
+}
+.mat-column-recursos {
+    flex: 0 0 10%;
+}
+.mat-column-tipo {
+    flex: 0 0 10%;
+}
+.mat-column-sede {
+    flex: 0 0 10%;
+}
+.mat-column-estadoReserva {
+    flex: 0 0 10%;
+}
+.mat-column-estado {
+    flex: 0 0 10%;
+}
+.mat-column-acciones {
+    flex: 0 0 20%;
+}
+.boton{
+    margin: 12px;
+}
