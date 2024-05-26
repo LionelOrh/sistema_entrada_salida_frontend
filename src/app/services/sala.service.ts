@@ -21,7 +21,6 @@ export class SalaService {
     registrar(data:Sala):Observable<any>{
       return this.http.post(baseUrlSala, data);
     }
-  
     //PC2 - CRUD
     registrarCrud(data:Sala):Observable<any>{
       return this.http.post(baseUrlCrudSala+"/registraSala", data);
@@ -35,10 +34,8 @@ export class SalaService {
     consultarCrud(filtro:string):Observable<any>{
       return this.http.get(baseUrlCrudSala+"/listaSalaPorNumeroLike/"+ filtro);
     }
-    validarNumero(numero:string):Observable<any>{
-      return this.http.get<any>(`${this.baseUrlCrudSala}/buscaPorNumeroIgual`,{params : {numero}});
+    validarNumero(numero: string): Observable<any> {
+      return this.http.get<any>(`${this.baseUrlCrudSala}/buscaPorNumeroIgual`, { params: { numero } });
     }
-
-
 
 }

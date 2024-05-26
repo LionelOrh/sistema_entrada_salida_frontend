@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppMaterialModule } from '../../app.material.module';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
 import { Sala } from '../../models/sala.model';
@@ -11,6 +11,7 @@ import { TokenService } from '../../security/token.service';
 import { SalaService } from '../../services/sala.service';
 
 import Swal from 'sweetalert2'
+import { map } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -42,15 +43,15 @@ export class AgregarSalaComponent{
     };
     objUsuario: Usuario = {} ;
 
-      formsRegistra = this.formBuilder.group({ 
+    formsRegistra = this.formBuilder.group({ 
 
-      validaNumero: ['', [Validators.required]] , 
-      validaPiso: ['', [Validators.required, Validators.pattern('[0-9]{1,2}')]] , 
-      validaNumAlumnos: ['', [Validators.required, Validators.pattern('[0-9]{1,3}')] ], 
-      validaRecursos: ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-ÚñÑ ]{3,40}')]], 
+      validaNumero: ['', [Validators.required, Validators.pattern('^[A-ZÑ]\\d{3}$')],this.validarNumero.bind(this)], 
+      validaPiso: ['', [Validators.required, Validators.min(1),Validators.max(10)]], 
+      validaNumAlumno: ['', [Validators.required, Validators.min(1),Validators.max(5)]], 
+      validaRecursos: ['', [Validators.required, Validators.pattern('^[a-zA-ZñÑ\\s,]{3,60}$')]], 
       validaTipoSala: ['', Validators.min(1)] , 
       validaSede: ['', Validators.min(1)] , 
-      validaEstadoReserva: ['', Validators.min(1)] , 
+      validaEstadoReserva: ['', Validators.min(1)], 
      });
 
 
@@ -102,6 +103,14 @@ export class AgregarSalaComponent{
               this.formsRegistra.reset();
 
           }           
+  }
+
+  validarNumero(control:FormControl){
+    return this.salaService.validarNumero(control.value).pipe(
+      map((response: any) => {
+        return response.valid ? null : {numeroRepetido: true};
+      })
+    );
   }
 }
 
