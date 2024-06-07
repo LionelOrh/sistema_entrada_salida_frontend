@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppMaterialModule } from '../../app.material.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../../menu/menu.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { Pais } from '../../models/pais.model';
+import { UtilService } from '../../services/util.service';
+import { EditorialService } from '../../services/editorial.service';
 
 @Component({
   standalone: true,
@@ -12,5 +16,62 @@ import { MenuComponent } from '../../menu/menu.component';
   styleUrls: ['./consulta-editorial.component.css']
 })
 export class ConsultaEditorialComponent {
+//Grila
+dataSource:any;
 
+//Clase para la paginacion
+@ViewChild (MatPaginator, { static: true }) paginator!: MatPaginator;
+
+//Cabecera
+displayedColumns = ["idEditorial","razonSocial","direccion","ruc","gerente","fechaCreacion","pais", "estado"];
+
+//Para el combobox
+
+lstPais: Pais[] = [];
+
+      varRazonSocial: string = "";
+      varDireccion: string = "";
+      varRuc: string = "";
+      varGerente: string = "";
+      varFechaCreacionDesde: Date = new Date();
+      varFechaCreacionHasta: Date = new Date();
+      varEstado: boolean = false;
+      varIdPais: number = -1;
+
+      constructor(private utilService:UtilService, private editorialService : EditorialService) { }
+
+      ngOnInit() {
+        this.utilService.listaPais().subscribe(
+               x =>  this.lstPais = x
+         );
+      }
+      filtrar(){
+        console.log(">>> Filtrar [ini]");
+        console.log(">>> varRazonSocial: "+this.varRazonSocial);
+        console.log(">>> varDireccion: "+this.varDireccion);
+        console.log(">>> varRuc: "+this.varRuc);
+        console.log(">>> varGerente: "+this.varGerente);
+        console.log(">>> varFechaCreacionDesde: "+this.varFechaCreacionDesde.toISOString);
+        console.log(">>> varFechaCreacionHasta: "+this.varFechaCreacionHasta.toISOString);
+        console.log(">>> varEstado: "+this.varEstado);
+        console.log(">>> varIdPais: "+this.varIdPais);
+    
+
+       
+        this.editorialService.ConsultarEditorialComplejo(
+                    this.varRazonSocial, 
+                    this.varDireccion,
+                    this.varRuc,
+                    this.varGerente,
+                    this.varFechaCreacionDesde.toISOString(), 
+                    this.varFechaCreacionHasta.toISOString(), 
+                    this.varEstado ? 1 : 0, 
+                    this.varIdPais).subscribe(
+              x => {
+                    this.dataSource = x;
+                    this.dataSource.paginator = this.paginator;
+              }
+        );
+        console.log(">>> Filtrar [fin]");
+      }
 }

@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../app.settings';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Editorial } from '../models/editorial.model';
 import { Observable } from 'rxjs';
 
 const baseUrlEditorial = AppSettings.API_ENDPOINT+ '/editorial';
 const baseUrlCrudEditorial= AppSettings.API_ENDPOINT+'/crudEditorial'
+const baseUrlConsultaEditorial = AppSettings.API_ENDPOINT+ '/consultaEditorial';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -40,6 +42,19 @@ export class EditorialService {
     return this.http.get(baseUrlCrudEditorial + "/buscarEditorialPorRazonSocialActualiza", {
         params: { razonSocial }
     });
+}
+ // PC3 - CONSULTAR
+ ConsultarEditorialComplejo(razonSocial:string,direccion:string,ruc:string, gerente:string,desde:string, hasta:string, estado:number,pais:number):Observable<any>{
+  const params = new HttpParams()
+  .set("razonSocial", razonSocial)
+  .set("direccion", direccion)
+  .set("ruc", ruc)
+  .set("gerente", gerente)
+  .set("fecDesde", desde)
+  .set("fecHasta", hasta)
+  .set("estado", estado)
+  .set("idPais", pais)
+  return this.http.get(baseUrlConsultaEditorial+"/consultaEditorialPorParametros", {params});
 }
 
 }
