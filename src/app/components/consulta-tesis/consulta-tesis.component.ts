@@ -78,4 +78,53 @@ export class ConsultaTesisComponent implements OnInit {
     console.log(">>> Filtrar [fin]");
   }
 
+  exportarPDF() {
+
+    this.tesisService.generateDocumentReport( 
+              this.varTitulo, 
+              this.varFechaCreacionDesde.toISOString(), 
+              this.varFechaCreacionHasta.toISOString(), 
+              this.varEstado ? 1 : 0, 
+              this.varIdTema, 
+              this.varIdIdioma, 
+              this.varIdCentroEstudios).subscribe(
+          response => {
+            console.log(response);
+            var url = window.URL.createObjectURL(response.data);
+            var a = document.createElement('a');
+            document.body.appendChild(a);
+            a.setAttribute('style', 'display: none');
+            a.setAttribute('target', 'blank');
+            a.href = url;
+            a.download = response.filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            a.remove();
+        }); 
+  }
+
+  exportarExcel() {
+    this.tesisService.generateDocumentExcel( 
+              this.varTitulo, 
+              this.varFechaCreacionDesde.toISOString(), 
+              this.varFechaCreacionHasta.toISOString(), 
+              this.varEstado ? 1 : 0, 
+              this.varIdTema, 
+              this.varIdIdioma, 
+              this.varIdCentroEstudios).subscribe(
+          response => {
+            console.log(response);
+            var url = window.URL.createObjectURL(response.data);
+            var a = document.createElement('a');
+            document.body.appendChild(a);
+            a.setAttribute('style', 'display: none');
+            a.setAttribute('target', 'blank');
+            a.href = url;
+            a.download = response.filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            a.remove();
+        }); 
+  }
+
 }
