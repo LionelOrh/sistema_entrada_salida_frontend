@@ -1,0 +1,32 @@
+.mat-column-idLibro {
+    flex: 0 0 10%;
+}
+.mat-column-titulo {
+    flex: 0 0 10%;
+}
+.mat-column-anio {
+    flex: 0 0 10%;
+}
+.mat-column-serie {
+    flex: 0 0 10%;
+}
+.mat-column-categoriaLibro {
+    flex: 0 0 10%;
+}
+.mat-column-estadoPrestamo {
+    flex: 0 0 10%;
+}
+.mat-column-tipoLibro {
+    flex: 0 0 17%;
+}
+.mat-column-Editorial {
+    flex: 0 0 8%;
+}
+.mat-column-estado {
+    flex: 0 0 6%;
+}
+
+.containerA{
+    width: 88%;
+    margin: 0 auto;
+}

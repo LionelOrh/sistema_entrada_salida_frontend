@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { AppSettings } from '../app.settings';
 import { Libro } from '../models/libro.model';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 const baseUrlLibro = AppSettings.API_ENDPOINT+ '/libro';
 const baseUrlCrudLibro = AppSettings.API_ENDPOINT+ '/crudLibro';
+const baseUrlConsultaLibro = AppSettings.API_ENDPOINT+ '/consultaLibro';
+
 
 @Injectable({
   providedIn: 'root'
@@ -31,4 +33,33 @@ export class LibroService {
   consultarCrud(filtro:string):Observable<any>{
     return this.http.get(baseUrlCrudLibro+"/listaLibroPorTituloLike/"+ filtro);
   }
+
+
+
+
+  ConsultaLibroComplejo(
+    titulo: string,
+    anio: number,
+    serie: string,
+    estado: number,
+    idCategoriaLibro: number,
+    idEstadoPrestamo: number,
+    idTipoLibro: number,
+    idEditorial: number
+  ): Observable<any> {
+    const params = new HttpParams()
+      .set("titulo", titulo)
+      .set("anio", anio)
+      .set("serie", serie)
+      .set("estado", estado)
+      .set("idCategoriaLibro", idCategoriaLibro)
+      .set("idEstadoPrestamo", idEstadoPrestamo)
+      .set("idTipoLibro", idTipoLibro)
+      .set("idEditorial", idEditorial)
+
+
+    return this.http.get(baseUrlConsultaLibro + "/consultaLibroPorParametros", { params })
+  }
+
+
 }
