@@ -83,4 +83,62 @@ export class ConsultaAutorComponent implements OnInit {
     console.log(">>> Filtrar [fin]");
   }
 
+
+  exportarPDF() {
+
+    this.serviceAutor.generateDocumentReport(
+      this.varNombres,
+      this.varApellidos,
+      this.varFechaNacimientoDesde.toISOString(),
+      this.varFechaNacimientoHasta.toISOString(),
+      this.varTelefono,
+      this.varCelular,
+      this.varOrcid,
+      this.varEstado ? 1 : 0,
+      this.varIdPais,
+      this.varIdGrado).subscribe(
+        response => {
+          console.log(response);
+          var url = window.URL.createObjectURL(response.data);
+          var a = document.createElement('a');
+          document.body.appendChild(a);
+          a.setAttribute('style', 'display: none');
+          a.setAttribute('target', 'blank');
+          a.href = url;
+          a.download = response.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+        });
+  }
+
+  exportarExcel() {
+
+    this.serviceAutor.generateDocumentExcel(
+      this.varNombres,
+      this.varApellidos,
+      this.varFechaNacimientoDesde.toISOString(),
+      this.varFechaNacimientoHasta.toISOString(),
+      this.varTelefono,
+      this.varCelular,
+      this.varOrcid,
+      this.varEstado ? 1 : 0,
+      this.varIdPais,
+      this.varIdGrado).subscribe(
+        response => {
+          console.log(response);
+          var url = window.URL.createObjectURL(response.data);
+          var a = document.createElement('a');
+          document.body.appendChild(a);
+          a.setAttribute('style', 'display: none');
+          a.setAttribute('target', 'blank');
+          a.href = url;
+          a.download = response.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+        });
+
+
+  }
 }
