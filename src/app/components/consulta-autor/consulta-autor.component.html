@@ -72,13 +72,16 @@
         </div>
         <div class="row" style="margin-top: 3%; display: flex; align-items: center; justify-content: center">
                 <div class="col-md-2">
-                        <button mat-raised-button type="button" color="primary" style="width: 100px;" (click)="filtrar()">Filtrar</button>
+                        <button mat-raised-button type="button" color="primary" style="width: 100px;"
+                                (click)="filtrar()">Filtrar</button>
                 </div>
                 <div class="col-md-2">
-                        <button mat-raised-button type="submit" color="warn" style="width: 100px;">PDF</button>
+                        <button mat-raised-button type="submit" color="warn" style="width: 100px;"
+                                (click)="exportarPDF()">PDF</button>
                 </div>
                 <div class="col-md-21">
-                        <button mat-raised-button type="submit" color="accent" style="width: 100px;">XLS</button>
+                        <button mat-raised-button type="submit" color="accent" style="width: 100px;"
+                                (click)="exportarExcel()">XLS</button>
                 </div>
         </div>
 
@@ -87,55 +90,57 @@
                         <ng-container matColumnDef="idAutor">
                                 <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
                                 <mat-cell *matCellDef="let aux">{{ aux.idAutor }}</mat-cell>
-                            </ng-container>
-                
-                            <ng-container matColumnDef="nombres">
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombres">
                                 <mat-header-cell *matHeaderCellDef class="custom-header-cell">Nombres</mat-header-cell>
                                 <mat-cell *matCellDef="let aux">{{ aux.nombres }}</mat-cell>
-                            </ng-container>
+                        </ng-container>
 
-                            <ng-container matColumnDef="apellidos">
-                                <mat-header-cell *matHeaderCellDef class="custom-header-cell">Apellidos</mat-header-cell>
+                        <ng-container matColumnDef="apellidos">
+                                <mat-header-cell *matHeaderCellDef
+                                        class="custom-header-cell">Apellidos</mat-header-cell>
                                 <mat-cell *matCellDef="let aux">{{ aux.apellidos }}</mat-cell>
-                            </ng-container>
+                        </ng-container>
 
-                            <ng-container matColumnDef="fechaNacimiento">
+                        <ng-container matColumnDef="fechaNacimiento">
                                 <mat-header-cell *matHeaderCellDef>F. Nacimiento</mat-header-cell>
-                                <mat-cell *matCellDef="let aux">{{ aux.fechaNacimiento | date: "dd/MM/yyyy" }}</mat-cell>
-                            </ng-container>
-                
-                            <ng-container matColumnDef="telefono">
+                                <mat-cell *matCellDef="let aux">{{ aux.fechaNacimiento | date: "dd/MM/yyyy"
+                                        }}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="telefono">
                                 <mat-header-cell *matHeaderCellDef>Teléfono</mat-header-cell>
                                 <mat-cell *matCellDef="let aux">{{ aux.telefono }}</mat-cell>
-                            </ng-container>
-                
-                            <ng-container matColumnDef="celular">
+                        </ng-container>
+
+                        <ng-container matColumnDef="celular">
                                 <mat-header-cell *matHeaderCellDef>Celular</mat-header-cell>
                                 <mat-cell *matCellDef="let aux">{{ aux.celular }}</mat-cell>
-                            </ng-container>
-                
-                            <ng-container matColumnDef="orcid">
+                        </ng-container>
+
+                        <ng-container matColumnDef="orcid">
                                 <mat-header-cell *matHeaderCellDef>Orcid</mat-header-cell>
                                 <mat-cell *matCellDef="let aux">{{ aux.orcid }}</mat-cell>
-                            </ng-container>
-                
-                            <ng-container matColumnDef="pais">
+                        </ng-container>
+
+                        <ng-container matColumnDef="pais">
                                 <mat-header-cell *matHeaderCellDef>País</mat-header-cell>
                                 <mat-cell *matCellDef="let aux">{{ aux.pais.nombre }}</mat-cell>
-                            </ng-container>
-                
-                            <ng-container matColumnDef="grado">
+                        </ng-container>
+
+                        <ng-container matColumnDef="grado">
                                 <mat-header-cell *matHeaderCellDef>Grado</mat-header-cell>
                                 <mat-cell *matCellDef="let aux">{{ aux.grado.descripcion }}</mat-cell>
-                            </ng-container>
-                
-                            <ng-container matColumnDef="estado">
+                        </ng-container>
+
+                        <ng-container matColumnDef="estado">
                                 <mat-header-cell mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
                                 <mat-cell *matCellDef="let aux">{{ aux.estado == 1 ? "Activo" : "Inactivo" }}</mat-cell>
-                            </ng-container>
+                        </ng-container>
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let aux; columns: displayedColumns"></mat-row>
                 </mat-table>
-                <mat-paginator [pageSizeOptions]="[6,8,10]" showFirstLastButtons></mat-paginator>     
+                <mat-paginator [pageSizeOptions]="[6,8,10]" showFirstLastButtons></mat-paginator>    
         </div>
 </div>
