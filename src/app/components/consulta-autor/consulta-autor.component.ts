@@ -112,6 +112,7 @@ export class ConsultaAutorComponent implements OnInit {
         });
   }
 
+
   exportarExcel() {
 
     this.serviceAutor.generateDocumentExcel(
