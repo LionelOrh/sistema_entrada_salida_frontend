@@ -66,13 +66,14 @@ export class TesisService {
       headers.append('Accept', 'application/pdf');
       let requestOptions: any = { headers: headers, responseType: 'blob' };
 
-      return this.http.post(baseUrlConsultaTesis+"/reporteTesisPDF", {params}, requestOptions).pipe(map((response)=>{
-        return {
-            filename: 'reporteDocente20232.pdf',
-            data: new Blob([response], {type: 'application/pdf'})
-          };
-      }));
-    }
+      return this.http.post(baseUrlConsultaTesis+"/reporteTesisPDF?titulo="+titulo+"&fecDesde="+desde+"&fecHasta="+hasta+"&estado="+
+            est+"&idTema="+tema+"&idIdioma="+idioma+"&idCentroEstudios="+centro,'', requestOptions).pipe(map((response)=>{
+            return {
+                filename: 'reporteTesis2024.pdf',
+                data: new Blob([response], {type: 'application/pdf'})
+            };
+        }));
+  }
 
     generateDocumentExcel(titulo:string, desde:string, hasta:string, est:number, tema:number, idioma:number, centro:number):Observable<any>{
       const params = new HttpParams()
