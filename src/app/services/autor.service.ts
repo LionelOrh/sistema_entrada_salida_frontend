@@ -79,13 +79,14 @@ export class AutorService {
     headers.append('Accept', 'application/pdf');
     let requestOptions: any = { headers: headers, responseType: 'blob' };
 
-    return this.http.post(baseUrlConsultaAutor +"/reporteAutorPdf",{params}, requestOptions).pipe(map((response)=>{
+    return this.http.post(baseUrlConsultaAutor +"/reporteAutorPDF?nombres="+nom+"&apellidos="+ape+"&fechaNacimientoDesde="+desde+"&fechaNacimientoHasta="+hasta+"&telefono="+tel+"&celular="+cel+"&orcid="+orcid+"&estado="+est+"&idPais="+p+"&idGrado="+g,'', requestOptions).pipe(map((response)=>{
       return {
-          filename: 'reporteDocente20232.pdf',
+          filename: 'reporteAutor2024.pdf',
           data: new Blob([response], {type: 'application/pdf'})
       };
   }));
 }
+
 
 generateDocumentExcel(nom:string, ape:string, desde:string, hasta:string, tel:string, cel:string, orcid:string, est:number, p:number, g:number): Observable<any> {
   const params = new HttpParams()
