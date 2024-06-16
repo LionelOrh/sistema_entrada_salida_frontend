@@ -74,4 +74,69 @@ lstPais: Pais[] = [];
         );
         console.log(">>> Filtrar [fin]");
       }
-}
+
+
+      exportarPDF() {
+
+            this.editorialService.generateDocumentReport( 
+                                  this.varRazonSocial, 
+                                  this.varDireccion, 
+                                  this.varRuc,
+                                  this.varGerente,
+                                  this.varFechaCreacionDesde.toISOString(), 
+                                  this.varFechaCreacionHasta.toISOString(), 
+                                  this.varEstado ? 1 : 0, 
+                                  this.varIdPais).subscribe(
+                  response => {
+                    console.log(response);
+                    var url = window.URL.createObjectURL(response.data);
+                    var a = document.createElement('a');
+                    document.body.appendChild(a);
+                    a.setAttribute('style', 'display: none');
+                    a.setAttribute('target', 'blank');
+                    a.href = url;
+                    a.download = response.filename;
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                }); 
+          }
+    
+          exportarExcel() {
+            console.log(">>> Filtrar [ini]");
+            console.log(">>> varRazonSocial: "+this.varRazonSocial);
+            console.log(">>> varDireccion: "+this.varDireccion);
+            console.log(">>> varRuc: "+this.varRuc);
+            console.log(">>> varGerente: "+this.varGerente);
+            console.log(">>> varFechaCreacionDesde: "+this.varFechaCreacionDesde.toISOString);
+            console.log(">>> varFechaCreacionHasta: "+this.varFechaCreacionHasta.toISOString);
+            console.log(">>> varEstado: "+this.varEstado);
+            console.log(">>> varIdPais: "+this.varIdPais);
+                
+                
+            this.editorialService.generateDocumentExcel( 
+                  this.varRazonSocial, 
+                  this.varDireccion, 
+                  this.varRuc,
+                  this.varGerente,
+                  this.varFechaCreacionDesde.toISOString(), 
+                  this.varFechaCreacionHasta.toISOString(), 
+                  this.varEstado ? 1 : 0, 
+                  this.varIdPais).subscribe(
+                  response => {
+                    console.log(response);
+                    var url = window.URL.createObjectURL(response.data);
+                    var a = document.createElement('a');
+                    document.body.appendChild(a);
+                    a.setAttribute('style', 'display: none');
+                    a.setAttribute('target', 'blank');
+                    a.href = url;
+                    a.download = response.filename;
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                }); 
+          }
+        
+         
+    }
