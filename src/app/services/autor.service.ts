@@ -34,6 +34,8 @@ export class AutorService {
   consultarCrud(filtro: string): Observable<any> {
     return this.http.get(baseUrlCrudAutor + "/listaAutorPorNombresLike/" + filtro);
   }
+
+  //PC3- CONSULTAR
   ConsultaAutorComplejo(
     nombres: string,
     apellidos: string,
@@ -107,7 +109,7 @@ generateDocumentExcel(nom:string, ape:string, desde:string, hasta:string, tel:st
 
   return this.http.post(baseUrlConsultaAutor +"/reporteAutorExcel?nombres="+nom+"&apellidos="+ape+"&fechaNacimientoDesde="+desde+"&fechaNacimientoHasta="+hasta+"&telefono="+tel+"&celular="+cel+"&orcid="+orcid+"&estado="+est+"&idPais="+p+"&idGrado="+g,'', requestOptions).pipe(map((response)=>{
     return {
-        filename: 'reporteExcel20232.xlsx',
+        filename: 'reporteExcelAutor20232.xlsx',
         data: new Blob([response], {type: 'application/vnd.ms-excel'})
     };
 }));
