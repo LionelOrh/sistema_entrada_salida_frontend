@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../app.settings';
 import { Libro } from '../models/libro.model';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from "rxjs/operators";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 const baseUrlLibro = AppSettings.API_ENDPOINT+ '/libro';
@@ -39,7 +40,8 @@ export class LibroService {
 
   ConsultaLibroComplejo(
     titulo: string,
-    anio: number,
+    anioDesde: number,
+    anioHasta: number,
     serie: string,
     estado: number,
     idCategoriaLibro: number,
@@ -49,7 +51,8 @@ export class LibroService {
   ): Observable<any> {
     const params = new HttpParams()
       .set("titulo", titulo)
-      .set("anio", anio)
+      .set("anioDesde", anioDesde)
+      .set("anioHasta", anioHasta)
       .set("serie", serie)
       .set("estado", estado)
       .set("idCategoriaLibro", idCategoriaLibro)
@@ -63,10 +66,11 @@ export class LibroService {
 
 
 
-  generateDocumentReport(tit:string, ani:number, ser:string, est:number, idCate:number, idEs:number, idTip:number, idEdi:number): Observable<any> {
+  generateDocumentReport(tit:string, desde:number,hasta:number, ser:string, est:number, idCate:number, idEs:number, idTip:number, idEdi:number): Observable<any> {
     const params = new HttpParams()
     .set("titulo", tit)
-    .set("anio", ani)
+    .set("anioDesde", desde)
+    .set("anioHasta", hasta)
     .set("serie", ser)
     .set("estado", est)
     .set("idCategoriaLibro", idCate)
@@ -78,18 +82,19 @@ export class LibroService {
     headers.append('Accept', 'application/pdf');
     let requestOptions: any = { headers: headers, responseType: 'blob' };
 
-    return this.http.post(baseUrlConsultaLibro +"/reporteLibroPdf",{params}, requestOptions).pipe(map((response)=>{
+    return this.http.post(baseUrlConsultaLibro +"/reporteLibroPDF?titulo="+tit+"&anioDesde="+desde+"&anioHasta="+hasta+"&serie="+ser+"&estado="+est+"&idCategoriaLibro="+idCate+"&idEstadoPrestamo="+idEs+"&idTipoLibro="+idTip+"&idEditorial="+idEdi,'',  requestOptions).pipe(map((response)=>{
       return {
-          filename: 'reporteDocente20232.pdf',
+          filename: 'ReporteLibro.pdf',
           data: new Blob([response], {type: 'application/pdf'})
       };
   }));
 }
 
-generateDocumentExcel(tit:string, ani:number, ser:string, est:number, idCate:number, idEs:number, idTip:number, idEdi:number): Observable<any> {
+generateDocumentExcel(tit:string, desde:number,hasta:number, ser:string, est:number, idCate:number, idEs:number, idTip:number, idEdi:number): Observable<any> {
   const params = new HttpParams()
   .set("titulo", tit)
-  .set("anio", ani)
+  .set("anioDesde", desde)
+    .set("anioHasta", hasta)
   .set("serie", ser)
   .set("estado", est)
   .set("idCategoriaLibro", idCate)
@@ -101,10 +106,10 @@ generateDocumentExcel(tit:string, ani:number, ser:string, est:number, idCate:num
   headers.append('Accept', 'application/vnd.ms-excel');
   let requestOptions: any = { headers: headers, responseType: 'blob' };
 
-  return this.http.post(baseUrlConsultaLibro +"/reporteLibroExcel?titulo="+tit+"&anio="+ani+"&serie="+ser+"&estado="+est+"&idCategoriaLibro="+idCate+"&idEstadoPrestamo="+idEs+"&idTipoLibro="+idTip+"&idEditorial="+idEdi,'',  requestOptions).pipe(map((Response)=>{
+  return this.http.post(baseUrlConsultaLibro +"/reporteLibroExcel?titulo="+tit+"&anioDesde="+desde+"&anioHasta="+hasta+"&serie="+ser+"&estado="+est+"&idCategoriaLibro="+idCate+"&idEstadoPrestamo="+idEs+"&idTipoLibro="+idTip+"&idEditorial="+idEdi,'',  requestOptions).pipe(map((response)=>{
     return {
         filename: 'reporteExcel20232.xlsx',
-        data: new Blob([Response], {type: 'application/vnd.ms-excel'})
+        data: new Blob([response], {type: 'application/vnd.ms-excel'})
     };
 }));
 }
