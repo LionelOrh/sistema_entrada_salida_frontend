@@ -8,11 +8,11 @@
         </div>
         <div  class="row"  style="margin-top: 3%">
                 <mat-form-field class="col-md-5">
-                    <mat-label>Razon Social</mat-label>
+                    <mat-label>Razón Social</mat-label>
                     <input  matInput  [(ngModel)]="varRazonSocial"  >
                 </mat-form-field>
                 <mat-form-field class="col-md-5">
-                    <mat-label>Direccion</mat-label>
+                    <mat-label>Dirección</mat-label>
                     <input  matInput  [(ngModel)]="varDireccion"  >
                 </mat-form-field>
                 <div class="col-md-2" style="display: flex; align-items: center; justify-content: center">
@@ -41,7 +41,7 @@
         </div>
         <div  class="row"  style="margin-top: 3%;">
             <mat-form-field class="col-md-5">
-                <mat-label>Ruc</mat-label>
+                <mat-label>RUC</mat-label>
                 <input  matInput  [(ngModel)]="varRuc"  >
             </mat-form-field>
 
@@ -50,7 +50,7 @@
                 <input  matInput  [(ngModel)]="varGerente"  >
             </mat-form-field>
             <mat-form-field class="col-md-6">
-                <mat-label>Pais</mat-label>
+                <mat-label>País</mat-label>
                 <mat-select    [(ngModel)]="varIdPais" >
                     <mat-option value="-1"> [Todos] </mat-option>
                     <mat-option *ngFor="let y of lstPais" [value]="y.idPais">
