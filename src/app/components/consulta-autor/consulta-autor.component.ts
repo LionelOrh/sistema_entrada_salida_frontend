@@ -109,10 +109,8 @@ export class ConsultaAutorComponent implements OnInit {
           a.click();
           window.URL.revokeObjectURL(url);
           a.remove();
-        });
-  }
-
-
+      }); 
+}
   exportarExcel() {
 
     this.serviceAutor.generateDocumentExcel(
