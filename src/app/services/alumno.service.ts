@@ -120,4 +120,52 @@ export class AlumnoService {
       }));
   }
 
+  generateDocumentReport(nombres: string,
+    apellidos: string,
+    telefono: string,
+    celular: string,
+    dni: string,
+    correo: string,
+    tipoSangre: string,
+    fechaNacimientoDesde: string,
+    fechaNacimientoHasta: string,
+    estado: number,
+    idPais: number,
+    idModalidad: number): Observable<any> {
+    const params = new HttpParams()
+    .set("nombres", nombres)
+      .set("apellidos", apellidos)
+      .set("telefono", telefono)
+      .set("celular", celular)
+      .set("dni", dni)
+      .set("correo", correo)
+      .set("tipoSangre", tipoSangre)
+      .set("fechaNacimientoDesde", fechaNacimientoDesde)
+      .set("fechaNacimientoHasta", fechaNacimientoHasta)
+      .set("estado", estado)
+      .set("idPais", idPais)
+      .set("idModalidad", idModalidad);
+    let headers = new HttpHeaders();
+    headers.append('Accept', 'application/pdf');
+    let requestOptions: any = { headers: headers, responseType: 'blob' };
+
+    return this.http.post(baseUrlConsultaAlumno +"/reporteAlumnoPDF?nombres=" + nombres
+      + "&apellidos" + apellidos +
+      "&telefono=" + telefono +
+      "&celular=" + celular +
+      "&dni=" + dni +
+      "&correo=" + correo +
+      "&tipoSangre=" + tipoSangre +
+      "&fechaNacimientoDesde=" + fechaNacimientoDesde +
+      "&fechaNacimientoHasta=" + fechaNacimientoHasta +
+      "&estado=" + estado +
+      "&idPais=" + idPais +
+      "&idModalidad=" + idModalidad, '', requestOptions).pipe(map((response)=>{
+      return {
+          filename: 'reporteAlumno.pdf',
+          data: new Blob([response], {type: 'application/pdf'})
+      };
+  }));
+}
+
 }
