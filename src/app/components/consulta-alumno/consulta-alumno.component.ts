@@ -38,7 +38,7 @@ export class ConsultaAlumnoComponent implements OnInit {
   varDni: string = "";
   varCorreo: string = "";
   varTipoSangre: string = "";
-  varFechaNacimientoDesde: Date = new Date();
+  varFechaNacimientoDesde: Date = new Date(1900,0,1);
   varFechaNacimientoHasta: Date = new Date();
 
   varIdPais: number = -1;
@@ -91,37 +91,6 @@ export class ConsultaAlumnoComponent implements OnInit {
       );
     console.log(">>> Filtrar [fin]");
   }
-
-  exportarPDF() {
-
-    this.serviceAlumno.generateDocumentExcel(
-      this.varNombres,
-      this.varApellidos,
-      this.varTelefono,
-      this.varCelular,
-      this.varDni,
-      this.varCorreo,
-      this.varTipoSangre,
-      this.varFechaNacimientoDesde.toISOString(),
-      this.varFechaNacimientoHasta.toISOString(),
-      this.varEstado ? 1 : 0,
-      this.varIdPais,
-      this.varIdModalidad).subscribe(
-        response => {
-          console.log(response);
-          var url = window.URL.createObjectURL(response.data);
-          var a = document.createElement('a');
-          document.body.appendChild(a);
-          a.setAttribute('style', 'display: none');
-          a.setAttribute('target', 'blank');
-          a.href = url;
-          a.download = response.filename;
-          a.click();
-          window.URL.revokeObjectURL(url);
-          a.remove();
-        });
-  }
-
   exportarExcel() {
     console.log(">>> Filtrar [ini]");
     console.log(">>> varNombres: " + this.varNombres);
@@ -165,13 +134,33 @@ this.serviceAlumno.generateDocumentExcel(
     }); 
 }
 
+exportarPDF() {
 
-
-
-
-
-
-
-
-
+    this.serviceAlumno.generateDocumentReport(
+      this.varNombres,
+      this.varApellidos,
+      this.varTelefono,
+      this.varCelular,
+      this.varDni,
+      this.varCorreo,
+      this.varTipoSangre,
+      this.varFechaNacimientoDesde.toISOString(),
+      this.varFechaNacimientoHasta.toISOString(),
+      this.varEstado ? 1 : 0,
+      this.varIdPais,
+      this.varIdModalidad).subscribe(
+        response => {
+          console.log(response);
+          var url = window.URL.createObjectURL(response.data);
+          var a = document.createElement('a');
+          document.body.appendChild(a);
+          a.setAttribute('style', 'display: none');
+          a.setAttribute('target', 'blank');
+          a.href = url;
+          a.download = response.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+        });
+  }
 }
