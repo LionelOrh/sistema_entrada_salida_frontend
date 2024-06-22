@@ -111,13 +111,10 @@ export class CrudAutorUpdateComponent {
 
       this.autorService.actualizarCrud(this.autor).subscribe(
         x => {
-          if (x.mensaje === 'El Autor ' + this.autor.nombres + ' ya existe') {
+          if (x.mensaje === 'El Autor ' + this.autor.nombres + " " + this.autor.apellidos+ ' ya existe') {
             this.autorExistente = true;
-            this.formsActualizar.controls.validaNombres.setErrors({ 'autorExistente': true });
-          }
-          else if (x.mensaje === 'El Autor con el apellido ' + this.autor.apellidos + ' ya existe') {
-            this.autorExistente = true;
-            this.formsActualizar.controls.validaApellidos.setErrors({ 'autorExistente': true });
+            this.formsActualizar.controls.validaNombres.setErrors({'autorExistente': true});
+            this.formsActualizar.controls.validaApellidos.setErrors({'autorExistente': true});
           }
           else if (x.mensaje === 'El teléfono ' + this.autor.telefono + ' ya está en uso') {
             this.autorExistente = true;
