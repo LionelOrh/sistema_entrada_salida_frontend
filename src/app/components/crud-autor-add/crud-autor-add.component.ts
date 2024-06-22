@@ -11,6 +11,7 @@ import { UtilService } from '../../services/util.service';
 import { TokenService } from '../../security/token.service';
 import Swal from 'sweetalert2';
 import { DataCatalogo } from '../../models/dataCatalogo.model';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
@@ -53,8 +54,12 @@ export class CrudAutorAddComponent {
     validaGrado: ['', Validators.min(1)],
   });
 
-  constructor(private autorService: AutorService, private utilService: UtilService, private tokenService: TokenService,
-    private formBuilder: FormBuilder) {
+  constructor(
+    private autorService: AutorService, 
+    private utilService: UtilService, 
+    private tokenService: TokenService,
+    private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<CrudAutorAddComponent>  ) {
     utilService.listaPais().subscribe(
       x => this.lstPais = x
     );
@@ -95,14 +100,12 @@ export class CrudAutorAddComponent {
   
       this.autorService.registrarCrud(this.autor).subscribe(
         x => {
-          if (x.mensaje === 'El Autor con el nombre ' + this.autor.nombres + ' ya existe') {
+          if (x.mensaje === 'El Autor ' + this.autor.nombres + " " + this.autor.apellidos+ ' ya existe') {
             this.autorExistente = true;
             this.formsRegistra.controls.validaNombres.setErrors({'autorExistente': true});
-          } 
-          else if (x.mensaje === 'El Autor con el apellido ' + this.autor.apellidos + ' ya existe') {
-            this.autorExistente = true;
             this.formsRegistra.controls.validaApellidos.setErrors({'autorExistente': true});
           }
+
           else if (x.mensaje === 'El teléfono ' + this.autor.telefono + ' ya está en uso') {
             this.autorExistente = true;
             this.formsRegistra.controls.validaTelefono.setErrors({'autorExistente': true});
@@ -126,6 +129,7 @@ export class CrudAutorAddComponent {
                 this.formsRegistra.get(controlName)?.setErrors(null);
               });
               this.formsRegistra.reset();
+              this.dialogRef.close();
             });
           }
         }

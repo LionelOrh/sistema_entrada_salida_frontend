@@ -94,13 +94,10 @@ export class AgregarAutorComponent {
   
       this.autorService.registrarCrud(this.autor).subscribe(
         x => {
-          if (x.mensaje === 'El Autor con el nombre ' + this.autor.nombres + ' ya existe') {
+          if (x.mensaje.startsWith('El Autor ' + this.autor.nombres + " " + this.autor.apellidos + ' ya existe')) {
             this.autorExistente = true;
-            this.formsRegistra.controls.validaNombres.setErrors({'autorExistente': true});
-          } 
-          else if (x.mensaje === 'El Autor con el apellido ' + this.autor.apellidos + ' ya existe') {
-            this.autorExistente = true;
-            this.formsRegistra.controls.validaApellidos.setErrors({'autorExistente': true});
+            this.formsRegistra.controls.validaNombres.setErrors({ 'autorExistente': true });
+            this.formsRegistra.controls.validaApellidos.setErrors({ 'autorExistente': true });
           }
           else if (x.mensaje === 'El teléfono ' + this.autor.telefono + ' ya está en uso') {
             this.autorExistente = true;

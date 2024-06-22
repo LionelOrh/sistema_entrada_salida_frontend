@@ -15,7 +15,7 @@
                         El nombre es requerido
                     </span>
                     <span *ngIf="formsRegistra.controls.validaNombres.hasError('pattern')">
-                        El nombre es de 3 a 30 caracteres
+                        El nombre es de 4 a 40 caracteres     
                     </span>
                     <span *ngIf="formsRegistra.controls.validaNombres.hasError('autorExistente')">
                         El Nombre ya existe
@@ -31,7 +31,7 @@
                         El apellido es requerido
                     </span>
                     <span *ngIf="formsRegistra.controls.validaApellidos.hasError('pattern')">
-                        El apellido es de 3 a 30 caracteres
+                        El apellido es de 4 a 40 caracteres     
                     </span>
                     <span *ngIf="formsRegistra.controls.validaApellidos.hasError('autorExistente')">
                         El Apellido ya existe
