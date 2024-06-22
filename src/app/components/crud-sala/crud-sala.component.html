@@ -8,7 +8,7 @@
     </div>
     <div  class="row"  style="margin-top: 3%">
         <mat-form-field class="col-md-4">
-            <mat-label>Nombre de Sala</mat-label>
+            <mat-label>Nro de Aula</mat-label>
             <input  matInput  [(ngModel)]="filtro">
         </mat-form-field>
 
@@ -21,7 +21,7 @@
             
             <mat-table  #table  class="mat-cell" [dataSource]="dataSource" >
                 <ng-container matColumnDef="idSala">
-                  <mat-header-cell  mat-header-cell *matHeaderCellDef >Nro De Sala</mat-header-cell>
+                  <mat-header-cell  mat-header-cell *matHeaderCellDef >Código Sala</mat-header-cell>
                   <mat-cell *matCellDef="let aux" >{{ aux.idSala}}</mat-cell>
                 </ng-container>
 

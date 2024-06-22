@@ -1,11 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { Sala } from '../models/sala.model';
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../app.settings';
 
 const baseUrlSala = AppSettings.API_ENDPOINT+ '/sala';
 const baseUrlCrudSala = AppSettings.API_ENDPOINT+ '/crudSala';
+const baseUrlConsultaSala = AppSettings.API_ENDPOINT+ '/consultaSala';
+
 
 
 @Injectable({
@@ -38,4 +40,68 @@ export class SalaService {
       return this.http.get<any>(`${this.baseUrlCrudSala}/buscaPorNumeroIgual`, { params: { numero } });
     }
 
+  //PC3 - Consultar
+  consultarSalaComplejo(num:string, piso:number, numAlum:number, rec:string, est:number, t:number, s:number, r:number):Observable<any>{
+    const params = new HttpParams()
+    .set("numero", num)
+    .set("piso", piso)
+    .set("numAlumnos", numAlum)
+    .set("recursos", rec)
+    .set("estado", est)
+    .set("idTipoSala", t)
+    .set("idSede", s)
+    .set("idEstadoReserva", r);
+
+  return this.http.get(baseUrlConsultaSala+"/consultaSalaPorParametros", {params});
+  }
+
+  generateDocumentReport(num:string, piso:number, numAlum:number, rec:string, est:number, t:number, s:number, r:number): Observable<any> {
+    const params = new HttpParams()
+    .set("numero", num)
+    .set("piso", piso)
+    .set("numAlumnos", numAlum)
+    .set("recursos", rec)
+    .set("estado", est)
+    .set("idTipoSala", t)
+    .set("idSede", s)
+    .set("idEstadoReserva", r);
+
+    let headers = new HttpHeaders();
+    headers.append('Accept', 'application/pdf');
+    let requestOptions: any = { headers: headers, responseType: 'blob' };
+
+    return this.http.post(baseUrlConsultaSala +"/reporteSalaPDF?numero="+num+"&piso="+piso+
+      "&numAlumnos="+numAlum+"&recursos="+rec+"&estado="+est+"&idTipoSala="+t+"&idSede="+s+
+      "&idEstadoReserva="+r,'', requestOptions).pipe(map((response)=>{
+      return {
+          filename: 'reportePDFSala.pdf',
+          data: new Blob([response], {type: 'application/pdf'})
+      };
+  }));
+}
+
+  generateDocumentExcel(num:string, piso:number, numAlum:number, rec:string, est:number, t:number, s:number, r:number): Observable<any> {
+    const params = new HttpParams()
+    .set("numero", num)
+    .set("piso", piso)
+    .set("numAlumnos", numAlum)
+    .set("recursos", rec)
+    .set("estado", est)
+    .set("idTipoSala", t)
+    .set("idSede", s)
+    .set("idEstadoReserva", r);
+
+    let headers = new HttpHeaders();
+    headers.append('Accept', 'application/vnd.ms-excel');
+    let requestOptions: any = { headers: headers, responseType: 'blob' };
+
+    return this.http.post(baseUrlConsultaSala +"/reporteSalaExcel?numero="+num+"&piso="+piso+
+      "&numAlumnos="+numAlum+"&recursos="+rec+"&estado="+est+"&idTipoSala="+t+"&idSede="+s+
+      "&idEstadoReserva="+r,'', requestOptions).pipe(map((response)=>{
+      return {
+          filename: 'reporteExcelSala.xlsx',
+          data: new Blob([response], {type: 'application/vnd.ms-excel'})
+      };
+  }));
+}
 }
