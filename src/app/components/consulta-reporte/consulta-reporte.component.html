@@ -1,0 +1,54 @@
+<app-menu></app-menu>
+<div class="container">
+  <mat-toolbar class="toolbar-entrada-salida">
+    <span>Consulta y Reporte del Control de Usuarios</span>
+  </mat-toolbar> 
+  <br>
+  <div class="bordered-section">
+    <div class="row">
+      <div class="col-4">
+        <label for="codigo">Código</label>
+        <input type="text" id="codigo" class="form-control" placeholder="Ingrese el código">
+      </div>
+      <div class="col-4"> 
+        <label for="userType">Tipo de Usuario</label>
+        <select class="form-control" id="userType">
+          <option selected>Seleccione...</option>
+        </select>
+      </div>
+      <div class="col-4">
+        <label for="date">Fecha</label>
+        <input type="date" class="form-control" id="date" value="2024-01-01">
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <br>
+        <button class="btn btn-filtrar">Filtrar</button>
+      </div>
+    </div>
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Tipo de Usuario</th>
+            <th>Fecha de Ingreso</th>
+            <th>Hora de Ingreso</th>
+            <th>Fecha de Salida</th>
+            <th>Hora de Salida</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    
+    <div class="action-buttons mt-4">
+      <button class="btn btn-pdf">PDF</button>
+      &nbsp; <!-- Espacio entre los botones -->
+      <button class="btn btn-excel">EXCEL</button>
+    </div>
+</div>
+<p class="footer-text">Supervisor</p>

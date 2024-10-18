@@ -1,0 +1,65 @@
+<app-menu></app-menu>
+<div class="container">
+    <mat-toolbar class="toolbar-entrada-salida">
+      <span>Gestión de Acceso para Proveedores</span>
+    </mat-toolbar>
+    <br>
+    <h6>Datos de la Empresa</h6>
+    <form>
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <label for="ruc">RUC</label>
+          <input type="text" class="form-control" id="ruc" placeholder="RUC">
+        </div>
+        <div class="col-sm-6">
+          <label for="razon-social">Razón Social</label>
+          <input type="text" class="form-control" id="razon-social" placeholder="Razón Social">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-12">
+          <label for="producto">Descripción del Producto</label>
+          <textarea class="form-control" id="producto" rows="3" placeholder="Descripción del Producto"></textarea>
+        </div>
+      </div>
+    </form>
+    <hr class="my-4">
+    <h6>Datos del Representante</h6>
+    <form>
+      <div class="form-group row">
+        <div class="col-sm-4">
+          <label for="nombres">Nombres</label>
+          <input type="text" class="form-control" id="nombres" placeholder="Nombres">
+        </div>
+        <div class="col-sm-4">
+          <label for="apellidos">Apellidos</label>
+          <input type="text" class="form-control" id="apellidos" placeholder="Apellidos">
+        </div>
+        <div class="col-sm-4">
+          <label for="cargo-responsable">Cargo Responsable</label>
+          <input type="text" class="form-control" id="cargo-responsable" placeholder="Cargo Responsable">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-4">
+          <label for="tipo-documento">Tipo de Documento</label>
+          <select class="form-control" id="tipo-documento">
+            <option selected>Seleccione...</option>
+          </select>
+        </div>
+        <div class="col-sm-4">
+          <label for="num-documento">Número de Documento</label>
+          <input type="text" class="form-control" id="num-documento" placeholder="Número de Documento">
+        </div>
+        <div class="col-sm-4">
+            <div class="action-buttons">
+              <button class="btn btn-qr">Generar QR</button>
+            </div>
+          </div>
+      </div>
+     
+    </form>
+    
+    <p class="footer-text">Supervisor</p>
+  </div>
+  

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Opcion } from '../security/opcion';
 import { TokenService } from '../security/token.service';
+import { Router } from '@angular/router'; 
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AppMaterialModule } from '../app.material.module';
 import { FormsModule } from '@angular/forms';
@@ -16,36 +17,40 @@ import { CommonModule } from '@angular/common';
 export class MenuComponent implements OnInit {
 
   isLogged = false;
-  opcRegistro : Opcion[] = [];
-  opcConsulta : Opcion[] = [];
-  opcCRUD : Opcion[] = [];
-  opcTransacciones : Opcion[] = [];
+  opcRegistroEntradaSalida: Opcion[] = [];
+  opcRegistroExterno: Opcion[] = [];
+  opcConsultaReporte: Opcion[] = [];
+  opcAccesoProveedor: Opcion[] = [];
 
-  constructor(private tokenService: TokenService) {
+  constructor(private tokenService: TokenService, private router: Router) {  
     console.log("MenuComponent >>> constructor >>> " + this.tokenService.getToken());
   }
 
   ngOnInit() {
     console.log("MenuComponent >>> ngOnInit >>> ");
 
-    this.opcRegistro = this.tokenService.getOpciones().filter( x => x.tipo === 1);
-    this.opcConsulta = this.tokenService.getOpciones().filter( x => x.tipo === 2);
-    this.opcCRUD = this.tokenService.getOpciones().filter( x => x.tipo === 3);
-    this.opcTransacciones = this.tokenService.getOpciones().filter( x => x.tipo === 4);
+    this.opcRegistroEntradaSalida = this.tokenService.getOpciones().filter(x => x.tipo === 1);
+    this.opcRegistroExterno = this.tokenService.getOpciones().filter(x => x.tipo === 2);
+    this.opcConsultaReporte= this.tokenService.getOpciones().filter(x => x.tipo === 3);
+    this.opcAccesoProveedor = this.tokenService.getOpciones().filter(x => x.tipo === 4);
 
     console.log("MenuComponent >>> ngOnInit >>> " + this.tokenService.getToken());
-    if (this.tokenService.getToken()) {
-      console.log("MenuComponent >>> this.isLogged = true >>> ");
-      this.isLogged = true;
-    } else {
-      console.log("MenuComponent >>> this.isLogged = false >>> ");
-      this.isLogged = false;
-    }
+    this.isLogged = !!this.tokenService.getToken(); 
+    console.log(`MenuComponent >>> this.isLogged = ${this.isLogged} >>> `);
   }
 
   onLogOut(): void {
     this.tokenService.logOut();
-    window.location.reload();
+    this.router.navigate(['/login']);
   }
 
+  obtenerRol(): string {
+    if (this.opcConsultaReporte.length > 0) {
+      return 'Supervisor';
+    } else if (this.opcRegistroEntradaSalida.length > 0) {
+      return 'Personal de Seguridad';
+    } else {
+      return 'Rol Desconocido';
+    }
+  }
 }

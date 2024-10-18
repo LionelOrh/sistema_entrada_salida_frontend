@@ -18,4 +18,5 @@ export class AuthService {
   public login(loginUsuario: LoginUsuario): Observable<JwtDTO> {
     return this.httpClient.post<JwtDTO>(authURL + '/login', loginUsuario);
   }
+  
 }

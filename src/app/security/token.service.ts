@@ -58,20 +58,19 @@ export class TokenService {
   public setAuthorities(authorities: string[]): void {
     window.sessionStorage.removeItem(AUTHORITIES_KEY);
     window.sessionStorage.setItem(AUTHORITIES_KEY, JSON.stringify(authorities));
-  }
+}
 
-  public getAuthorities(): string[] {
-    this.roles = [];
-    if (sessionStorage.getItem(AUTHORITIES_KEY)) {
-      JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY)|| '{}').forEach(
-        (aux:any) => {
-          this.roles.push(aux.authorities);
-        }
-      );
+public getAuthorities(): string[] {
+    this.roles = []; // Reinicia los roles
+    const storedAuthorities = sessionStorage.getItem(AUTHORITIES_KEY);
+
+    if (storedAuthorities) {
+        this.roles = JSON.parse(storedAuthorities); // Parse directamente a roles
     }
+
     console.log(">>>> TokenService " + this.roles.length);
-    return this.roles;
-  }
+    return this.roles; // Devuelve el arreglo de roles
+}
 
   public setOpciones(opciones: Opcion[]): void {
     window.sessionStorage.removeItem(OPCIONES_KEY);

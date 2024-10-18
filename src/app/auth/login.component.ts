@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
 
   isLogged = false;
   isLoginFail = false;
+  isLoading = false;
   loginUsuario: LoginUsuario = {};
   roles: string[] = [];
   errMsj!: string;
@@ -44,45 +45,52 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(): void {
+    this.isLoading = true; // Inicia el estado de carga
+
     this.authService.login(this.loginUsuario).subscribe(
-      (data:any) => {
+      (data: any) => {
           this.isLogged = true;
           this.tokenService.setToken(data.token);
           this.tokenService.setUserName(data.login);
-          this.tokenService.setUserNameComplete(data.nombreCompleto)
+          this.tokenService.setUserNameComplete(data.nombreCompleto);
           this.tokenService.setAuthorities(data.authorities);
           this.tokenService.setUserId(data.idUsuario);
           this.tokenService.setOpciones(data.opciones);
 
           this.roles = data.authorities;
           this.router.navigate(['/']);
+          
 
-          console.log("onLogin() >> token >>> " +  this.tokenService.getToken());
-          console.log("onLogin() >> setUserName >>> " +  this.tokenService.getUserName());
-          console.log("onLogin() >> setUserNameComplete >>> " +  this.tokenService.getUserNameComplete());
-          console.log("onLogin() >> idUsuario >>> " +  this.tokenService.getUserId());
-          console.log("onLogin() >> roles >>> " +  this.tokenService.getAuthorities());
+          console.log("onLogin() >> token >>> " + this.tokenService.getToken());
+          console.log("onLogin() >> setUserName >>> " + this.tokenService.getUserName());
+          console.log("onLogin() >> setUserNameComplete >>> " + this.tokenService.getUserNameComplete());
+          console.log("onLogin() >> idUsuario >>> " + this.tokenService.getUserId());
+          console.log("onLogin() >> roles >>> " + this.tokenService.getAuthorities());
           console.log("onLogin() >> opciones >>> INICIO >> " );
           this.tokenService.getOpciones().forEach(obj => {
-            console.log(" >> onLogin() >> " +  obj.nombre ); 
+            console.log(" >> onLogin() >> " + obj.nombre); 
           });
           console.log("onLogin() >> opciones >>> FIN >> " );
+
+          this.isLoading = false; // Finaliza el estado de carga
       },
-      (err:any) => {
+      (err: any) => {
           this.isLogged = false;
           this.errMsj = err.message;
           console.log(err);
-          if (err.status == 401){
-    
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: "Usuario no Autorizado",
-              })
+          this.isLoading = false; // Finaliza el estado de carga en caso de error
 
+          if (err.status === 401) {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: "Usuario no Autorizado",
+              });
           }
       }
     );
-  }
+}
+
+
 
 }
