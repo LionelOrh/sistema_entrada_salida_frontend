@@ -8,6 +8,6 @@ const baseUrlExterno = AppSettings.API_ENDPOINT + '/externo';
     providedIn: 'root'
   })
 
-  export class AlumnoService {
+  export class ExternoService {
     constructor(private http:HttpClient) { }
   }

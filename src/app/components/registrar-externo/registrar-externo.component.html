@@ -1,5 +1,6 @@
 <app-menu></app-menu>
 <div class="container">
+  <form id="idFormExterno"  >
     <mat-toolbar class="toolbar-entrada-salida">
       <span>Registro de Externo</span>
     </mat-toolbar>
@@ -28,9 +29,9 @@
         <div class="col-md-6">
           <div class="form-group">
             <label for="tipo-documento">Tipo de Documento</label>
-            <select id="tipo-documento" class="form-control">
-              <option value="">Seleccione...</option>
-              <!-- Agrega las opciones de tipos de documento aquí -->
+            <select id="tipo-documento" class="form-control" formControlName="tipoDocumento">
+              <option value="-1">Seleccione...</option>
+              <option *ngFor="let tipoDocumento of lstTipoDoc" [value]="tipoDocumento.idTipoDoc">{{ tipoDocumento.descripcion }}</option>
             </select>
           </div>
         </div>
@@ -49,5 +50,6 @@
         <button class="btn btn-success">GENERAR QR</button>
       </div>
     </div>
+  </form>
     <p class="footer-text">Personal de Seguridad</p>
   </div>
