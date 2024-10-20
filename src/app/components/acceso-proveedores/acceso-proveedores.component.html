@@ -1,5 +1,6 @@
 <app-menu></app-menu>
 <div class="container">
+  <form id="idFormProveedor"  >
     <mat-toolbar class="toolbar-entrada-salida">
       <span>Gestión de Acceso para Proveedores</span>
     </mat-toolbar>
@@ -40,12 +41,15 @@
           <input type="text" class="form-control" id="cargo-responsable" placeholder="Cargo Responsable">
         </div>
       </div>
-      <div class="form-group row">
-        <div class="col-sm-4">
-          <label for="tipo-documento">Tipo de Documento</label>
-          <select class="form-control" id="tipo-documento">
-            <option selected>Seleccione...</option>
-          </select>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="tipo-documento">Tipo de Documento</label>
+            <select id="tipo-documento" class="form-control" formControlName="tipoDocumento">
+              <option value="-1">Seleccione</option>
+              <option *ngFor="let tipoDocumento of lstTipoDoc" [value]="tipoDocumento.idTipoDoc">{{ tipoDocumento.descripcion }}</option>
+            </select>
+          </div>
         </div>
         <div class="col-sm-4">
           <label for="num-documento">Número de Documento</label>
@@ -59,7 +63,7 @@
       </div>
      
     </form>
-    
+  </form>
     <p class="footer-text">Supervisor</p>
   </div>
   

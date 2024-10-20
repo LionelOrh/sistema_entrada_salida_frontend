@@ -9,7 +9,7 @@ import { ExternoService } from '../../services/externo.service';
 import { TokenService } from '../../security/token.service';
 import { Externo } from '../../models/externo.model';
 import { Usuario } from '../../models/usuario.model';
-
+ 
 @Component({
   standalone: true,
   imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent, ReactiveFormsModule],

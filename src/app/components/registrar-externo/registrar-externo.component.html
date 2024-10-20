@@ -23,14 +23,14 @@
             <label for="celular">Celular</label>
             <input type="tel" id="celular" class="form-control" placeholder="Celular">
           </div>
-        </div>
+        </div> 
       </div>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label for="tipo-documento">Tipo de Documento</label>
             <select id="tipo-documento" class="form-control" formControlName="tipoDocumento">
-              <option value="-1">Seleccione...</option>
+              <option value="-1">Seleccione</option>
               <option *ngFor="let tipoDocumento of lstTipoDoc" [value]="tipoDocumento.idTipoDoc">{{ tipoDocumento.descripcion }}</option>
             </select>
           </div>

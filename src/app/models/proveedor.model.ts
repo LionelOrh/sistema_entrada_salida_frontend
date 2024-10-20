@@ -1,14 +1,16 @@
 import { TipoDocumento } from "./tipoDocumento.model";
 import { Usuario } from "./usuario.model";
 
-export class Externo {
-    idExterno?: number; 
+export class Proveedor {
+    idProveedor?: number; 
+    razonSocial?: string;
+    ruc?: string;
+    desProd?:string;
     nombres?: string;
     apellidos?: string;
-    celular?:string;
+    cargoRes?:string;
     tipoDoc?: TipoDocumento;
     nroDoc?: string;
-    motivo?: string;
     estado?: number;
     usuarioRegistro?: Usuario;
     usuarioActualiza?: Usuario
