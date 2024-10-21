@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: #0a3a61;">
+<nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color: #0a3a61; position: relative;">
   <a class="navbar-brand" href="#">
     <img src="/assets/img/Cibertec_logo_menu.png" alt="Cibertec" style="height: 40px;" />
   </a>
@@ -27,7 +27,7 @@
         </a>
       </li>
 
-      <li class="nav-item" *ngIf="isLogged &&   opcRegistroExterno.length> 0">
+      <li class="nav-item" *ngIf="isLogged && opcRegistroExterno.length > 0">
         <a class="nav-link" routerLink="/{{ opcRegistroExterno[0].ruta }}">
           Registrar Externo
         </a>
@@ -46,14 +46,13 @@
       </li>
     </ul>
 
-    <ul class="navbar-nav ms-auto">
-      <li class="nav-item" *ngIf="isLogged" (click)="onLogOut()">
-        <a class="nav-link" style="cursor: pointer;">
+    <!-- Botón de Cerrar Sesión en la esquina izquierda -->
+    <ul class="navbar-nav" style="position: absolute; right: 10px; top: 10px;">
+      <li class="nav-item" *ngIf="isLogged">
+        <a class="nav-link" style="cursor: pointer;" (click)="onLogOut()">
           <i class="fas fa-door-open"></i> Cerrar Sesión
         </a>
       </li>
     </ul>
   </div>
-
-  
 </nav>

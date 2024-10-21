@@ -3,10 +3,11 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login.component';
 import { IndexComponent } from './index/index.component';
 
-import { RegistrarEntradaSalidaComponent } from './components/registro-entrada-salida/registro-entrada-salida.component';
+
 import { RegistrarExternoComponent } from './components/registrar-externo/registrar-externo.component';
 import { ConsultaReporteComponent } from './components/consulta-reporte/consulta-reporte.component';
 import { AccesoProveedorComponent } from './components/acceso-proveedores/acceso-proveedores.component';
+import { RegistrarEntradaSalidaComponent } from './components/registro-entrada-salida/registro-entrada-salida.component';
 
 
 

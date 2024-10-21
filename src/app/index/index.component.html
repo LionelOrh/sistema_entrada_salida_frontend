@@ -1,5 +1,60 @@
-<app-menu></app-menu>
-<div class="container text-center">
-    <div *ngIf="isLogged; else loggedOut"><h5>Bienvenido al sistema, {{nombreUsuario}}</h5></div>
-    <ng-template #loggedOut><h5>Para ingresar debe Inicia Sesión</h5></ng-template>
-</div> 
+<div class="container text-center d-flex flex-column align-items-center justify-content-center min-vh-100">
+    <div class="content-container">
+        <h2 *ngIf="isLogged">Bienvenido al sistema, {{nombreUsuario}}</h2>
+        <h5 *ngIf="!isLogged">Para ingresar debe Iniciar Sesión</h5>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-4 mb-4" *ngIf="!isLogged">
+                <div class="card custom-card" routerLink="/login" style="cursor: pointer;">
+                    <div class="card-body">
+                        <i class="fas fa-sign-in-alt fa-2x"></i>
+                        <h5 class="card-title">Iniciar Sesión</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4" *ngIf="isLogged && opcRegistroEntradaSalida.length > 0">
+                <div class="card custom-card" [routerLink]="['/', opcRegistroEntradaSalida[0].ruta]" style="cursor: pointer;">
+                    <div class="card-body">
+                        <i class="fas fa-user-clock fa-2x"></i>
+                        <h5 class="card-title">Registro de Entrada y Salida</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4" *ngIf="isLogged && opcRegistroExterno.length > 0">
+                <div class="card custom-card" [routerLink]="['/', opcRegistroExterno[0].ruta]" style="cursor: pointer;">
+                    <div class="card-body">
+                        <i class="fas fa-user-plus fa-2x"></i>
+                        <h5 class="card-title">Registrar Externo</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4" *ngIf="isLogged && opcConsultaReporte.length > 0">
+                <div class="card custom-card" [routerLink]="['/', opcConsultaReporte[0].ruta]" style="cursor: pointer;">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                        <h5 class="card-title">Consulta y Reporte de Usuarios</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4" *ngIf="isLogged && opcAccesoProveedor.length > 0">
+                <div class="card custom-card" [routerLink]="['/', opcAccesoProveedor[0].ruta]" style="cursor: pointer;">
+                    <div class="card-body">
+                        <i class="fas fa-user-shield fa-2x"></i>
+                        <h5 class="card-title">Gestión de Acceso para Proveedores</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón de Cerrar Sesión en la esquina -->
+        <div class="logout-button">
+            <a class="btn btn-light" *ngIf="isLogged" (click)="onLogOut()" style="cursor: pointer;">
+                <i class="fas fa-door-open"></i> Cerrar Sesión
+            </a>
+        </div>
+    </div>
+</div>
