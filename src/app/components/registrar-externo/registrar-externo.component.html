@@ -1,55 +1,64 @@
 <app-menu></app-menu>
 <div class="container">
-  <form id="idFormExterno"  >
-    <mat-toolbar class="toolbar-entrada-salida">
-      <span>Registro de Externo</span>
-    </mat-toolbar>
-    <div class="form-container">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="nombres">Nombres</label>
-            <input type="text" id="nombres" class="form-control" placeholder="Nombres">
-          </div>
+    <form id="idFormExterno" [formGroup]="formRegistra" (ngSubmit)="registra()">
+        <mat-toolbar class="toolbar-entrada-salida">
+            <span>Registro de Externo</span>
+        </mat-toolbar>
+        <div class="form-container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="nombres">Nombres</label>
+                        <input formControlName="validaNombre" class="form-control" placeholder="Nombres">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="apellidos">Apellidos</label>
+                        <input formControlName="validaApellido" class="form-control" placeholder="Apellidos">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="celular">Celular</label>
+                        <input formControlName="validaCelular" class="form-control" placeholder="Celular">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="tipo-documento">Tipo de Documento</label>
+                        <mat-select formControlName="validaTipoDocumento" placeholder="Seleccione un tipo de documento" class="form-control">
+                            <mat-option [value]="-1" disabled>Seleccione un tipo de documento</mat-option>
+                            <mat-option *ngFor="let x of lstTipoDoc" [value]="x.idTipoDoc">
+                                {{ x.descripcion }}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="numero-documento">Número de Documento</label>
+                        <input formControlName="validaNumeroDocumento" class="form-control" placeholder="Número de Documento">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="correo">Correo</label>
+                        <input formControlName="validaCorreo" class="form-control" placeholder="Correo">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="motivo">Motivo</label>
+                <textarea formControlName="validaMotivo" id="motivo" class="form-control" rows="3" placeholder="Motivo"></textarea>
+            </div>
+        
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">GENERAR QR</button>
+            </div>
         </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="apellidos">Apellidos</label>
-            <input type="text" id="apellidos" class="form-control" placeholder="Apellidos">
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="celular">Celular</label>
-            <input type="tel" id="celular" class="form-control" placeholder="Celular">
-          </div>
-        </div> 
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="tipo-documento">Tipo de Documento</label>
-            <select id="tipo-documento" class="form-control" formControlName="tipoDocumento">
-              <option value="-1">Seleccione</option>
-              <option *ngFor="let tipoDocumento of lstTipoDoc" [value]="tipoDocumento.idTipoDoc">{{ tipoDocumento.descripcion }}</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="numero-documento">Número de Documento</label>
-            <input type="text" id="numero-documento" class="form-control" placeholder="Número de Documento">
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="motivo">Motivo</label>
-        <textarea id="motivo" class="form-control" rows="3" placeholder="Motivo"></textarea>
-      </div>
-      <div class="text-center">
-        <button class="btn btn-success">GENERAR QR</button>
-      </div>
-    </div>
-  </form>
+    </form>
     <p class="footer-text">Personal de Seguridad</p>
-  </div>
+</div>

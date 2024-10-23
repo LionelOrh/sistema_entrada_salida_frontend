@@ -6,10 +6,10 @@ export class Externo {
     nombres?: string;
     apellidos?: string;
     celular?:string;
-    tipoDoc?: TipoDocumento;
-    nroDoc?: string;
+    correo?:string;
+    tipoDocumento?: TipoDocumento;
+    num_doc?: string;
     motivo?: string;
     estado?: number;
     usuarioRegistro?: Usuario;
-    usuarioActualiza?: Usuario
 }
