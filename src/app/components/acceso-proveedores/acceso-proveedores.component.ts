@@ -9,7 +9,7 @@ import { Usuario } from '../../models/usuario.model';
 import { UtilService } from '../../services/util.service';
 import { TokenService } from '../../security/token.service';
 import { ProveedorService } from '../../services/proveedor.service';
-
+ 
 @Component({
   standalone: true,
   imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent, ReactiveFormsModule],
