@@ -18,7 +18,7 @@
         <mat-label>Rol</mat-label>
         <mat-select [(ngModel)]="varRol">
           <mat-option value="-1"> [Todos] </mat-option>
-          <mat-option *ngFor="let rol of lstRol" [value]="rol.idRol">
+          <mat-option *ngFor="let rol of lstRol.slice(2)" [value]="rol.idRol">
             {{ rol.nombre }}
           </mat-option>
         </mat-select>
@@ -48,7 +48,6 @@
     <button type="submit" class="btn btn-success" style="width: 200px;" (click)="filtrar()">Filtrar</button>
 </div>
 
-<!-- Agregamos un margen en la tabla -->
 <mat-table [dataSource]="dataSource" #table class="mat-elevation-z8" style="margin-top: 20px;">
     <ng-container matColumnDef="codigo">
       <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
@@ -89,7 +88,7 @@
   <div class="action-buttons mt-4 text-center">
     <button class="btn btn-pdf">PDF</button>
     &nbsp;
-    <button class="btn btn-excel">EXCEL</button>
+    <button class="btn btn-excel" (click)="exportarExcel()">EXCEL</button>
   </div>
 
   <p class="footer-text mt-4">Supervisor</p>

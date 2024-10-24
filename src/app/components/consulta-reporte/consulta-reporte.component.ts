@@ -67,4 +67,32 @@ export class ConsultaReporteComponent implements OnInit {
     );
     
   }
+
+  exportarExcel() {
+    console.log(">>> Filtrar [ini]");
+    console.log(">>> varCodigo: " + this.varCodigo);
+    console.log(">>> varFechaDesde: " + this.formatDate(this.varFechaDesde));
+    console.log(">>> varFechaHasta: " + this.formatDate(this.varFechaHasta));
+    console.log(">>> varRol: " + this.varRol);
+    
+    this.accesoService.generateDocumentExcel( 
+      this.varCodigo,
+      this.varFechaDesde.toISOString().split('T')[0],
+      this.varFechaHasta.toISOString().split('T')[0],
+      this.varRol).subscribe(
+      response => {
+        console.log(response);
+        var url = window.URL.createObjectURL(response.data);
+        var a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        a.setAttribute('target', 'blank');
+        a.href = url;
+        a.download = response.filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+    }); 
+}
+
 }
