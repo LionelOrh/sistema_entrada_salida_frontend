@@ -1,41 +1,37 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms'
-import { CommonModule } from '@angular/common';
-import { MenuComponent } from '../../menu/menu.component';
-import { AppMaterialModule } from '../../app.material.module';
 import { Rol } from '../../models/rol.model';
-import { Acceso } from '../../models/acceso.model';
-import { Usuario } from '../../models/usuario.model';
 import { UtilService } from '../../services/util.service';
-import { TokenService } from '../../security/token.service';
 import { AccesoService } from '../../services/acceso.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { AppMaterialModule } from '../../app.material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   standalone: true,
   imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent, ReactiveFormsModule],
-
   selector: 'app-consulta-reporte',
   templateUrl: './consulta-reporte.component.html',
   styleUrls: ['./consulta-reporte.component.css']
 })
 
 export class ConsultaReporteComponent implements OnInit {
-  //grilla
+  // Grilla
   dataSource: any;
-  //Clase para la paginacion
+  // Clase para la paginación
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-  //Cabecera
+  // Cabecera
   displayedColumns = ["codigo", "nombres", "apellidos", "fecha", "rol", "estado"];
 
-  //Para el combobox
+  // Para el combobox
   lstRol: Rol[] = [];
 
-  varCodigo: number = 0;
+  varCodigo: string = "";
+  varFechaDesde: Date = new Date(1900, 0, 1);
+  varFechaHasta: Date = new Date();
   varRol: number = -1;
-  varFecha: Date = new Date();
-  varEstado: boolean = false;
 
   constructor(private utilService: UtilService, private accesoService: AccesoService) { }
 
@@ -45,18 +41,30 @@ export class ConsultaReporteComponent implements OnInit {
     );
   }
 
-  filtrar() {
-    this.accesoService.ConsultaReporte(
-      this.varCodigo,
-      this.varFecha,
-      this.varEstado ? 1 : 0,
-      this.varRol).subscribe(
-        x => {
-          this.dataSource = x;
-          this.dataSource.paginator = this.paginator;
-        }
-      );
-    
+  // Función para formatear las fechas a 'YYYY-MM-DD'
+  formatDate(date: Date): string {
+    return date.toISOString().split('T')[0]; // Separa solo la parte de la fecha
   }
 
+  filtrar() {
+    console.log(">>> Filtrar [ini]");
+    console.log(">>> varCodigo: " + this.varCodigo);
+    console.log(">>> varFechaDesde: " + this.formatDate(this.varFechaDesde));
+    console.log(">>> varFechaHasta: " + this.formatDate(this.varFechaHasta));
+    console.log(">>> varRol: " + this.varRol);
+  
+    this.accesoService.consultaReporteAccesos(
+      this.varCodigo,
+      this.varFechaDesde.toISOString().split('T')[0],
+      this.varFechaHasta.toISOString().split('T')[0],
+      this.varRol
+    ).subscribe(
+      x => {
+        console.log("Data recibida: ", x); // Para asegurarte de que recibes datos
+        this.dataSource = x; // Asignar el dataSource a la tabla
+        this.dataSource.paginator = this.paginator;
+      }
+    );
+    
+  }
 }

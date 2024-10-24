@@ -73,7 +73,8 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 20px; /* Espacio entre la fila de campos y los botones */
+  margin-bottom: 20px; /* Espacio entre los botones y la tabla */
 }
 
 .btn-filtrar {
@@ -85,6 +86,7 @@
   border: none;
   cursor: pointer;
   font-size: 0.95rem;
+  margin-right: 20px; /* Espacio entre el botón y la tabla */
 }
 
 .btn-pdf {
@@ -146,8 +148,11 @@
   flex: 0 0 15%;
 }
 .mat-column-rol {
-  flex: 0 0 20%;
+  flex: 0 0 15%;
 }
 .mat-column-estado {
-  flex: 0 0 10%;
+  flex: 0 0 15%;
+}
+.full-width {
+  width: 100%;
 }
