@@ -79,7 +79,7 @@ export class RegistrarExternoComponent {
       });
       return;
     }
-
+    
     // Si es válido, asignamos los valores y procedemos con la llamada al servicio
     this.externo.usuarioRegistro = this.objUsuario;
     this.externo.nombres = this.formRegistra.value.validaNombre;
@@ -90,9 +90,9 @@ export class RegistrarExternoComponent {
     this.externo.motivo = this.formRegistra.value.validaMotivo;
     this.externo.tipoDocumento = { idTipoDoc: this.formRegistra.value.validaTipoDocumento };
 
-    // Llamada al servicio para registrar el Externo
     this.externoService.registrar(this.externo).subscribe(
       response => {
+        console.log(response); // Asegúrate de ver el contenido de la respuesta
         if (response.mensaje.includes('ya existe')) {
           Swal.fire({
             icon: 'warning',
@@ -100,7 +100,7 @@ export class RegistrarExternoComponent {
             text: `El número ${this.externo.num_doc} ya existe en la base de datos.`,
             confirmButtonText: 'Cerrar'
           });
-        } else if (response.mensaje.includes('exitoso')) {
+        } else if (response.mensaje.includes('Se registró correctamente')) {  // Ajusta esta línea
           Swal.fire({
             icon: 'success',
             title: 'Registro exitoso',
@@ -117,7 +117,7 @@ export class RegistrarExternoComponent {
           confirmButtonText: 'Cerrar'
         });
       }
-    );
+    );    
   }
 
   // Método para generar mensajes de error
@@ -140,17 +140,14 @@ export class RegistrarExternoComponent {
     if (controls['validaCelular'].hasError('required')) {
       errores.push('<li>El celular es obligatorio.</li>');
     } else if (controls['validaCelular'].hasError('pattern')) {
-      errores.push('<li>El celular debe tener 9 dígitos y solo contener números..</li>');
+      errores.push('<li>El celular debe tener 9 dígitos.</li>');
     }
 
-      // Validación para el campo "Número de Documento (DNI)"
-  if (controls['validaNumeroDocumento'].hasError('required')) {
-    errores.push('<li>El número de documento es obligatorio.</li>');
-  } else if (controls['validaNumeroDocumento'].hasError('minlength')) {
-    errores.push('<li>El número de documento debe tener al menos 8 caracteres.</li>');
-  } else if (controls['validaNumeroDocumento'].hasError('maxlength')) {
-    errores.push('<li>El número de documento no debe exceder los 45 caracteres.</li>');
-  }
+    if (controls['validaNumeroDocumento'].hasError('required')) {
+      errores.push('<li>El número de documento es obligatorio.</li>');
+    } else if (controls['validaNumeroDocumento'].hasError('maxlength')) {
+      errores.push('<li>El número de documento no debe exceder los 45 caracteres.</li>');
+    }
 
     if (controls['validaCorreo'].hasError('required')) {
       errores.push('<li>El correo es obligatorio.</li>');
