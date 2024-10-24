@@ -9,7 +9,7 @@ export class Proveedor {
     nombres?: string;
     apellidos?: string;
     cargoRes?:string;
-    tipoDoc?: TipoDocumento;
+    tipoDocumento?: TipoDocumento;
     nroDoc?: string;
     estado?: number;
     usuarioRegistro?: Usuario;
