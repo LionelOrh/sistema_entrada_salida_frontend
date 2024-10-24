@@ -1,54 +1,83 @@
 <app-menu></app-menu>
 <div class="container">
+
   <mat-toolbar class="toolbar-entrada-salida">
     <span>Consulta y Reporte del Control de Usuarios</span>
-  </mat-toolbar> 
+  </mat-toolbar>
   <br>
-  <div class="bordered-section">
-    <div class="row">
-      <div class="col-4">
-        <label for="codigo">Código</label>
-        <input type="text" id="codigo" class="form-control" placeholder="Ingrese el código">
-      </div>
-      <div class="col-4"> 
-        <label for="userType">Tipo de Usuario</label>
-        <select class="form-control" id="userType">
-          <option selected>Seleccione...</option>
-        </select>
-      </div>
-      <div class="col-4">
-        <label for="date">Fecha</label>
-        <input type="date" class="form-control" id="date" value="2024-01-01">
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-auto">
-        <br>
-        <button class="btn btn-filtrar">Filtrar</button>
-      </div>
-    </div>
-    <div class="table-responsive mt-4">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Tipo de Usuario</th>
-            <th>Fecha de Ingreso</th>
-            <th>Hora de Ingreso</th>
-            <th>Fecha de Salida</th>
-            <th>Hora de Salida</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
+
+  <div class="row" style="margin-top: 3%">
+    <mat-form-field class="col-md-4">
+      <mat-label>Código</mat-label>
+      <input matInput [(ngModel)]="varCodigo">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4">
+      <mat-label>Seleccionar Rol</mat-label>
+      <mat-select [(ngModel)]="varRol">
+        <mat-option *ngFor="let rol of lstRol.slice(2)" [value]="rol.idRol">{{ rol.nombre }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     
-    <div class="action-buttons mt-4">
-      <button class="btn btn-pdf">PDF</button>
-      &nbsp; <!-- Espacio entre los botones -->
-      <button class="btn btn-excel">EXCEL</button>
-    </div>
+
+    <mat-form-field class="col-md-4">
+      <mat-label>Fecha</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fecha" placeholder="Seleccione una fecha">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  
+  <div class="text-center">
+    <button type="submit" class="btn btn-success" style="width: 200px;" (click)="filtrar()" >Filtrar</button>
+  </div>
+ 
+
+  <div class="row" style="margin-top: 3%">
+    <div class="row" style="margin-top: 3%; ">
+      <mat-table #table class="mat-cell">
+        <ng-container matColumnDef="codigo">
+          <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
+          <mat-cell *matCellDef="let aux">{{ aux.codigo }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nombres">
+          <mat-header-cell *matHeaderCellDef>Nombres</mat-header-cell>
+          <mat-cell *matCellDef="let aux">{{ aux.nombres }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="apellidos">
+          <mat-header-cell *matHeaderCellDef>Apellidos</mat-header-cell>
+          <mat-cell *matCellDef="let aux">{{ aux.apellidos }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+          <mat-cell *matCellDef="let aux">{{ aux.fecha }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="rol">
+          <mat-header-cell *matHeaderCellDef>Tipo Usuario</mat-header-cell>
+          <mat-cell *matCellDef="let aux">{{ aux.rol.nombre }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+          <mat-cell *matCellDef="let aux">{{ aux.estado == 1 ? "Ingresó" : "No Ingresó" }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let aux; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[6,8,10]" showFirstLastButtons></mat-paginator>
+
+  <div class="action-buttons mt-4">
+    <button class="btn btn-pdf">PDF</button>
+    &nbsp; <!-- Espacio entre los botones -->
+    <button class="btn btn-excel">EXCEL</button>
+  </div>
+
+    <p class="footer-text">Supervisor</p>
+  </div>
 </div>
-<p class="footer-text">Supervisor</p>

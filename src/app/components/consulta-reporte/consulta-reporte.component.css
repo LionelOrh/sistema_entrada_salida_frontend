@@ -132,3 +132,22 @@
   margin-top: 20px;
   width: 100%;
 }
+
+.mat-column-codigo {
+  flex: 0 0 15%;
+}
+.mat-column-nombres {
+  flex: 0 0 20%;
+}
+.mat-column-apellidos {
+  flex: 0 0 20%;
+}
+.mat-column-fecha {
+  flex: 0 0 15%;
+}
+.mat-column-rol {
+  flex: 0 0 20%;
+}
+.mat-column-estado {
+  flex: 0 0 10%;
+}
