@@ -20,7 +20,7 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./consulta-reporte.component.css']
 })
 
-export class ConsultaReporteComponent /*implements OnInit */{
+export class ConsultaReporteComponent implements OnInit {
   //grilla
   dataSource: any;
   //Clase para la paginacion
@@ -35,12 +35,28 @@ export class ConsultaReporteComponent /*implements OnInit */{
   varCodigo: number = 0;
   varRol: number = -1;
   varFecha: Date = new Date();
+  varEstado: boolean = false;
 
-  constructor(private utilService:UtilService, private accesoService : AccesoService) { }
+  constructor(private utilService: UtilService, private accesoService: AccesoService) { }
 
   ngOnInit() {
     this.utilService.listaRol().subscribe(
-           x =>  this.lstRol = x
-     );
+      x => this.lstRol = x
+    );
   }
+
+  filtrar() {
+    this.accesoService.ConsultaReporte(
+      this.varCodigo,
+      this.varFecha,
+      this.varEstado ? 1 : 0,
+      this.varRol).subscribe(
+        x => {
+          this.dataSource = x;
+          this.dataSource.paginator = this.paginator;
+        }
+      );
+    
+  }
+
 }

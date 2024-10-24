@@ -9,12 +9,8 @@ import { Usuario } from '../../models/usuario.model';
 import { UtilService } from '../../services/util.service';
 import { TokenService } from '../../security/token.service';
 import { ProveedorService } from '../../services/proveedor.service';
-<<<<<<< HEAD
- 
-=======
 import Swal from 'sweetalert2';
 
->>>>>>> 2e591b79ca16c845678530faa1017f56c0528657
 @Component({
   standalone: true,
   imports: [AppMaterialModule, FormsModule, CommonModule, MenuComponent, ReactiveFormsModule],
