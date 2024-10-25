@@ -10,6 +10,7 @@ import { UtilService } from '../../services/util.service';
 import { TokenService } from '../../security/token.service';
 import { ProveedorService } from '../../services/proveedor.service';
 import Swal from 'sweetalert2';
+import JsBarcode from 'jsbarcode';
 
 @Component({
   standalone: true,
@@ -32,6 +33,7 @@ export class AccesoProveedorComponent {
   };
   objUsuario: Usuario = {};
   formRegistra: FormGroup;
+  codigoBarrasGenerado: boolean = false; 
 
   constructor(
     private utilService: UtilService,
@@ -42,20 +44,19 @@ export class AccesoProveedorComponent {
     this.utilService.listaTipoDocumento().subscribe(x => this.lstTipoDoc = x);
     this.objUsuario.idUsuario = this.tokenService.getUserId();
 
-    // Definimos los validadores para cada campo
     this.formRegistra = this.formBuilder.group({
       validaRazonSocial: ['', [Validators.required]],
-      validaRuc: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]], // RUC de 11 dígitos
+      validaRuc: ['', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]], 
       validaDesProd: ['', [Validators.required]],
       validaNombres: ['', [Validators.required]],
       validaApellidos: ['', [Validators.required]],
       validaCargoRes: ['', [Validators.required]],
-      validaTipoDocumento: [-1, [Validators.required, this.tipoDocumentoValidator()]], // Validador personalizado
+      validaTipoDocumento: [-1, [Validators.required, this.tipoDocumentoValidator()]], 
       validaNroDoc: ['', [Validators.required, Validators.maxLength(45)]],
     });
   }
 
-  // Validador personalizado para tipo de documento
+ 
   tipoDocumentoValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
@@ -63,7 +64,7 @@ export class AccesoProveedorComponent {
     };
   }
 
-  // Método para registrar el Proveedor
+  
   registrar() {
     if (this.formRegistra.invalid) {
       const errores = this.getErrorMessages();
@@ -76,37 +77,69 @@ export class AccesoProveedorComponent {
       return;
     }
 
-    // Si es válido, asignamos los valores del formulario al objeto proveedor
-    this.proveedor.usuarioActualiza = this.objUsuario;
-    this.proveedor.usuarioRegistro = this.objUsuario;
-    this.proveedor.razonSocial = this.formRegistra.value.validaRazonSocial;
-    this.proveedor.ruc = this.formRegistra.value.validaRuc;
-    this.proveedor.desProd = this.formRegistra.value.validaDesProd;
-    this.proveedor.nombres = this.formRegistra.value.validaNombres;
-    this.proveedor.apellidos = this.formRegistra.value.validaApellidos;
-    this.proveedor.cargoRes = this.formRegistra.value.validaCargoRes;
-    this.proveedor.nroDoc = this.formRegistra.value.validaNroDoc;
-    this.proveedor.tipoDocumento = { idTipoDoc: this.formRegistra.value.validaTipoDocumento };
+ this.proveedor.usuarioActualiza = this.objUsuario;
+ this.proveedor.usuarioRegistro = this.objUsuario;
+ this.proveedor.razonSocial = this.formRegistra.value.validaRazonSocial;
+ this.proveedor.ruc = this.formRegistra.value.validaRuc;
+ this.proveedor.desProd = this.formRegistra.value.validaDesProd;
+ this.proveedor.nombres = this.formRegistra.value.validaNombres;
+ this.proveedor.apellidos = this.formRegistra.value.validaApellidos;
+ this.proveedor.cargoRes = this.formRegistra.value.validaCargoRes;
+ this.proveedor.nroDoc = this.formRegistra.value.validaNroDoc;
+ this.proveedor.tipoDocumento = { idTipoDoc: this.formRegistra.value.validaTipoDocumento };
 
-    this.proveedorService.registrar(this.proveedor).subscribe(
-      x => Swal.fire({
-        icon: 'success',
-        title: 'Registro exitoso',
-        text: x.mensaje,
-        confirmButtonText: 'Cerrar'
-      }),
-      error => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Hubo un error al realizar el registro. Inténtalo de nuevo.',
-          confirmButtonText: 'Cerrar'
-        });
-      }
-    );
+ 
+ this.proveedorService.registrar(this.proveedor).subscribe(
+  response => {
+    const idProveedor = response.id;      
+    const nroDocProveedor = response.nroDoc; 
+
+
+    const idDniCombo = `${idProveedor}${nroDocProveedor}`;
+
+
+    const cifrado = btoa(idDniCombo);  
+
+ 
+    this.generarCodigoBarras(cifrado); 
+    this.codigoBarrasGenerado = true; 
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Registro exitoso',
+      text: response.mensaje,
+      confirmButtonText: 'Cerrar'
+    });
+  },
+  error => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Hubo un error al realizar el registro. Inténtalo de nuevo.',
+      confirmButtonText: 'Cerrar'
+    });
   }
+);
+}
 
-  // Método para generar mensajes de error
+generarCodigoBarras(cifrado: string) {
+setTimeout(() => {
+  const barcodeElement = document.getElementById('barcode');
+  if (barcodeElement) {
+    JsBarcode(barcodeElement, cifrado, { 
+      format: 'CODE128',
+      lineColor: '#0aa',
+      width: 2,
+      height: 40,
+      displayValue: true
+    });
+  } else {
+    console.error("No se encontró el elemento de código de barras");
+  }
+}, 100);
+}
+
+ 
   getErrorMessages(): string {
     const errores = [];
     const controls = this.formRegistra.controls;
@@ -136,7 +169,7 @@ export class AccesoProveedorComponent {
     if (controls['validaNroDoc'].hasError('required')) {
       errores.push('<li>El número de documento es obligatorio.</li>');
     } else if (controls['validaNroDoc'].hasError('maxlength')) {
-      errores.push('<li>El número de documento no debe exceder los 45 caracteres.</li>');
+      errores.push('<li>El número de documento no debe exceder los 8 caracteres.</li>');
     }
 
     return errores.join('');
