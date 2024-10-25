@@ -45,7 +45,7 @@
   </div>
 
   <div class="text-center mt-6">
-    <button type="submit" class="btn btn-success" style="width: 200px;" (click)="filtrar()">Filtrar</button>
+    <button type="submit" class="btn " style="width: 200px;" (click)="filtrar()">Filtrar</button>
 </div>
 
 <mat-table [dataSource]="dataSource" #table class="mat-elevation-z8" style="margin-top: 20px;">
@@ -85,9 +85,7 @@
 
   <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
 
-  <div class="action-buttons mt-4 text-center">
-    <button class="btn btn-pdf" (click)="exportarPDF()">PDF</button>
-    &nbsp;
+  <div class="action-buttons mt-4 text-center"> 
     <button class="btn btn-excel" (click)="exportarExcel()">EXCEL</button>
   </div>
 
