@@ -52,4 +52,29 @@ export class AccesoService {
         };
       }));
   }
+
+  generateDocumentReport(
+    codigo: string,
+    fechaDesde: string,
+    fechaHasta: string,
+    idRol: number): Observable<any> {
+      const params = new HttpParams()
+      .set("codigo", codigo)
+      .set("fechaDesde", fechaDesde)
+      .set("fechaHasta", fechaHasta)
+      .set("idRol", idRol);
+    let headers = new HttpHeaders();
+    headers.append('Accept', 'application/pdf');
+    let requestOptions: any = { headers: headers, responseType: 'blob' };
+
+    return this.http.post(baseUrlAcceso +"/reportePDF?codigo=" + codigo +
+      "&fechaDesde=" + fechaDesde +
+      "&fechaHasta=" + fechaHasta +
+      "&idRol=" + idRol, '', requestOptions).pipe(map((response)=>{
+      return {
+          filename: 'ReporteAccesos.pdf',
+          data: new Blob([response], {type: 'application/pdf'})
+      };
+  }));
+}
 }

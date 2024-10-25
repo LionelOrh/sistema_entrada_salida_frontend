@@ -66,6 +66,7 @@ export class ConsultaReporteComponent implements OnInit {
       }
     );
     
+    
   }
 
   exportarExcel() {
@@ -95,4 +96,25 @@ export class ConsultaReporteComponent implements OnInit {
     }); 
 }
 
+exportarPDF() {
+
+  this.accesoService.generateDocumentReport(
+    this.varCodigo,
+      this.varFechaDesde.toISOString().split('T')[0],
+      this.varFechaHasta.toISOString().split('T')[0],
+      this.varRol).subscribe(
+      response => {
+        console.log(response);
+        var url = window.URL.createObjectURL(response.data);
+        var a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        a.setAttribute('target', 'blank');
+        a.href = url;
+        a.download = response.filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      });
+}
 }
