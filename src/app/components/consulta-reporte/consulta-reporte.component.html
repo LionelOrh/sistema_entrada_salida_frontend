@@ -86,7 +86,7 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
 
   <div class="action-buttons mt-4 text-center">
-    <button class="btn btn-pdf">PDF</button>
+    <button class="btn btn-pdf" (click)="exportarPDF()">PDF</button>
     &nbsp;
     <button class="btn btn-excel" (click)="exportarExcel()">EXCEL</button>
   </div>
